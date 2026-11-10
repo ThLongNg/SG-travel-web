@@ -1,0 +1,30 @@
+---
+// Notices above content: "情報確認中" (dev only, verified:false) and the untranslated note on vi/en.
+import Icon from '../glass/Icon.astro';
+import { t, type Locale } from '../../lib/i18n';
+
+interface Props {
+  lang: Locale;
+  verified: boolean;
+}
+
+const { lang, verified } = Astro.props;
+const showVerify = !verified && import.meta.env.DEV;
+const showUntranslated = lang !== 'ja';
+---
+
+{(showVerify || showUntranslated) && (
+  <div class="flex flex-wrap items-center gap-2">
+    {showVerify && (
+      <span class="tag tag--amber" data-verifying>
+        <Icon name="alert" size={14} class="mr-1" />
+        {t(lang, 'common.verifying')}
+      </span>
+    )}
+    {showUntranslated && (
+      <p class="m-0 text-[13px] leading-relaxed text-ink-muted" lang={lang}>
+        {t(lang, 'common.untranslated')}
+      </p>
+    )}
+  </div>
+)}

@@ -1,0 +1,42 @@
+---
+// Course card (pattern from /dev/glass §03): 16:9 image, amber duration tag, serif title, summary.
+import { Image } from 'astro:assets';
+import GlassPanel from '../glass/GlassPanel.astro';
+import { localizePath, t, type Locale } from '../../lib/i18n';
+import { themeLabel, type Course } from '../spot/spot-utils';
+
+interface Props {
+  course: Course;
+  lang: Locale;
+  /** light = no blur (use when several cards are on screen) */
+  variant?: 'default' | 'light';
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { course, lang, variant = 'default', headingLevel: H = 'h3' } = Astro.props;
+const d = course.data;
+---
+
+<GlassPanel as="article" variant={variant} padding="none" class="overflow-hidden">
+  <a href={localizePath(`/courses/${course.id}/`, lang)} class="group block no-underline">
+    <div class="media-frame aspect-[16/9] rounded-none">
+      <Image
+        src={d.heroImage}
+        alt={d.heroAlt}
+        widths={[400, 800, 1200]}
+        sizes="(min-width: 1024px) 480px, (min-width: 768px) 50vw, 100vw"
+        class="transition-transform duration-500 group-hover:scale-[1.03]"
+      />
+    </div>
+    <div class="p-5">
+      <div class="flex flex-wrap gap-1.5">
+        <span class="tag tag--amber">{t(lang, 'courses.nights', { n: d.nights, m: d.days })}</span>
+        {d.themes.slice(0, 2).map((th) => (
+          <span class="tag">{themeLabel(lang, th)}</span>
+        ))}
+      </div>
+      <H class="font-display mt-2 text-[20px] leading-snug">{d.title}</H>
+      <p class="mt-1 line-clamp-2 text-sm text-ink-muted">{d.summary}</p>
+    </div>
+  </a>
+</GlassPanel>

@@ -1,9 +1,14 @@
 ---
-// STUB (owner: Agent A). Props are frozen by docs/CONTRACT.md — rewrite the internals only.
-// Phase-0 version: plain autoplay video + poster + scrim. A adds: no-video on reduced-motion/saveData/2g-3g,
-// pause offscreen / hidden tab, play/pause glass button, orientation-based source choice.
+// Saigon video hero (owner: Agent A). Props are frozen by docs/CONTRACT.md §6.
+// - The poster is a <picture> (portrait / landscape) so LCP never waits for the video; it matches
+//   the <link rel="preload"> emitted by BaseLayout's `preloadPoster`.
+// - <video> ships with NO <source>: JS attaches the right file only when motion and data are OK
+//   (not prefers-reduced-motion, not saveData, not 2g/3g). Portrait → mobile file, landscape → desktop.
+// - MP4 first everywhere; WebM is added only for non-WebKit browsers (WebKit stalls on VP9).
+// - Pauses off-screen (IntersectionObserver) and on hidden tabs; glass play/pause button (WCAG 2.2.2).
 import { heroMedia } from '../../lib/media';
 import { t, type Locale } from '../../lib/i18n';
+import Icon from '../glass/Icon.astro';
 
 interface Props {
   lang: Locale;
@@ -19,27 +24,155 @@ const { lang, height = 'full', class: className } = Astro.props;
   class:list={['video-hero relative isolate overflow-hidden', className]}
   style={`height:${height === 'full' ? '100dvh' : '60dvh'}`}
   aria-label={t(lang, 'media.videoAlt')}
+  data-video-hero
 >
+  <picture>
+    <source media="(orientation: portrait)" srcset={heroMedia.posterPortrait} type="image/webp" />
+    <img
+      src={heroMedia.posterLandscape}
+      alt=""
+      class="absolute inset-0 -z-30 h-full w-full object-cover"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </picture>
   <video
-    class="absolute inset-0 -z-20 h-full w-full object-cover"
-    autoplay
+    class="video-hero__video absolute inset-0 -z-20 h-full w-full object-cover"
     muted
     loop
     playsinline
-    preload="metadata"
-    poster={heroMedia.posterLandscape}
+    preload="none"
     aria-hidden="true"
-  >
-    <!-- MP4 first: WebKit (iOS Safari, Playwright WebKit) can claim VP9 support yet stall on WebM,
-         which also blocks the document load event. -->
-    <source src={heroMedia.mobile.mp4} type="video/mp4" media="(orientation: portrait)" />
-    <source src={heroMedia.mobile.webm} type="video/webm" media="(orientation: portrait)" />
-    <source src={heroMedia.desktop.mp4} type="video/mp4" />
-    <source src={heroMedia.desktop.webm} type="video/webm" />
-  </video>
+    tabindex="-1"
+    data-mp4-portrait={heroMedia.mobile.mp4}
+    data-webm-portrait={heroMedia.mobile.webm}
+    data-mp4-landscape={heroMedia.desktop.mp4}
+    data-webm-landscape={heroMedia.desktop.webm}
+  ></video>
+  <!-- Scrim: dark from the bottom (text area) + a light veil at the top (header) -->
   <div
-    class="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/40 to-night/20"
+    class="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/45 to-night/30"
     aria-hidden="true"
   ></div>
+  <button
+    type="button"
+    class="video-hero__toggle glass glass-pill glass-press touch-target absolute z-10 grid place-items-center"
+    data-label-play={t(lang, 'media.playVideo')}
+    data-label-pause={t(lang, 'media.pauseVideo')}
+    aria-label={t(lang, 'media.pauseVideo')}
+    hidden
+  >
+    <span class="video-hero__icon-pause">
+      <Icon name="pause" size={18} />
+    </span>
+    <span class="video-hero__icon-play">
+      <Icon name="play" size={16} />
+    </span>
+  </button>
   <slot />
 </section>
+
+<script>
+  type Conn = { saveData?: boolean; effectiveType?: string };
+
+  function canAutoplayVideo(): boolean {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+    const c = (navigator as Navigator & { connection?: Conn }).connection;
+    if (c?.saveData) return false;
+    if (c?.effectiveType && /(^|-)(2g|3g)$/.test(c.effectiveType)) return false;
+    return true;
+  }
+
+  // WebKit (Safari, all iOS browsers) can claim VP9 support yet stall on WebM → MP4 only there.
+  const isWebKit =
+    /AppleWebKit/.test(navigator.userAgent) && !/Chrome|Chromium|Edg\//.test(navigator.userAgent);
+
+  for (const hero of document.querySelectorAll<HTMLElement>('[data-video-hero]')) {
+    const video = hero.querySelector<HTMLVideoElement>('video')!;
+    const btn = hero.querySelector<HTMLButtonElement>('.video-hero__toggle')!;
+    if (!canAutoplayVideo()) continue;
+
+    const portrait = matchMedia('(orientation: portrait)');
+    let userPaused = false;
+    let inView = true;
+
+    const load = () => {
+      const o = portrait.matches ? 'portrait' : 'landscape';
+      const mp4 = video.dataset[o === 'portrait' ? 'mp4Portrait' : 'mp4Landscape']!;
+      const webm = video.dataset[o === 'portrait' ? 'webmPortrait' : 'webmLandscape']!;
+      if (video.dataset.current === o) return;
+      video.dataset.current = o;
+      const sources = [
+        `<source src="${mp4}" type="video/mp4">`,
+        isWebKit ? '' : `<source src="${webm}" type="video/webm">`,
+      ];
+      // Non-WebKit: prefer WebM (smaller); WebKit: MP4 only.
+      video.innerHTML = isWebKit ? sources[0] : sources[1] + sources[0];
+      video.preload = 'auto';
+      video.load();
+      sync();
+    };
+
+    const setButton = (playing: boolean) => {
+      btn.toggleAttribute('data-playing', playing);
+      btn.setAttribute('aria-label', playing ? btn.dataset.labelPause! : btn.dataset.labelPlay!);
+    };
+
+    const sync = () => {
+      const shouldPlay = !userPaused && inView && document.visibilityState === 'visible';
+      if (shouldPlay) {
+        video.play().catch(() => setButton(false));
+      } else if (!video.paused) {
+        video.pause();
+      }
+    };
+
+    video.addEventListener('playing', () => {
+      hero.classList.add('is-playing');
+      btn.hidden = false;
+      setButton(true);
+    });
+    video.addEventListener('pause', () => setButton(false));
+
+    btn.addEventListener('click', () => {
+      userPaused = !video.paused;
+      if (userPaused) video.pause();
+      else sync();
+    });
+
+    new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting;
+        sync();
+      },
+      { threshold: 0.05 },
+    ).observe(hero);
+    document.addEventListener('visibilitychange', sync);
+    portrait.addEventListener('change', load);
+    load();
+  }
+</script>
+
+<style>
+  .video-hero__video {
+    opacity: 0;
+    transition: opacity 600ms var(--ease-out-soft);
+  }
+  .video-hero.is-playing .video-hero__video {
+    opacity: 1;
+  }
+  .video-hero__toggle {
+    top: calc(var(--safe-top) + var(--header-h) + 20px);
+    right: var(--spacing-gutter);
+  }
+  .video-hero__icon-play {
+    display: grid;
+  }
+  .video-hero__icon-pause,
+  .video-hero__toggle[data-playing] .video-hero__icon-play {
+    display: none;
+  }
+  .video-hero__toggle[data-playing] .video-hero__icon-pause {
+    display: grid;
+  }
+</style>
