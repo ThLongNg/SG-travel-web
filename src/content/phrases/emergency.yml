@@ -1,0 +1,40 @@
+slug: emergency
+titleJa: 緊急
+order: 5
+verified: true
+phrases:
+  - id: help
+    ja: 助けて！
+    vi: Cứu tôi với!
+    kana: クーウ トイ ヨイ
+  - id: call-police
+    ja: 警察を呼んでください
+    vi: Gọi cảnh sát giúp tôi
+    kana: ゴイ カン サッ ユップ トイ
+    note: 警察の電話番号は113です。
+  - id: call-ambulance
+    ja: 救急車を呼んでください
+    vi: Gọi xe cấp cứu giúp tôi
+    kana: ゴイ セー カップ クーウ ユップ トイ
+    note: 救急車の電話番号は115です。
+  - id: lost-passport
+    ja: パスポートをなくしました
+    vi: Tôi bị mất hộ chiếu
+    kana: トイ ビー マッ ホー チウ
+  - id: phone-snatched
+    ja: スマートフォンをひったくられました
+    vi: Tôi bị giật điện thoại
+    kana: トイ ビー ヤッ ディエン トアイ
+  - id: where-toilet
+    ja: トイレはどこですか？
+    vi: Nhà vệ sinh ở đâu?
+    kana: ニャー イェー シン オー ダウ
+  - id: it-hurts-here
+    ja: ここが痛いです
+    vi: Tôi bị đau ở đây
+    kana: トイ ビー ダウ オー ダイ
+    note: 痛む場所を指さしながら見せましょう。
+  - id: nearest-hospital
+    ja: いちばん近い病院はどこですか？
+    vi: Bệnh viện gần nhất ở đâu?
+    kana: ベン イエン ガン ニャッ オー ダウ
