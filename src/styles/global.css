@@ -14,7 +14,7 @@
   --color-amber-strong: #ffb85c;
   --color-river: #2ec4b6; /* Saigon river teal, secondary accent */
   --color-ink: #f5f7fa; /* text on dark glass */
-  --color-ink-muted: #c3cdd8; /* ≥ 4.5:1 on night */
+  --color-ink-muted: #cbd5e1; /* ≥ 4.5:1 on night and on glass */
   --color-ink-dark: #0b1b2b; /* text on amber */
 
   --font-sans: 'Inter Variable', 'Noto Sans JP Variable', system-ui, sans-serif;
@@ -34,15 +34,27 @@
 :root {
   color-scheme: dark;
   /* Glass recipe — used by src/styles/glass.css; tweak here only */
-  --glass-bg: rgb(255 255 255 / 0.12);
-  --glass-bg-strong: rgb(16 34 52 / 0.72); /* long text: opaquer for readability */
-  --glass-bg-light: rgb(255 255 255 / 0.08); /* list items: no blur */
-  --glass-border: rgb(255 255 255 / 0.35);
-  --glass-blur: 24px;
-  --glass-saturate: 180%;
-  --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.45), inset 0 -1px 0 rgb(255 255 255 / 0.08);
-  --glass-shadow: 0 8px 32px rgb(0 0 0 / 0.18);
-  --glass-fallback: rgb(18 40 61 / 0.88);
+  /* Clear liquid glass: light gradient fill (brighter top-left), bright rim, colour comes from what's behind */
+  --glass-bg: linear-gradient(
+    150deg,
+    rgb(255 255 255 / 0.2) 0%,
+    rgb(255 255 255 / 0.07) 45%,
+    rgb(255 255 255 / 0.1) 100%
+  );
+  --glass-bg-strong: linear-gradient(
+    160deg,
+    rgb(28 36 78 / 0.78),
+    rgb(12 22 46 / 0.86)
+  ); /* long text: indigo-tinted, opaque enough for paragraphs */
+  --glass-bg-light: rgb(255 255 255 / 0.07); /* list items: no blur */
+  --glass-border: rgb(255 255 255 / 0.24);
+  --glass-blur: 22px;
+  --glass-saturate: 190%;
+  --glass-highlight:
+    inset 0 1px 0 rgb(255 255 255 / 0.55), inset 1px 0 0 rgb(255 255 255 / 0.12),
+    inset 0 -1px 0 rgb(255 255 255 / 0.06);
+  --glass-shadow: 0 12px 32px -8px rgb(2 6 23 / 0.55);
+  --glass-fallback: rgb(22 30 66 / 0.9);
 
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -117,9 +129,118 @@ a {
   color: var(--color-amber);
 }
 
+/* ── Shared page vocabulary (use these instead of re-styling per page) ── */
+
+/* Section header: <div class="section-head"><h2><span class="section-no">01</span>人気の観光地</h2><a class="section-more">…</a></div> */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 12px;
+}
+.section-head h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  font-size: 22px;
+}
+.section-head .section-no {
+  font-size: 14px;
+}
+.section-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-river);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Small label above a title: area, category ("南部 · ホーチミン") */
+.eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-amber);
+}
+
+/* Tinted circle behind an icon (info grid, prep tiles). Default teal; .icon-badge--amber for warm. */
+.icon-badge {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  color: var(--color-river);
+  background: rgb(46 196 182 / 0.16);
+  box-shadow: inset 0 0 0 1px rgb(46 196 182 / 0.3);
+}
+.icon-badge--amber {
+  color: var(--color-amber);
+  background: rgb(242 165 65 / 0.16);
+  box-shadow: inset 0 0 0 1px rgb(242 165 65 / 0.3);
+}
+
+/* Small non-interactive tag (teal), e.g. themes on a card; .tag--amber for duration badges */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: #7ff0e4;
+  background: rgb(46 196 182 / 0.16);
+}
+.tag--amber {
+  color: #ffd08a;
+  background: rgb(242 165 65 / 0.18);
+}
+
+/* Horizontal swipe row with snap; full-bleed on mobile, keeps 16px gutter */
+.h-scroll {
+  display: flex;
+  gap: 12px;
+  margin-inline: calc(var(--spacing-gutter) * -1);
+  padding: 4px var(--spacing-gutter) 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--spacing-gutter);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.h-scroll::-webkit-scrollbar {
+  display: none;
+}
+.h-scroll > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* Rounded media frame with a bottom fade, for card images */
+.media-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--color-night-2);
+}
+.media-frame > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* Gạch bông (Saigon encaustic tile) — faint SVG pattern for footer, dividers, empty states */
 .tile-pattern {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23F2A541' stroke-opacity='.14' stroke-width='1'%3E%3Cpath d='M24 4 L44 24 L24 44 L4 24Z'/%3E%3Ccircle cx='24' cy='24' r='7'/%3E%3Cpath d='M24 17 Q28 24 24 31 Q20 24 24 17Z M17 24 Q24 20 31 24 Q24 28 17 24Z'/%3E%3Cpath d='M0 0 Q6 6 0 12 M48 0 Q42 6 48 12 M0 48 Q6 42 0 36 M48 48 Q42 42 48 36'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23F2A541' stroke-opacity='.08' stroke-width='1'%3E%3Cpath d='M24 4 L44 24 L24 44 L4 24Z'/%3E%3Ccircle cx='24' cy='24' r='7'/%3E%3Cpath d='M24 17 Q28 24 24 31 Q20 24 24 17Z M17 24 Q24 20 31 24 Q24 28 17 24Z'/%3E%3Cpath d='M0 0 Q6 6 0 12 M48 0 Q42 6 48 12 M0 48 Q6 42 0 36 M48 48 Q42 42 48 36'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 48px 48px;
 }
 

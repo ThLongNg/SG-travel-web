@@ -1,5 +1,8 @@
 ---
-// Design review page (Lead). Not in sitemap, noindex. Shows the video hero + every glass component.
+// Design review page (Lead). noindex, not in sitemap.
+// A full home-screen mock (layout from the Figma reference) + spot-detail preview, built only from
+// the shared glass components and global.css vocabulary. Agents copy these patterns.
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import VideoHero from '../../components/media/VideoHero.astro';
 import GlassPanel from '../../components/glass/GlassPanel.astro';
@@ -7,36 +10,82 @@ import GlassButton from '../../components/glass/GlassButton.astro';
 import GlassChip from '../../components/glass/GlassChip.astro';
 import GlassSearch from '../../components/glass/GlassSearch.astro';
 import GlassSheet from '../../components/glass/GlassSheet.astro';
-import Icon from '../../components/glass/Icon.astro';
+import Icon, { type IconName } from '../../components/glass/Icon.astro';
 import { t } from '../../lib/i18n';
+import img1 from '../../assets/content/fixture-spot-1.webp';
+import img2 from '../../assets/content/fixture-spot-2.webp';
+import img3 from '../../assets/content/fixture-area-1.webp';
+import img4 from '../../assets/content/fixture-area-2.webp';
+import img5 from '../../assets/content/fixture-course-1.webp';
 
 const lang = 'ja' as const;
 const themes = ['beach', 'food', 'heritage', 'nature', 'shopping', 'walk'] as const;
-const info = [
-  ['clock', '営業時間', '8:00〜18:00'],
-  ['ticket', '料金', '150,000ドン（約900円）'],
-  ['hourglass', '所要時間', '1時間30分'],
-  ['calendar', 'ベストシーズン', '12月〜4月'],
-  ['toilet', 'トイレ', 'あり'],
-  ['card', 'カード払い', '不明'],
-] as const;
+const spots = [
+  {
+    img: img1,
+    area: '南部 · ホーチミン',
+    ja: 'ベンタイン市場',
+    vi: 'Chợ Bến Thành',
+    tags: ['市場', 'グルメ'],
+  },
+  {
+    img: img2,
+    area: '南部 · ホーチミン',
+    ja: 'サイゴン中央郵便局',
+    vi: 'Bưu điện Sài Gòn',
+    tags: ['歴史', '街歩き'],
+  },
+  {
+    img: img3,
+    area: '中部 · クアンナム',
+    ja: 'ホイアン旧市街',
+    vi: 'Phố cổ Hội An',
+    tags: ['世界遺産'],
+  },
+];
+const areas = [
+  { img: img3, region: '南部', name: 'ホーチミン中心部', desc: '活気ある街と、夜景の美しい川辺' },
+  { img: img4, region: '南部', name: 'チョロン（5区）', desc: '華人街の市場と古い寺院' },
+  { img: img1, region: '中部', name: 'ホイアン・ダナン', desc: 'ランタンの旧市街とビーチ' },
+];
+const prep: { icon: IconName; title: string; desc: string; amber?: boolean }[] = [
+  { icon: 'yen', title: '為替計算', desc: '円⇄ドンをすぐ換算', amber: true },
+  { icon: 'chat', title: '指さし会話帳', desc: '発音つきフレーズ集' },
+  { icon: 'wifi', title: 'SIM・通信', desc: 'eSIMの選び方' },
+  { icon: 'shield', title: '安全情報', desc: 'よくあるトラブル対策', amber: true },
+];
+const info: [IconName, string, string][] = [
+  ['clock', '営業時間', '6:00〜18:00（ダミー）'],
+  ['ticket', '入場', '無料（ダミー）'],
+  ['hourglass', '所要時間', '1〜2時間'],
+  ['sun', 'ベストシーズン', '12〜4月'],
+  ['train', 'アクセス', '1区中心から徒歩圏'],
+  ['card', '支払い', '現金があると安心'],
+];
 ---
 
 <BaseLayout title="Glass Demo" lang={lang} activeTab="home" transparentHeader preloadPoster noindex>
+  <!-- ───────── Hero ───────── -->
   <VideoHero lang={lang}>
-    <div class="mx-auto flex h-full max-w-5xl flex-col justify-end gap-5 px-4 pb-[calc(var(--tabbar-h)+var(--tabbar-gap)*2+var(--safe-bottom)+16px)]">
-      <div class="flex items-end gap-4">
-        <p class="vertical-title text-sm text-ink/80" aria-hidden="true">
-          ベトナム旅のガイド
+    <div class="mx-auto flex h-full max-w-5xl flex-col justify-end gap-4 px-4 pb-[calc(var(--tabbar-h)+var(--tabbar-gap)*2+var(--safe-bottom)+20px)]">
+      <p
+        class="vertical-title absolute top-[calc(var(--safe-top)+96px)] right-5 text-[15px] text-ink/85"
+        aria-hidden="true"
+      >
+        ベトナム、ホーチミンへ
+      </p>
+      <div>
+        <p class="font-latin mb-2 text-[13px] font-semibold tracking-[0.35em] text-amber" lang="vi">
+          SÀI GÒN
         </p>
-        <div>
-          <p class="font-latin text-sm tracking-[0.3em] text-amber" lang="vi">
-            SÀI GÒN
-          </p>
-          <h1 class="text-[28px] leading-snug text-balance md:text-5xl">
-            {t(lang, 'site.tagline')}
-          </h1>
-        </div>
+        <h1 class="text-[30px] leading-[1.35] [text-shadow:0_2px_24px_rgb(0_0_0/0.5)] md:text-5xl">
+          活気と夜景の街、
+          <br />
+          ホーチミンへ。
+        </h1>
+        <p class="mt-2 text-sm text-ink-muted">
+          ベンタイン市場 ・ <span lang="vi">Chợ Bến Thành</span>
+        </p>
       </div>
       <GlassSearch
         label={t(lang, 'home.searchLabel')}
@@ -45,74 +94,138 @@ const info = [
         id="demo-search"
         class="glass--refract"
       />
-      <div
-        class="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none]"
-        role="group"
-        aria-label={t(lang, 'home.themesLabel')}
-      >
-        {themes.map((k, i) => (
-          <GlassChip selected={i === 1}>{t(lang, `themes.${k}`)}</GlassChip>
+      <div class="h-scroll" role="group" aria-label={t(lang, 'home.themesLabel')}>
+        <GlassChip selected>すべて</GlassChip>
+        {themes.map((k) => (
+          <GlassChip>{t(lang, `themes.${k}`)}</GlassChip>
         ))}
       </div>
     </div>
   </VideoHero>
 
-  <div class="mx-auto max-w-5xl space-y-10 px-4 pt-10">
-    <section class="space-y-4">
-      <p class="section-no text-sm">01 — GlassButton</p>
-      <div class="flex flex-wrap gap-3">
-        <GlassButton>ガラスボタン</GlassButton>
-        <GlassButton variant="accent" icon="map">
-          地図で開く
-        </GlassButton>
-        <GlassButton icon="share">共有</GlassButton>
-        <GlassButton iconOnly icon="heart" label="お気に入り" />
-        <GlassButton iconOnly icon="back" label="戻る" />
-        <GlassButton size="lg" data-sheet-open="demo-sheet" icon="filter">
-          絞り込み（シート）
-        </GlassButton>
-      </div>
-    </section>
-
-    <section class="space-y-4">
-      <p class="section-no text-sm">02 — GlassPanel（default / 基本情報）</p>
-      <GlassPanel as="section" aria-labelledby="demo-info">
-        <h2 id="demo-info" class="mb-3 text-lg">
-          {t(lang, 'spots.basicInfo')}
+  <div class="mx-auto max-w-5xl space-y-14 px-4 pt-12">
+    <!-- 01 Popular spots: swipe cards (light glass, no blur) -->
+    <section aria-labelledby="s1">
+      <div class="section-head">
+        <h2 id="s1">
+          <span class="section-no">01</span>
+          {t(lang, 'home.popular')}
         </h2>
-        <dl class="grid grid-cols-2 gap-3 text-sm md:grid-cols-3">
-          {info.map(([icon, label, value]) => (
-            <div class="flex gap-2">
-              <Icon name={icon} class="mt-0.5 shrink-0 text-amber" />
-              <div>
-                <dt class="text-ink-muted">{label}</dt>
-                <dd class="m-0 font-medium">{value}</dd>
+        <a href="#" class="section-more">
+          すべて見る
+          <Icon name="chevronRight" size={16} />
+        </a>
+      </div>
+      <ul class="h-scroll m-0 list-none">
+        {spots.map((s) => (
+          <li class="w-[240px]">
+            <a href="#" class="group block no-underline">
+              <div class="media-frame aspect-[4/3]">
+                <Image
+                  src={s.img}
+                  alt={`${s.ja}（プレースホルダー）`}
+                  widths={[240, 480]}
+                  sizes="240px"
+                />
+                <div class="absolute top-2.5 left-2.5 flex gap-1.5">
+                  {s.tags.map((tag) => (
+                    <span class="tag bg-night/70! backdrop-blur-sm">{tag}</span>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </dl>
+              <p class="eyebrow mt-3">{s.area}</p>
+              <p class="font-display text-[18px] font-bold">{s.ja}</p>
+              <p class="font-latin text-[13px] text-ink-muted" lang="vi">
+                {s.vi}
+              </p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- 02 Areas: rows with thumbnail -->
+    <section aria-labelledby="s2">
+      <div class="section-head">
+        <h2 id="s2">
+          <span class="section-no">02</span>
+          {t(lang, 'home.byArea')}
+        </h2>
+      </div>
+      <ul class="m-0 grid list-none gap-3 p-0 md:grid-cols-3">
+        {areas.map((a) => (
+          <GlassPanel as="li" variant="light" padding="none">
+            <a href="#" class="flex items-center gap-4 p-3 pr-4 no-underline">
+              <div class="media-frame size-[72px] rounded-2xl">
+                <Image src={a.img} alt="" widths={[72, 144]} sizes="72px" />
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="eyebrow">{a.region}</p>
+                <p class="font-display text-[17px] font-bold">{a.name}</p>
+                <p class="truncate text-[13px] text-ink-muted">{a.desc}</p>
+              </div>
+              <Icon name="chevronRight" class="text-ink-muted" />
+            </a>
+          </GlassPanel>
+        ))}
+      </ul>
+    </section>
+
+    <!-- 03 Course: one large glass card -->
+    <section aria-labelledby="s3">
+      <div class="section-head">
+        <h2 id="s3">
+          <span class="section-no">03</span>
+          {t(lang, 'home.courses')}
+        </h2>
+        <a href="#" class="section-more">
+          すべて見る
+          <Icon name="chevronRight" size={16} />
+        </a>
+      </div>
+      <GlassPanel as="article" padding="none" class="overflow-hidden">
+        <div class="media-frame aspect-[16/9] rounded-none">
+          <Image
+            src={img5}
+            alt="モデルコースの写真（プレースホルダー）"
+            widths={[400, 800]}
+            sizes="(min-width: 768px) 960px, 100vw"
+          />
+        </div>
+        <div class="p-5">
+          <span class="tag tag--amber">2泊3日</span>
+          <h3 class="font-display mt-2 text-[20px] leading-snug">
+            はじめてのホーチミン、
+            <br />
+            街と夜景を満喫する3日間
+          </h3>
+          <p class="mt-1 text-sm text-ink-muted">
+            市場・歴史建築・川辺の夜景を、無理なくめぐるコース（ダミー）。
+          </p>
+        </div>
       </GlassPanel>
     </section>
 
-    <section class="space-y-4">
-      <p class="section-no text-sm">03 — GlassPanel strong（長文）</p>
-      <GlassPanel variant="strong" padding="lg">
-        <h2 class="mb-2 text-xl">どんな場所？</h2>
-        <p>
-          長い文章は不透明度の高いガラスにのせて、読みやすさを優先します。
-          背景の夜景がほんのり透けることで、サイト全体にサイゴンらしい空気感を残しています。
-          本文は16px、行間は1.8です。
-        </p>
-      </GlassPanel>
-    </section>
-
-    <section class="space-y-4">
-      <p class="section-no text-sm">04 — GlassPanel light（リスト・ブラーなし）</p>
-      <ul class="grid gap-3 md:grid-cols-3">
-        {['ベンタイン市場', 'サイゴン中央郵便局', 'グエンフエ通り'].map((n) => (
-          <GlassPanel as="li" variant="light" padding="sm">
-            <p class="font-medium">{n}</p>
-            <p class="text-sm text-ink-muted">ホーチミン・南部（デモ）</p>
+    <!-- 04 Prep: 2×2 tiles with icon badges -->
+    <section aria-labelledby="s4">
+      <div class="section-head">
+        <h2 id="s4">
+          <span class="section-no">04</span>
+          {t(lang, 'home.prepare')}
+        </h2>
+      </div>
+      <ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 md:grid-cols-4">
+        {prep.map((p) => (
+          <GlassPanel as="li" variant="light" padding="none">
+            <a href="#" class="flex h-full flex-col gap-3 p-4 no-underline">
+              <span class:list={['icon-badge', p.amber && 'icon-badge--amber']}>
+                <Icon name={p.icon} size={20} />
+              </span>
+              <span>
+                <span class="block font-bold">{p.title}</span>
+                <span class="block text-[13px] text-ink-muted">{p.desc}</span>
+              </span>
+            </a>
           </GlassPanel>
         ))}
       </ul>
@@ -120,14 +233,103 @@ const info = [
 
     <hr class="tile-divider" />
 
-    <section class="tile-pattern glass-radius border border-white/10 p-8 text-center text-ink-muted">
-      gạch bông パターン（空状態・フッター用）
+    <!-- Spot detail preview -->
+    <section aria-labelledby="d1" class="space-y-5">
+      <p class="section-no text-sm">PREVIEW — 観光地詳細</p>
+      <div class="media-frame aspect-[4/3]">
+        <Image
+          src={img1}
+          alt="ベンタイン市場の写真（プレースホルダー）"
+          widths={[400, 800]}
+          sizes="100vw"
+        />
+        <div class="absolute inset-x-3 top-3 flex justify-between">
+          <GlassButton iconOnly icon="back" label="戻る" />
+          <div class="flex gap-2">
+            <GlassButton iconOnly icon="heart" label="お気に入り" />
+            <GlassButton iconOnly icon="share" label="共有" />
+          </div>
+        </div>
+        <span class="glass glass-pill absolute right-3 bottom-3 px-3 py-1 text-xs">1 / 8</span>
+      </div>
+      <div>
+        <p class="eyebrow">南部 · ホーチミン 1区</p>
+        <h2 id="d1" class="mt-1 text-[28px]">
+          ベンタイン市場
+        </h2>
+        <p class="font-latin text-sm text-ink-muted" lang="vi">
+          Chợ Bến Thành（チョー・ベンタイン）
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag">市場</span>
+        <span class="tag">グルメ</span>
+        <span class="tag">街歩き</span>
+      </div>
+      <p class="text-[16px]">
+        ホーチミンの台所として親しまれる市場です。食材や雑貨、軽食の屋台が所狭しと並びます。（ダミー）
+      </p>
+
+      <GlassPanel as="section" aria-labelledby="d-info" variant="strong">
+        <h3 id="d-info" class="mb-4 text-[17px] font-bold">
+          {t(lang, 'spots.basicInfo')}
+        </h3>
+        <dl class="m-0 grid grid-cols-2 gap-x-4 gap-y-5">
+          {info.map(([icon, label, value]) => (
+            <div class="flex gap-3">
+              <span class="icon-badge size-9!">
+                <Icon name={icon} size={18} />
+              </span>
+              <div class="min-w-0">
+                <dt class="text-xs text-ink-muted">{label}</dt>
+                <dd class="m-0 text-[15px] leading-snug font-semibold">{value}</dd>
+              </div>
+            </div>
+          ))}
+        </dl>
+        <p class="mt-5 border-t border-white/10 pt-3 text-xs text-ink-muted">
+          ※ ダミーデータ ・ {t(lang, 'common.lastUpdated')} 2026年11月11日
+        </p>
+      </GlassPanel>
+
+      <div class="flex gap-3">
+        <GlassButton variant="accent" icon="pin" class="flex-1">
+          地図アプリで開く
+        </GlassButton>
+        <GlassButton icon="share">共有</GlassButton>
+      </div>
+
+      <GlassPanel variant="strong" padding="none" class="divide-y divide-white/10">
+        {[
+          [
+            '見どころ',
+            '・生鮮市場と雑貨エリア ・屋台で食べ歩き ・夜は周辺にナイトマーケット（ダミー）',
+          ],
+          [
+            t(lang, 'spots.tipsForJapanese'),
+            '値札のない店では、先に値段を確認しましょう。（ダミー）',
+          ],
+          ['注意点・トラブル対策', 'スリに注意。リュックは前に抱えましょう。（ダミー）'],
+        ].map(([q, a], i) => (
+          <details class="group px-5" open={i === 0}>
+            <summary class="flex min-h-[56px] cursor-pointer list-none items-center justify-between font-bold [&::-webkit-details-marker]:hidden">
+              {q}
+              <Icon name="chevronDown" class="transition-transform group-open:rotate-180" />
+            </summary>
+            <p class="pb-4 text-[15px] text-ink-muted">{a}</p>
+          </details>
+        ))}
+      </GlassPanel>
+
+      <GlassButton size="lg" data-sheet-open="demo-sheet" icon="filter" class="w-full">
+        絞り込み（ボトムシートのデモ）
+      </GlassButton>
     </section>
   </div>
 
   <GlassSheet id="demo-sheet" title={t(lang, 'spots.filter')} closeLabel={t(lang, 'common.close')}>
     <p class="mb-2 text-sm text-ink-muted">{t(lang, 'spots.filterArea')}</p>
-    <div class="mb-4 flex flex-wrap gap-2">
+    <div class="mb-5 flex flex-wrap gap-2">
       <GlassChip variant="light" selected>
         {t(lang, 'areas.south')}
       </GlassChip>

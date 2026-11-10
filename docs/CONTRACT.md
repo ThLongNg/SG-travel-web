@@ -106,10 +106,24 @@ Nhóm key (xem file để biết từng key): `site.*` · `nav.*` · `common.*` 
 `vi.json`, `en.json` hiện là bản sao của ja (B dịch, **không thêm/bớt key**). `t()` kiểm tra key lúc biên dịch (`I18nKey`) — key sai sẽ làm `astro check` lỗi.
 Nội dung (Content Collections) chỉ có tiếng Nhật; trang vi/en hiển thị nội dung tiếng Nhật kèm `common.untranslated`.
 
-## 8. Hướng thiết kế (tóm tắt)
+## 8. Hướng thiết kế — **`/dev/glass` là mẫu chuẩn, hãy sao chép pattern từ đó**
 
-- Màu: nền `#0B1B2B` (night), nhấn chính `#F2A541` (amber, đèn đường), nhấn phụ `#2EC4B6` (river). Chữ `#F5F7FA` / `#C3CDD8`.
-- Font: tiêu đề Noto Serif JP 700, thân Noto Sans JP, Latin/Việt Inter. Thân 16px, line-height 1.8.
-- Kính: `rgba(255,255,255,.12)` + `blur(24px) saturate(180%)` + viền `rgba(255,255,255,.35)` + highlight inset + sheen chéo trái-trên; pill cho nút/chip, bo 26px cho panel. Nhấn → scale .97 (spring 200ms). Khúc xạ SVG chỉ bật trên Chromium (`html.is-chromium`).
-- Chi tiết tạp chí: chữ dọc `.vertical-title`, số mục `.section-no` (01 / 02…), chữ "Sài Gòn" trang trí, họa tiết gạch bông.
-- Bố cục trang chủ: hero video 100dvh (chữ dọc + "SÀI GÒN" + khẩu hiệu + `GlassSearch` + chip chủ đề cuộn ngang) → 01 人気の観光地 (thẻ vuốt ngang) → 02 エリア → 03 モデルコース → 04 旅の準備. Xem mẫu ở `/dev/glass`.
+Bố cục theo file Figma tham khảo (đã đối chiếu): Home, Spot detail, Phrasebook, Show mode.
+
+- **Nền**: "aurora" cố định do BaseLayout vẽ (vùng sáng amber trên-trái, teal giữa-phải, chàm dưới) trên poster mờ. Trang **không** tự vẽ nền.
+- **Vai trò màu** (đúng 2 màu nhấn):
+  - Amber `#F2A541`: hành động chính (`GlassButton variant="accent"`), trạng thái đang chọn (chip, tab), số mục `.section-no`, `.eyebrow`.
+  - Teal `#2EC4B6`: link phụ (`.section-more` "すべて見る ›"), `.tag` chủ đề, `.icon-badge` trong lưới thông tin.
+  - Chữ `#F5F7FA` / phụ `#CBD5E1`. Không thêm màu khác cho UI.
+- **Kính**: nền gradient trong (trắng .20→.07), viền .24, rim sáng phía trên, `blur(22px) saturate(190%) brightness(1.08)`. `strong` = chàm đục (đoạn văn, 基本情報, accordion). `light` = không blur (thẻ trong danh sách, hàng khu vực, ô 旅の準備).
+- **Từ vựng dùng chung trong `global.css`** (dùng thay vì tự style):
+  - `.section-head` + `h2 > .section-no` + `.section-more` → tiêu đề mục "01 人気の観光地 … すべて見る ›".
+  - `.eyebrow` → nhãn nhỏ amber phía trên tiêu đề ("南部 · ホーチミン").
+  - `.icon-badge` / `.icon-badge--amber` → icon trong vòng tròn màu.
+  - `.tag` / `.tag--amber` → nhãn nhỏ không bấm (chủ đề, "2泊3日").
+  - `.h-scroll` → hàng vuốt ngang có snap, tràn mép trên mobile.
+  - `.media-frame` → khung ảnh bo 20px (đặt `<Image>` bên trong).
+- **Pattern mẫu trong `/dev/glass`**: thẻ địa điểm 240px (ảnh 4:3 + tag trên ảnh + eyebrow + tên serif + tên Việt), hàng khu vực (thumbnail 72px + chevron), thẻ khóa học lớn (ảnh 16:9 + `.tag--amber` + tiêu đề serif), lưới 2×2 旅の準備 (icon-badge), chi tiết địa điểm (gallery có nút kính nổi + bộ đếm "1 / 8", tiêu đề, tag, tóm tắt, 基本情報 lưới 2 cột với icon-badge, hàng nút "地図アプリで開く" + "共有", accordion `<details>` trên kính strong), bottom sheet lọc.
+- Font: tiêu đề Noto Serif JP 700 (`font-display`), thân Noto Sans JP, Latin/Việt Inter. Thân 16px, line-height 1.8. Tiêu đề mục 22px, tên thẻ 17–18px, chú thích 12–13px.
+- Chi tiết tạp chí: chữ dọc `.vertical-title` ở hero, số mục 01/02…, chữ "SÀI GÒN" trang trí, gạch bông (`.tile-pattern`, `.tile-divider`) rất nhạt.
+- Khoảng cách: lề 16px, giữa các mục `space-y-14`, giữa thẻ 12px.

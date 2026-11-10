@@ -16,17 +16,19 @@ const langLabel = { ja: '日本語', vi: 'Tiếng Việt', en: 'English' } as co
 <header class="site-header" data-transparent={transparent ? '' : undefined}>
   <div class="site-header__bar">
     <a href={localizePath('/', lang)} class="site-header__logo touch-target">
-      <span class="font-display text-[17px] font-bold">{t(lang, 'site.name')}</span>
-      <span class="font-latin text-xs text-amber" lang="vi">
-        {t(lang, 'site.decorVi')}
+      <span class="font-display text-[18px] leading-tight font-bold">{t(lang, 'site.name')}</span>
+      <span class="font-latin text-[10px] leading-none tracking-[0.18em] text-amber" lang="vi">
+        {t(lang, 'site.decorVi').toUpperCase()} · TRAVEL GUIDE
       </span>
     </a>
     <details class="site-header__lang">
       <summary
-        class="glass glass-pill glass-press touch-target grid place-items-center"
-        aria-label={t(lang, 'nav.language')}
+        class="glass glass-pill glass-press flex min-h-[40px] items-center gap-1.5 px-3.5 text-[13px] font-medium"
+        aria-label={`${t(lang, 'nav.language')}: ${langLabel[lang]}`}
       >
-        <Icon name="globe" />
+        <Icon name="globe" size={16} />
+        <span>{langLabel[lang]}</span>
+        <Icon name="chevronDown" size={14} />
       </summary>
       <ul class="glass glass--strong glass-radius site-header__menu">
         {locales.map((l) => (
@@ -99,7 +101,7 @@ const langLabel = { ja: '日本語', vi: 'Tiếng Việt', en: 'English' } as co
   }
   .site-header:not([data-transparent]) .site-header__bar,
   .site-header.is-scrolled .site-header__bar {
-    background: rgb(11 27 43 / 0.5);
+    background: rgb(14 20 48 / 0.55);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
     border-color: var(--glass-border);
@@ -107,9 +109,13 @@ const langLabel = { ja: '日本語', vi: 'Tiếng Việt', en: 'English' } as co
   }
   .site-header__logo {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
     text-decoration: none;
+  }
+  .site-header__lang summary {
+    cursor: pointer;
   }
   .site-header__lang {
     position: relative;
