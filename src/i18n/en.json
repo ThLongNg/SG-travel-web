@@ -238,6 +238,26 @@
   },
   "eat": {
     "title": "Eat & shop",
-    "lead": "Tips to eat out and pick souvenirs with confidence on your own."
+    "lead": "Tips to eat out and pick souvenirs with confidence on your own.",
+    "eatTitle": "Eat",
+    "buyTitle": "Shop",
+    "all": "All",
+    "catMain": "Noodles & rice",
+    "catSnack": "Snacks",
+    "catSweet": "Sweets",
+    "catDrink": "Drinks",
+    "sCatFood": "Food",
+    "sCatBeauty": "Beauty",
+    "sCatCraft": "Crafts",
+    "sCatFashion": "Fashion",
+    "sign": "On the sign",
+    "approx": "Approx.",
+    "priceNote": "Prices are rough guides and vary by shop.",
+    "forWhom": "Good for",
+    "where": "Where to buy",
+    "sayThis": "How to order",
+    "showStaff": "Show",
+    "tapHint": "Tap for how to eat and order",
+    "tips": "Tips"
   }
 }

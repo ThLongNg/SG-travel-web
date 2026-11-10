@@ -1,19 +1,21 @@
 ---
 slug: shopping
-title: お土産の選び方と買い方
+title: お土産の買い方のコツ
 category: shopping
 order: 7
-summary: 定番はコーヒー・ナッツ・雑貨。定価の店と、交渉する市場を使い分けて。
+summary: 定価の店と、交渉する市場を使い分けて。持ち帰りのルールも確認を。
 points:
-  - 定番はベトナムコーヒーとフィン（ドリップ器具）、カシューナッツ、蓮茶、ノンラー（笠）、陶器や漆器の小物
-  - 値段が決まっていて安心なのは、スーパーや雑貨店。食品のお土産はスーパーがまとめて買いやすい
-  - ベンタイン市場は値段交渉が前提。まず値段を聞き、少しずつ下げて、納得できなければ笑顔で立ち去ってOK
-  - 中央郵便局では絵はがきや切手が買え、その場で日本へ出せます
+  - 値段が決まっていて安心なのはスーパーや雑貨店。食品のお土産はスーパーでまとめ買いが楽です
+  - ベンタイン市場は値段交渉が前提。「Bớt được không?（ボッ ドゥオック コン／まけてもらえますか）」と笑顔で。納得できなければ立ち去ってOK
+  - 100mlを超える液体（ジャム・はちみつ・ココナッツオイルなど）は機内に持ち込めないので、スーツケースへ
+  - 生のマンゴーやドラゴンフルーツなどは日本に持ち込めません。ドライフルーツを選びましょう
 sources:
-  - title: Quà lưu niệm Sài Gòn：Gợi ý quà tặng & nơi mua uy tín（VinWonders）
-    url: https://vinwonders.com/vi/wonderpedia/news/qua-luu-niem-sai-gon/
+  - title: ベトナム：植物防疫所（農林水産省）
+    url: https://www.maff.go.jp/pps/j/search/ikuni/vn.html
+  - title: 国際線での液体物の持ち込み制限について（成田国際空港）
+    url: https://www.narita-airport.jp/ja/airportguide/security/liquid/
   - title: 6 địa điểm bán quà lưu niệm ở TPHCM dân local sẽ chỉ cho bạn（Du lịch Việt Nam）
     url: https://dulichvietnam.com.vn/dia-diem-ban-qua-luu-niem-o-tphcm.html
 lastVerified: 2026-11-11
-verified: false
+verified: true
 ---

@@ -38,10 +38,25 @@ test.describe('VND ⇄ JPY converter', () => {
     await expect(esim).toHaveAttribute('rel', /noopener/);
     // internal markers never reach readers
     await expect(page.locator('main')).not.toContainText('TODO');
-    // food & souvenir cards live on their own page, not here
-    await expect(page.locator('details#food')).toHaveCount(0);
-    await page.goto('/eat/#food');
-    await expect(page.locator('details#food')).toHaveAttribute('open', '');
+    // food & souvenir tips live on their own page (/eat/), not here
+    await expect(page.locator('details#shopping')).toHaveCount(0);
+  });
+
+  test('eat page: sign cards open a sheet, 見せる shows the order phrase, chips filter', async ({
+    page,
+  }) => {
+    await page.goto('/eat/');
+    await page.locator('[data-sheet-open="dish-pho"]').click();
+    await expect(page.locator('dialog#dish-pho')).toHaveAttribute('open', '');
+    await page.locator('dialog#dish-pho [data-show]').first().click();
+    await expect(page.locator('#show-mode [data-sm-vi]')).toHaveText('Cho tôi một tô phở bò');
+    await page.locator('#show-mode [data-show-close]').click();
+    await page.locator('dialog#dish-pho [data-sheet-close]').click();
+
+    // drinks chip leaves only drink cards in the food section
+    await page.locator('section[aria-labelledby="eat-food"] [data-cat="drink"]').click();
+    const visible = page.locator('section[aria-labelledby="eat-food"] li[data-item-cat]:visible');
+    await expect(visible).toHaveCount(2);
     await expect(page.locator('details#shopping')).toHaveCount(1);
   });
 });

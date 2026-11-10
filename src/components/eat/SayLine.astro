@@ -1,0 +1,46 @@
+---
+// One "what to say" line: Vietnamese + Southern kana + Japanese, with speak and 見せる buttons.
+// Wired by the page script through phraseTools() (data-say / data-speak / data-show).
+import Icon from '../glass/Icon.astro';
+import { t, type Locale } from '../../lib/i18n';
+
+interface Props {
+  lang: Locale;
+  vi: string;
+  kana: string;
+  ja: string;
+}
+const { lang, vi, kana, ja } = Astro.props;
+---
+
+<li
+  class="flex items-center gap-2 rounded-2xl bg-sand/70 p-3"
+  data-say
+  data-vi={vi}
+  data-kana={kana}
+  data-ja={ja}
+>
+  <div class="min-w-0 flex-1">
+    <p class="font-latin m-0 text-[16px] leading-snug font-bold" lang="vi">
+      {vi}
+    </p>
+    <p class="m-0 text-[13px] text-river">{kana}</p>
+    <p class="m-0 text-[12px] text-ink-muted">{ja}</p>
+  </div>
+  <button
+    type="button"
+    class="icon-badge glass-press touch-target shrink-0"
+    data-speak
+    hidden
+    aria-label={`${t(lang, 'phrases.play')}: ${vi}`}
+  >
+    <Icon name="speaker" size={18} />
+  </button>
+  <button
+    type="button"
+    class="glass-press touch-target shrink-0 rounded-full bg-amber px-3 text-[13px] font-bold text-ink-dark"
+    data-show
+  >
+    {t(lang, 'eat.showStaff')}
+  </button>
+</li>

@@ -77,6 +77,7 @@ const countTpl = t(lang, 'phrases.count', { n: '{n}' });
 
 <script>
   import { searchKey } from './search';
+  import { phraseTools } from './client';
 
   const root = document.querySelector<HTMLElement>('[data-phrasebook]');
   const dialog = document.querySelector<HTMLDialogElement>('#show-mode');
@@ -121,126 +122,14 @@ const countTpl = t(lang, 'phrases.count', { n: '{n}' });
     const fromHash = decodeURIComponent(location.hash.slice(1));
     if (chips.some((c) => c.dataset.group === fromHash)) select(fromHash);
 
-    // ───── Speech (vi-VN) ─────
-    const synth = 'speechSynthesis' in window ? window.speechSynthesis : null;
-    let voice: SpeechSynthesisVoice | null = null;
-    let decided = false;
-    const noVoice = root.querySelector<HTMLElement>('[data-no-voice]')!;
-    const replay = dialog.querySelector<HTMLButtonElement>('[data-sm-replay]')!;
-    const smNoVoice = dialog.querySelector<HTMLElement>('[data-sm-novoice]')!;
-    const render = () => {
-      for (const b of document.querySelectorAll<HTMLElement>('[data-speak]')) b.hidden = !voice;
-      replay.hidden = !voice;
-      noVoice.hidden = smNoVoice.hidden = !decided || !!voice;
-    };
-    const pickVoice = () => {
-      const voices = synth?.getVoices() ?? [];
-      voice =
-        voices.find((v) => /^vi[-_]VN$/i.test(v.lang)) ??
-        voices.find((v) => /^vi\b/i.test(v.lang)) ??
-        null;
-      if (voice || voices.length) decided = true;
-      render();
-    };
-    if (synth) {
-      pickVoice();
-      synth.addEventListener?.('voiceschanged', pickVoice);
-      // Some engines never fire voiceschanged when they have no voices at all.
-      setTimeout(() => {
-        decided = true;
-        pickVoice();
-      }, 1500);
-    } else {
-      decided = true;
-      render();
-    }
-    const speak = (text: string) => {
-      if (!synth || !voice) return;
-      synth.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.voice = voice;
-      u.lang = voice.lang || 'vi-VN';
-      u.rate = 0.85;
-      synth.speak(u);
-    };
-
-    // ───── 見せるモード ─────
-    const smJa = dialog.querySelector<HTMLElement>('[data-sm-ja]')!;
-    const smVi = dialog.querySelector<HTMLElement>('[data-sm-vi]')!;
-    const smKana = dialog.querySelector<HTMLElement>('[data-sm-kana]')!;
-    const wakeNote = dialog.querySelector<HTMLElement>('[data-sm-wake]')!;
-    let lock: WakeLockSentinel | null = null;
-
-    const keepAwake = async () => {
-      if (!('wakeLock' in navigator) || lock) return;
-      try {
-        lock = await navigator.wakeLock.request('screen');
-        wakeNote.hidden = false;
-        lock.addEventListener('release', () => {
-          lock = null;
-          wakeNote.hidden = true;
-        });
-      } catch {
-        wakeNote.hidden = true; // denied (battery saver, not visible…): the mode still works
-      }
-    };
-    document.addEventListener('visibilitychange', () => {
-      if (dialog.open && document.visibilityState === 'visible') void keepAwake();
-    });
-
-    const open = (card: HTMLElement) => {
-      smJa.textContent = card.dataset.ja ?? '';
-      smVi.textContent = card.dataset.vi ?? '';
-      smKana.textContent = card.dataset.kana ?? '';
-      dialog.showModal();
-      document.documentElement.style.overflow = 'hidden';
-      void keepAwake();
-      speak(card.dataset.vi ?? '');
-    };
-    dialog.addEventListener('close', () => {
-      document.documentElement.style.overflow = '';
-      synth?.cancel();
-      void lock?.release();
-      lock = null;
-      wakeNote.hidden = true;
-    });
-
+    const tools = phraseTools()!;
     root.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       const card = target.closest<HTMLElement>('[data-phrase]');
       if (!card) return;
-      if (target.closest('[data-show]')) open(card);
-      else if (target.closest('[data-speak]')) speak(card.dataset.vi ?? '');
-    });
-    dialog.querySelector('[data-show-close]')!.addEventListener('click', () => dialog.close());
-    replay.addEventListener('click', () => speak(smVi.textContent ?? ''));
-
-    // Swipe down to close
-    const inner = dialog.querySelector<HTMLElement>('.show-mode__inner')!;
-    let y0: number | null = null;
-    let dy = 0;
-    dialog.addEventListener(
-      'touchstart',
-      (e) => {
-        y0 = e.touches[0].clientY;
-        dy = 0;
-      },
-      { passive: true },
-    );
-    dialog.addEventListener(
-      'touchmove',
-      (e) => {
-        if (y0 === null) return;
-        dy = Math.max(0, e.touches[0].clientY - y0);
-        inner.style.transform = `translateY(${dy}px)`;
-      },
-      { passive: true },
-    );
-    dialog.addEventListener('touchend', () => {
-      inner.style.transform = '';
-      if (dy > 100) dialog.close();
-      y0 = null;
-      dy = 0;
+      const { ja = '', vi = '', kana = '' } = card.dataset;
+      if (target.closest('[data-show]')) tools.show(ja, vi, kana);
+      else if (target.closest('[data-speak]')) tools.speak(vi);
     });
   }
 </script>

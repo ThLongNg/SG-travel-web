@@ -238,6 +238,26 @@
   },
   "eat": {
     "title": "食べる・買う",
-    "lead": "ひとりでも安心して、食べて、お土産を選ぶためのヒント。"
+    "lead": "ひとりでも安心して、食べて、お土産を選ぶためのヒント。",
+    "eatTitle": "食べる",
+    "buyTitle": "買う",
+    "all": "すべて",
+    "catMain": "麺・ごはん",
+    "catSnack": "軽食",
+    "catSweet": "甘いもの",
+    "catDrink": "ドリンク",
+    "sCatFood": "食べもの",
+    "sCatBeauty": "コスメ",
+    "sCatCraft": "雑貨・工芸",
+    "sCatFashion": "ファッション",
+    "sign": "看板の文字",
+    "approx": "目安",
+    "priceNote": "値段は目安です。店や場所によって変わります。",
+    "forWhom": "おすすめ",
+    "where": "買える場所",
+    "sayThis": "注文のひとこと",
+    "showStaff": "見せる",
+    "tapHint": "タップで食べ方と注文のひとこと",
+    "tips": "コツ"
   }
 }

@@ -238,6 +238,26 @@
   },
   "eat": {
     "title": "Ăn & mua sắm",
-    "lead": "Gợi ý để tự mình ăn uống và chọn quà một cách yên tâm."
+    "lead": "Gợi ý để tự mình ăn uống và chọn quà một cách yên tâm.",
+    "eatTitle": "Ăn",
+    "buyTitle": "Mua",
+    "all": "Tất cả",
+    "catMain": "Món chính",
+    "catSnack": "Ăn vặt",
+    "catSweet": "Đồ ngọt",
+    "catDrink": "Đồ uống",
+    "sCatFood": "Đồ ăn",
+    "sCatBeauty": "Mỹ phẩm",
+    "sCatCraft": "Thủ công",
+    "sCatFashion": "Thời trang",
+    "sign": "Chữ trên biển hiệu",
+    "approx": "Tham khảo",
+    "priceNote": "Giá chỉ để tham khảo, tùy quán và địa điểm.",
+    "forWhom": "Gợi ý",
+    "where": "Mua ở đâu",
+    "sayThis": "Câu gọi món",
+    "showStaff": "Cho xem",
+    "tapHint": "Chạm để xem cách ăn và câu gọi món",
+    "tips": "Mẹo"
   }
 }

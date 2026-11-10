@@ -1,0 +1,188 @@
+# /eat/ — must-try dishes (no specific restaurants). Kana follows the Southern accent, like phrases/.
+# priceVnd: rough ranges, verified: false until checked in Ho Chi Minh City.
+- id: pho
+  order: 1
+  nameVi: Phở
+  nameJa: フォー
+  category: main
+  when: 朝ごはんに
+  priceVnd: { min: 40000, max: 70000 }
+  desc: 米麺を牛骨スープでいただく、ベトナムを代表する麺。南部風はもやしやバジルなどのハーブをたっぷり添えるのが特徴です。
+  tip: ベトナムではフォーは朝ごはん。牛肉（bò）と鶏肉（gà）が定番です。
+  phrases:
+    - {
+        vi: Cho tôi một tô phở bò,
+        kana: チョー トイ モッ トー フォー ボー,
+        ja: 牛肉のフォーをひとつください,
+      }
+    - { vi: Không hành, kana: コン ハン, ja: ネギ抜きで }
+  sources:
+    - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
+      url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
+  verified: false
+
+- id: com-tam
+  order: 2
+  nameVi: Cơm tấm
+  nameJa: コムタム
+  category: main
+  when: 朝〜昼に
+  priceVnd: { min: 35000, max: 70000 }
+  desc: 砕けたお米のごはんに、甘辛く焼いた豚肉をのせたホーチミン名物。目玉焼きや甘酸っぱい漬物を添えて、タレをかけていただきます。
+  tip: 定番は焼き豚（sườn）に目玉焼き（ốp la）をのせた一皿。
+  phrases:
+    - {
+        vi: Cho tôi một dĩa cơm tấm sườn,
+        kana: チョー トイ モッ イア コム タム スオン,
+        ja: 焼き豚のコムタムをひとつください,
+      }
+    - { vi: Thêm trứng ốp la, kana: テム チュン オップ ラー, ja: 目玉焼きを追加で }
+  sources:
+    - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
+      url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
+  verified: false
+
+- id: hu-tieu
+  order: 3
+  nameVi: Hủ tiếu
+  nameJa: フーティウ
+  category: main
+  when: 朝〜夜に
+  priceVnd: { min: 40000, max: 70000 }
+  desc: 南部の屋台の定番麺。豚骨のやさしいスープに、豚肉やエビ、うずらの卵などがのります。「ナムヴァン風」が代表格です。
+  tip: スープあり（nước）か、スープが別添えのまぜ麺（khô）を選べます。
+  phrases:
+    - {
+        vi: Cho tôi một tô hủ tiếu Nam Vang,
+        kana: チョー トイ モッ トー フー ティウ ナム ヤン,
+        ja: ナムヴァン風フーティウをひとつください,
+      }
+    - {
+        vi: Cho tôi hủ tiếu khô,
+        kana: チョー トイ フー ティウ コー,
+        ja: スープなし（まぜ麺）でお願いします,
+      }
+  sources:
+    - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
+      url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
+  verified: false
+
+- id: banh-xeo
+  order: 4
+  nameVi: Bánh xèo
+  nameJa: バインセオ
+  category: main
+  when: 昼〜夜に
+  priceVnd: { min: 50000, max: 180000 }
+  desc: 米粉の生地をパリッと焼き、エビや豚肉、もやしを包んだベトナム風お好み焼き。南部のものは大きくて薄いのが特徴です。
+  tip: ちぎって葉野菜とハーブで包み、甘酸っぱいタレにつけて食べます。手を使ってOK。
+  phrases:
+    - {
+        vi: Cho tôi một cái bánh xèo,
+        kana: チョー トイ モッ カイ バン セオ,
+        ja: バインセオをひとつください,
+      }
+  sources:
+    - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
+      url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
+  verified: false
+
+- id: banh-mi
+  order: 5
+  nameVi: Bánh mì
+  nameJa: バインミー
+  category: snack
+  when: 朝ごはんや小腹に
+  priceVnd: { min: 25000, max: 80000 }
+  desc: パリッと軽いフランスパンに、ハムやパテ、なます、ハーブを挟んだベトナム風サンドイッチ。街角の屋台で買えます。
+  tip: 辛いのが苦手なら、唐辛子抜きをお願いしましょう。
+  phrases:
+    - {
+        vi: Cho tôi một ổ bánh mì thịt,
+        kana: チョー トイ モッ オー バン ミー ティッ,
+        ja: お肉のバインミーをひとつください,
+      }
+    - { vi: Không cay nhé, kana: コン カイ ニェ, ja: 辛くしないでください }
+  sources:
+    - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
+      url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
+  verified: false
+
+- id: goi-cuon
+  order: 6
+  nameVi: Gỏi cuốn
+  nameJa: ゴイクオン（生春巻き）
+  category: snack
+  priceVnd: { min: 30000, max: 60000 }
+  desc: エビや豚肉、米麺、ハーブをライスペーパーで巻いた生春巻き。さっぱりしていて、暑い日にもぴったりです。
+  tip: ピーナッツ味噌のタレにつけるのが南部流です。
+  phrases:
+    - {
+        vi: Cho tôi một phần gỏi cuốn,
+        kana: チョー トイ モッ ファン ゴイ クオン,
+        ja: 生春巻きを一人前ください,
+      }
+  sources:
+    - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
+      url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
+  verified: false
+
+- id: che
+  order: 7
+  nameVi: Chè
+  nameJa: チェー（ベトナムぜんざい）
+  category: sweet
+  priceVnd: { min: 20000, max: 50000 }
+  desc: 豆やいも、ゼリー、ココナッツミルクなどを組み合わせた甘いデザート。温かいものと氷入りの冷たいものがあります。
+  tip: 種類が多いので、ショーケースを指さして選ぶのがかんたんです。
+  phrases:
+    - {
+        vi: Cho tôi một ly chè này,
+        kana: チョー トイ モッ リー チェー ナイ,
+        ja: このチェーをひとつください,
+      }
+    - { vi: Ít đá, kana: イッ ダー, ja: 氷は少なめで }
+  sources:
+    - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
+      url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
+  verified: false
+
+- id: ca-phe-sua-da
+  order: 8
+  nameVi: Cà phê sữa đá
+  nameJa: カフェスアダー（練乳アイスコーヒー）
+  category: drink
+  priceVnd: { min: 25000, max: 50000 }
+  desc: 濃く淹れたコーヒーに練乳を合わせ、氷を入れたベトナムの定番。濃厚な甘さが暑さで疲れた体にしみます。
+  tip: 甘さ控えめにしたいときは「Ít ngọt」とひとこと。
+  phrases:
+    - {
+        vi: Cho tôi một ly cà phê sữa đá,
+        kana: チョー トイ モッ リー カー フェー スア ダー,
+        ja: 練乳アイスコーヒーをひとつください,
+      }
+    - { vi: Ít ngọt nhé, kana: イッ ゴッ ニェ, ja: 甘さ控えめで }
+  sources:
+    - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
+      url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
+  verified: false
+
+- id: nuoc-mia
+  order: 9
+  nameVi: Nước mía
+  nameJa: ヌックミア（サトウキビジュース）
+  category: drink
+  priceVnd: { min: 15000, max: 25000 }
+  desc: その場でサトウキビを搾ってくれる屋台のジュース。ほんのり甘く、歩き疲れたときの一杯にぴったりです。
+  tip: 氷が心配な日は「氷なし」で頼めます。
+  phrases:
+    - {
+        vi: Cho tôi một ly nước mía,
+        kana: チョー トイ モッ リー ヌオック ミア,
+        ja: サトウキビジュースをひとつください,
+      }
+    - { vi: Không đá, kana: コン ダー, ja: 氷なしで }
+  sources:
+    - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
+      url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
+  verified: false

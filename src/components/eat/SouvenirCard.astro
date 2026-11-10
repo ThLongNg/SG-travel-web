@@ -1,0 +1,73 @@
+---
+// Souvenir: Japanese + Vietnamese name (to show the shop staff), rough price, who it suits and
+// what kind of shop sells it. The card itself is a say-line (speak / 見せる).
+import type { CollectionEntry } from 'astro:content';
+import Icon from '../glass/Icon.astro';
+import { vndToJpy } from '../../lib/format';
+import { t, type Locale } from '../../lib/i18n';
+
+interface Props {
+  lang: Locale;
+  item: CollectionEntry<'souvenirs'>;
+}
+const { lang, item } = Astro.props;
+const d = item.data;
+const n = (v: number) => v.toLocaleString('ja-JP');
+---
+
+<article
+  class="glass glass--light glass-radius flex h-full flex-col gap-2 p-4"
+  data-say
+  data-vi={d.nameVi}
+  data-kana={d.kana}
+  data-ja={d.nameJa}
+>
+  <span class="tag tag--amber self-start">
+    {t(lang, 'eat.forWhom')}：{d.forWhom}
+  </span>
+  <h3 class="m-0 text-[16px] leading-snug font-bold">{d.nameJa}</h3>
+  <p class="m-0 text-[13px] text-ink-muted">
+    <span class="font-latin font-semibold text-ink" lang="vi">
+      {d.nameVi}
+    </span>
+    ・{d.kana}
+  </p>
+  <p class="m-0 text-[13px] leading-relaxed">{d.desc}</p>
+  <dl class="m-0 mt-auto space-y-1 border-t border-line pt-2 text-[12px]">
+    <div class="flex gap-1.5">
+      <dt class="flex shrink-0 items-center gap-1 text-ink-muted">
+        <Icon name="yen" size={14} class="text-amber" />
+        {t(lang, 'eat.approx')}
+      </dt>
+      <dd class="m-0 font-semibold">
+        {n(d.priceVndFrom)}ドン〜（約{n(vndToJpy(d.priceVndFrom))}円〜）
+      </dd>
+    </div>
+    <div class="flex gap-1.5">
+      <dt class="flex shrink-0 items-center gap-1 text-ink-muted">
+        <Icon name="bag" size={14} class="text-river" />
+        {t(lang, 'eat.where')}
+      </dt>
+      <dd class="m-0">{d.where}</dd>
+    </div>
+  </dl>
+  <div class="flex gap-2">
+    <button
+      type="button"
+      class="glass-press touch-target flex flex-1 items-center justify-center gap-1.5 rounded-full bg-amber px-3 text-[13px] font-bold text-ink-dark"
+      data-show
+    >
+      <Icon name="chat" size={16} />
+      {t(lang, 'eat.showStaff')}
+    </button>
+    <button
+      type="button"
+      class="icon-badge glass-press touch-target shrink-0"
+      data-speak
+      hidden
+      aria-label={`${t(lang, 'phrases.play')}: ${d.nameVi}`}
+    >
+      <Icon name="speaker" size={18} />
+    </button>
+  </div>
+</article>

@@ -1,0 +1,136 @@
+# /eat/ — souvenirs (types of shops, no specific stores). priceVndFrom: rough "from" price,
+# verified: false until checked in Ho Chi Minh City.
+- id: tra-sen
+  order: 1
+  nameJa: 蓮茶（ロータスティー）
+  nameVi: Trà sen
+  kana: チャー セン
+  category: food
+  priceVndFrom: 80000
+  forWhom: 上司や目上の方へ
+  desc: ベトナムの国花・蓮の香りをうつした上品なお茶。缶や箱入りのものはギフトにも。
+  where: スーパー、ベンタイン市場
+  sources:
+    - title: Quà lưu niệm Sài Gòn：Gợi ý quà tặng & nơi mua uy tín（VinWonders）
+      url: https://vinwonders.com/vi/wonderpedia/news/qua-luu-niem-sai-gon/
+  verified: false
+
+- id: ca-phe-dua
+  order: 2
+  nameJa: ココナッツコーヒー（スティック）
+  nameVi: Cà phê dừa
+  kana: カー フェー ユア
+  category: food
+  priceVndFrom: 60000
+  forWhom: カフェ好きの同僚へ
+  desc: お湯を注ぐだけでココナッツ風味のベトナムコーヒーに。軽くて、配りやすいスティック包装。
+  where: スーパー、お土産店
+  sources:
+    - title: 9 món quà Việt Nam tặng người Nhật（CHUS）
+      url: https://chus.vn/goi-y-qua-viet-nam-tang-nguoi-nhat/
+  verified: false
+
+- id: xoai-say
+  order: 3
+  nameJa: ドライマンゴー
+  nameVi: Xoài sấy dẻo
+  kana: ソアイ サイ イェオ
+  category: food
+  priceVndFrom: 50000
+  forWhom: 自分へのご褒美や家族へ
+  desc: 完熟マンゴーの甘みがぎゅっと詰まったセミドライ。生のマンゴーは日本に持ち込めないので、お土産はこちらで。
+  where: スーパー、ベンタイン市場
+  sources:
+    - title: ベトナム：植物防疫所（農林水産省、生のマンゴーは持ち込み不可）
+      url: https://www.maff.go.jp/pps/j/search/ikuni/vn.html
+  verified: false
+
+- id: son-cocoon
+  order: 4
+  nameJa: ココナッツのリップバーム（Cocoon）
+  nameVi: Son dưỡng Cocoon
+  kana: ソン ユオン ココン
+  category: beauty
+  priceVndFrom: 35000
+  forWhom: 仲のよい女友達へ
+  desc: ベトナムのヴィーガンコスメブランドの人気アイテム。手ごろな値段で、まとめ買いして配りやすいサイズ。
+  where: コスメ・ドラッグストア、スーパー
+  sources:
+    - title: Quà lưu niệm Sài Gòn：Gợi ý quà tặng & nơi mua uy tín（VinWonders）
+      url: https://vinwonders.com/vi/wonderpedia/news/qua-luu-niem-sai-gon/
+  verified: false
+
+- id: xa-phong-dua
+  order: 5
+  nameJa: ココナッツ石けん
+  nameVi: Xà phòng dừa
+  kana: サー フォン ユア
+  category: beauty
+  priceVndFrom: 40000
+  forWhom: 美容好きの友人へ
+  desc: ココナッツオイルを使ったやさしい石けん。香りのよいものは、クローゼットに入れても。
+  where: お土産店、ベンタイン市場
+  sources:
+    - title: Quà lưu niệm Sài Gòn：Gợi ý quà tặng & nơi mua uy tín（VinWonders）
+      url: https://vinwonders.com/vi/wonderpedia/news/qua-luu-niem-sai-gon/
+  verified: false
+
+- id: tui-theu
+  order: 6
+  nameJa: 刺繍の巾着ポーチ
+  nameVi: Túi thêu
+  kana: トゥイ テウ
+  category: craft
+  priceVndFrom: 40000
+  forWhom: コスメ好きの友人や自分用に
+  desc: 花や鳥の手刺繍がかわいい小さなポーチ。リップやイヤホンの整理に重宝します。
+  where: ベンタイン市場、雑貨店
+  sources:
+    - title: 6 địa điểm bán quà lưu niệm ở TPHCM dân local sẽ chỉ cho bạn（Du lịch Việt Nam）
+      url: https://dulichvietnam.com.vn/dia-diem-ban-qua-luu-niem-o-tphcm.html
+  verified: false
+
+- id: tui-dan-nhua
+  order: 7
+  nameJa: プラかごバッグ
+  nameVi: Túi đan nhựa
+  kana: トゥイ ダン ニュア
+  category: craft
+  priceVndFrom: 80000
+  forWhom: 自分用に、夏のお出かけに
+  desc: 軽くて水に強い、カラフルな編みかご。旅行中の街歩きバッグとしてもすぐ使えます。
+  where: ベンタイン市場
+  sources:
+    - title: Quà lưu niệm Sài Gòn：Gợi ý quà tặng & nơi mua uy tín（VinWonders）
+      url: https://vinwonders.com/vi/wonderpedia/news/qua-luu-niem-sai-gon/
+  verified: false
+
+- id: gom-bat-trang
+  order: 8
+  nameJa: バッチャン焼き（陶器の小皿・茶器）
+  nameVi: Gốm Bát Tràng
+  kana: ゴム バッ チャン
+  category: craft
+  priceVndFrom: 60000
+  forWhom: お母さんや料理好きの方へ
+  desc: 素朴な手描きの蓮やトンボ柄が魅力の陶器。和食の小皿としても使いやすく、日常づかいに。
+  where: 雑貨店、ベンタイン市場
+  sources:
+    - title: Quà lưu niệm Sài Gòn：Gợi ý quà tặng & nơi mua uy tín（VinWonders）
+      url: https://vinwonders.com/vi/wonderpedia/news/qua-luu-niem-sai-gon/
+  verified: false
+
+- id: khan-lua
+  order: 9
+  nameJa: シルクスカーフ
+  nameVi: Khăn lụa
+  kana: カン ルア
+  category: fashion
+  priceVndFrom: 300000
+  forWhom: 大切な人への特別なギフトに
+  desc: なめらかな肌ざわりのシルク。冷房よけや日よけにも使えて、旅の間から活躍します。
+  where: シルク専門店、ベンタイン市場（品質は店により差があります）
+  sources:
+    - title: Quà lưu niệm Sài Gòn：Gợi ý quà tặng & nơi mua uy tín（VinWonders）
+      url: https://vinwonders.com/vi/wonderpedia/news/qua-luu-niem-sai-gon/
+  verified: false

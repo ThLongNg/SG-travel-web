@@ -1,0 +1,118 @@
+---
+// Must-try dish: a "shop sign" card (the Vietnamese name as written on signs) that opens a
+// bottom sheet with what it is, how to eat it, a rough price and order phrases.
+import type { CollectionEntry } from 'astro:content';
+import GlassSheet from '../glass/GlassSheet.astro';
+import Icon from '../glass/Icon.astro';
+import SayLine from './SayLine.astro';
+import { vndToJpy } from '../../lib/format';
+import { t, type Locale } from '../../lib/i18n';
+
+interface Props {
+  lang: Locale;
+  dish: CollectionEntry<'dishes'>;
+}
+const { lang, dish } = Astro.props;
+const d = dish.data;
+const sheetId = `dish-${dish.id}`;
+const n = (v: number) => v.toLocaleString('ja-JP');
+const price = `${n(d.priceVnd.min)}〜${n(d.priceVnd.max)}ドン（約${n(vndToJpy(d.priceVnd.min))}〜${n(vndToJpy(d.priceVnd.max))}円）`;
+---
+
+<button
+  type="button"
+  class="glass glass--light glass-radius glass-press block h-full w-full overflow-hidden p-0 text-left"
+  data-sheet-open={sheetId}
+  aria-haspopup="dialog"
+>
+  <span class:list={['sign-band', `sign-band--${d.category}`]}>
+    <span class="sign-band__label">{t(lang, 'eat.sign')}</span>
+    <span class="sign-band__word font-latin" lang="vi">
+      {d.nameVi}
+    </span>
+  </span>
+  <span class="block space-y-1 p-3">
+    <span class="block text-[15px] leading-snug font-bold">{d.nameJa}</span>
+    {d.when && <span class="tag">{d.when}</span>}
+    <span class="block text-[12px] text-ink-muted">
+      {t(lang, 'eat.approx')} {n(d.priceVnd.min)}〜{n(d.priceVnd.max)}ドン
+    </span>
+  </span>
+</button>
+
+<GlassSheet id={sheetId} title={d.nameJa} closeLabel={t(lang, 'common.close')}>
+  <div class="space-y-4">
+    <div class:list={['sign-band sign-band--lg rounded-2xl', `sign-band--${d.category}`]}>
+      <span class="sign-band__label">{t(lang, 'eat.sign')}</span>
+      <span class="sign-band__word font-latin" lang="vi">
+        {d.nameVi}
+      </span>
+    </div>
+    <p class="m-0 text-[15px] leading-relaxed">{d.desc}</p>
+    {d.tip && (
+      <p class="m-0 flex gap-2 rounded-2xl bg-sand/70 p-3 text-[14px] leading-relaxed">
+        <Icon name="info" size={18} class="mt-0.5 shrink-0 text-amber" />
+        {d.tip}
+      </p>
+    )}
+    <p class="m-0 flex items-center gap-2 text-[14px]">
+      <Icon name="yen" size={16} class="shrink-0 text-amber" />
+      <span>
+        {t(lang, 'eat.approx')}：{price}
+      </span>
+    </p>
+    <div>
+      <h3 class="mb-2 text-[15px] font-bold">{t(lang, 'eat.sayThis')}</h3>
+      <ul class="m-0 list-none space-y-2 p-0">
+        {d.phrases.map((p) => (
+          <SayLine lang={lang} vi={p.vi} kana={p.kana} ja={p.ja} />
+        ))}
+      </ul>
+    </div>
+  </div>
+</GlassSheet>
+
+<style is:global>
+  /* "Shop sign" band: the dish name as it appears on Saigon signboards */
+  .sign-band {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    min-height: 92px;
+    padding: 12px 14px;
+    color: var(--color-ink-dark); /* text on an accent fill */
+  }
+  .sign-band--lg {
+    min-height: 110px;
+  }
+  .sign-band__label {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    opacity: 0.85;
+  }
+  .sign-band__word {
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .sign-band--lg .sign-band__word {
+    font-size: 32px;
+  }
+  .sign-band--main {
+    background: var(--color-amber);
+  }
+  .sign-band--snack {
+    background: var(--color-river);
+  }
+  .sign-band--sweet {
+    background: color-mix(in srgb, var(--color-amber) 16%, white);
+    color: var(--color-amber);
+  }
+  .sign-band--drink {
+    background: color-mix(in srgb, var(--color-river) 16%, white);
+    color: var(--color-river);
+  }
+</style>

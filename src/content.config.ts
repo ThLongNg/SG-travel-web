@@ -1,7 +1,7 @@
 // Content schema — FROZEN after phase 0 (owner: Lead). Change requests → docs/change-requests/.
 // Astro 7 requires this path (src/content/config.ts is a hard error since Astro 6).
 import { defineCollection } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 const area = z.enum(['north', 'central', 'south']);
@@ -201,4 +201,49 @@ const phrases = defineCollection({
   }),
 });
 
-export const collections = { spots, areas, courses, guides, phrases };
+/** One line of "what to say" in a shop or eatery (shown with a speak button and 見せる). */
+const phrase = z.object({
+  vi: z.string().min(1),
+  kana: z.string().min(1), // Southern accent
+  ja: z.string().min(1),
+});
+
+/** /eat/ — must-try dishes. No specific restaurants: the sign word is how she finds them. */
+const dishes = defineCollection({
+  loader: file('./src/data/eat/dishes.yml'),
+  schema: z.object({
+    id: z.string().regex(/^[a-z0-9-]+$/),
+    order: z.number().int(),
+    nameVi: z.string().min(1), // as written on shop signs, e.g. "Phở"
+    nameJa: z.string().min(1),
+    category: z.enum(['main', 'snack', 'sweet', 'drink']),
+    when: z.string().optional(), // e.g. 朝ごはんに
+    priceVnd: z.object({ min: z.number().int().positive(), max: z.number().int().positive() }),
+    desc: z.string().min(1),
+    tip: z.string().optional(),
+    phrases: z.array(phrase).min(1),
+    sources,
+    verified: z.boolean(),
+  }),
+});
+
+/** /eat/ — souvenirs: what to buy, for whom, and where (types of shops, not specific stores). */
+const souvenirs = defineCollection({
+  loader: file('./src/data/eat/souvenirs.yml'),
+  schema: z.object({
+    id: z.string().regex(/^[a-z0-9-]+$/),
+    order: z.number().int(),
+    nameJa: z.string().min(1),
+    nameVi: z.string().min(1), // shown to the shop staff (見せる)
+    kana: z.string().min(1),
+    category: z.enum(['food', 'beauty', 'craft', 'fashion']),
+    priceVndFrom: z.number().int().positive(),
+    forWhom: z.string().min(1), // e.g. 職場のバラマキに
+    desc: z.string().min(1),
+    where: z.string().min(1), // e.g. スーパー、ベンタイン市場
+    sources,
+    verified: z.boolean(),
+  }),
+});
+
+export const collections = { spots, areas, courses, guides, phrases, dishes, souvenirs };

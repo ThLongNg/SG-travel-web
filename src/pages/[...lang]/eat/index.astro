@@ -1,20 +1,39 @@
 ---
-// 食べる・買う: what to eat, how to order, what to buy and how — so she can choose any place
-// nearby by herself (no specific restaurants). Cards come from the `guides` collection.
+// 食べる・買う: must-try dishes as "shop sign" cards (tap for how to eat + order phrases) and
+// souvenirs (Japanese/Vietnamese names to show the staff). No specific restaurants or stores.
+// Data: src/data/eat/{dishes,souvenirs}.yml · tips: guides collection (food / shopping).
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import GlassChip from '../../../components/glass/GlassChip.astro';
+import Icon from '../../../components/glass/Icon.astro';
 import GuideCards from '../../../components/guide/GuideCards.astro';
-import { EAT_CATEGORIES } from '../../../components/guide/categories';
-import { getLocale, localeParams, localizePath, t } from '../../../lib/i18n';
+import DishCard from '../../../components/eat/DishCard.astro';
+import SouvenirCard from '../../../components/eat/SouvenirCard.astro';
+import ShowMode from '../../../components/phrase/ShowMode.astro';
+import { getLocale, localeParams, localizePath, t, type I18nKey } from '../../../lib/i18n';
 
 export const getStaticPaths = localeParams;
 const lang = getLocale(Astro.params.lang);
 
-const guides = (await getCollection('guides'))
-  .filter((g) => EAT_CATEGORIES.includes(g.data.category))
-  .sort((a, b) => a.data.order - b.data.order);
-const food = guides.filter((g) => g.data.category === 'food');
-const shopping = guides.filter((g) => g.data.category === 'shopping');
+const byOrder = <T extends { data: { order: number } }>(a: T, b: T) => a.data.order - b.data.order;
+const dishes = (await getCollection('dishes')).sort(byOrder);
+const souvenirs = (await getCollection('souvenirs')).sort(byOrder);
+const guides = (await getCollection('guides')).sort(byOrder);
+const foodTips = guides.filter((g) => g.data.category === 'food');
+const shopTips = guides.filter((g) => g.data.category === 'shopping');
+
+const dishCats: [string, I18nKey][] = [
+  ['main', 'eat.catMain'],
+  ['snack', 'eat.catSnack'],
+  ['sweet', 'eat.catSweet'],
+  ['drink', 'eat.catDrink'],
+];
+const souvCats: [string, I18nKey][] = [
+  ['food', 'eat.sCatFood'],
+  ['beauty', 'eat.sCatBeauty'],
+  ['craft', 'eat.sCatCraft'],
+  ['fashion', 'eat.sCatFashion'],
+];
 ---
 
 <BaseLayout
@@ -37,24 +56,101 @@ const shopping = guides.filter((g) => g.data.category === 'shopping');
       )}
     </header>
 
-    <section aria-labelledby="eat-food">
-      <div class="section-head">
+    <section aria-labelledby="eat-food" class="space-y-4" data-filter-scope>
+      <div class="section-head mb-0!">
         <h2 id="eat-food">
           <span class="section-no">01</span>
-          {t(lang, 'guide.cat.food')}
+          {t(lang, 'eat.eatTitle')}
         </h2>
       </div>
-      <GuideCards lang={lang} guides={food} />
+      <p class="m-0 text-[13px] text-ink-muted">{t(lang, 'eat.tapHint')}</p>
+      <div class="h-scroll" role="group" aria-label={t(lang, 'eat.eatTitle')}>
+        <GlassChip variant="light" selected data-cat="all">
+          {t(lang, 'eat.all')}
+        </GlassChip>
+        {dishCats.map(([c, key]) => (
+          <GlassChip variant="light" data-cat={c}>
+            {t(lang, key)}
+          </GlassChip>
+        ))}
+      </div>
+      <ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 md:grid-cols-3">
+        {dishes.map((dish) => (
+          <li data-item-cat={dish.data.category}>
+            <DishCard lang={lang} dish={dish} />
+          </li>
+        ))}
+      </ul>
+      <p class="m-0 text-[12px] text-ink-muted">{t(lang, 'eat.priceNote')}</p>
+      <GuideCards lang={lang} guides={foodTips} />
     </section>
 
-    <section aria-labelledby="eat-shop">
-      <div class="section-head">
+    <section aria-labelledby="eat-shop" class="space-y-4" data-filter-scope>
+      <div class="section-head mb-0!">
         <h2 id="eat-shop">
           <span class="section-no">02</span>
-          {t(lang, 'guide.cat.shopping')}
+          {t(lang, 'eat.buyTitle')}
         </h2>
       </div>
-      <GuideCards lang={lang} guides={shopping} />
+      <div class="h-scroll" role="group" aria-label={t(lang, 'eat.buyTitle')}>
+        <GlassChip variant="light" selected data-cat="all">
+          {t(lang, 'eat.all')}
+        </GlassChip>
+        {souvCats.map(([c, key]) => (
+          <GlassChip variant="light" data-cat={c}>
+            {t(lang, key)}
+          </GlassChip>
+        ))}
+      </div>
+      <ul class="m-0 grid list-none grid-cols-1 gap-3 p-0 md:grid-cols-2 lg:grid-cols-3">
+        {souvenirs.map((item) => (
+          <li data-item-cat={item.data.category}>
+            <SouvenirCard lang={lang} item={item} />
+          </li>
+        ))}
+      </ul>
+      <p class="m-0 text-[12px] text-ink-muted">{t(lang, 'eat.priceNote')}</p>
+      <GuideCards lang={lang} guides={shopTips} />
     </section>
+
+    <p
+      class="glass glass--light glass-radius flex gap-2 p-3 text-[13px] text-ink-muted"
+      data-no-voice
+      hidden
+      role="status"
+    >
+      <Icon name="alert" size={18} class="mt-0.5 shrink-0 text-amber" />
+      {t(lang, 'phrases.noVoice')}
+    </p>
   </div>
+
+  <ShowMode lang={lang} />
 </BaseLayout>
+
+<script>
+  import { phraseTools } from '../../../components/phrase/client';
+
+  // Category chips: show only the cards of the chosen category within the same section.
+  for (const scope of document.querySelectorAll<HTMLElement>('[data-filter-scope]')) {
+    const chips = [...scope.querySelectorAll<HTMLButtonElement>('[data-cat]')];
+    const items = [...scope.querySelectorAll<HTMLElement>('[data-item-cat]')];
+    for (const chip of chips) {
+      chip.addEventListener('click', () => {
+        const cat = chip.dataset.cat;
+        for (const c of chips) c.setAttribute('aria-pressed', String(c === chip));
+        for (const it of items) it.hidden = cat !== 'all' && it.dataset.itemCat !== cat;
+      });
+    }
+  }
+
+  // Speak / 見せる for every say-line (order phrases and souvenir names).
+  const tools = phraseTools();
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const say = target.closest<HTMLElement>('[data-say]');
+    if (!say || !tools) return;
+    const { ja = '', vi = '', kana = '' } = say.dataset;
+    if (target.closest('[data-show]')) tools.show(ja, vi, kana);
+    else if (target.closest('[data-speak]')) tools.speak(vi);
+  });
+</script>
