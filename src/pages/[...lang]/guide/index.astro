@@ -1,0 +1,15 @@
+---
+// STUB (owner: Agent C) — practical guide + VND⇄JPY converter.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { getLocale, localeParams, t } from '../../../lib/i18n';
+
+export const getStaticPaths = localeParams;
+const lang = getLocale(Astro.params.lang);
+const guides = await getCollection('guides');
+---
+
+<BaseLayout title={t(lang, 'guide.title')} lang={lang} activeTab="guide">
+  <StubPage title={t(lang, 'guide.title')} owner="C" data={guides.map((g) => g.data.title)} />
+</BaseLayout>

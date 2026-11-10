@@ -1,0 +1,45 @@
+---
+// STUB (owner: Agent A). Props are frozen by docs/CONTRACT.md — rewrite the internals only.
+// Phase-0 version: plain autoplay video + poster + scrim. A adds: no-video on reduced-motion/saveData/2g-3g,
+// pause offscreen / hidden tab, play/pause glass button, orientation-based source choice.
+import { heroMedia } from '../../lib/media';
+import { t, type Locale } from '../../lib/i18n';
+
+interface Props {
+  lang: Locale;
+  /** Hero height. full = 100dvh (home), short = 60dvh. */
+  height?: 'full' | 'short';
+  class?: string;
+}
+
+const { lang, height = 'full', class: className } = Astro.props;
+---
+
+<section
+  class:list={['video-hero relative isolate overflow-hidden', className]}
+  style={`height:${height === 'full' ? '100dvh' : '60dvh'}`}
+  aria-label={t(lang, 'media.videoAlt')}
+>
+  <video
+    class="absolute inset-0 -z-20 h-full w-full object-cover"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    poster={heroMedia.posterLandscape}
+    aria-hidden="true"
+  >
+    <!-- MP4 first: WebKit (iOS Safari, Playwright WebKit) can claim VP9 support yet stall on WebM,
+         which also blocks the document load event. -->
+    <source src={heroMedia.mobile.mp4} type="video/mp4" media="(orientation: portrait)" />
+    <source src={heroMedia.mobile.webm} type="video/webm" media="(orientation: portrait)" />
+    <source src={heroMedia.desktop.mp4} type="video/mp4" />
+    <source src={heroMedia.desktop.webm} type="video/webm" />
+  </video>
+  <div
+    class="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/40 to-night/20"
+    aria-hidden="true"
+  ></div>
+  <slot />
+</section>

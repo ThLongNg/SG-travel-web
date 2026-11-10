@@ -1,0 +1,27 @@
+---
+// STUB (owner: Agent A) — course detail with day/time timeline.
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { getLocale, localeParams } from '../../../lib/i18n';
+
+export const getStaticPaths = (async () => {
+  const courses = await getCollection('courses');
+  return localeParams().flatMap(({ params }) =>
+    courses.map((course) => ({ params: { ...params, slug: course.id }, props: { course } })),
+  );
+}) satisfies GetStaticPaths;
+
+const { course } = Astro.props;
+const lang = getLocale(Astro.params.lang);
+---
+
+<BaseLayout
+  title={course.data.title}
+  description={course.data.summary}
+  lang={lang}
+  activeTab="courses"
+>
+  <StubPage title={course.data.title} owner="A" data={course.data.schedule} />
+</BaseLayout>

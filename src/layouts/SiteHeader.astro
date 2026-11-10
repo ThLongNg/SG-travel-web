@@ -1,0 +1,146 @@
+---
+import Icon from '../components/glass/Icon.astro';
+import { locales, localizePath, t, unlocalizePath, type Locale } from '../lib/i18n';
+
+interface Props {
+  lang: Locale;
+  /** Transparent while over a hero; turns into glass after scrolling. */
+  transparent?: boolean;
+}
+
+const { lang, transparent = false } = Astro.props;
+const basePath = unlocalizePath(Astro.url.pathname);
+const langLabel = { ja: '日本語', vi: 'Tiếng Việt', en: 'English' } as const;
+---
+
+<header class="site-header" data-transparent={transparent ? '' : undefined}>
+  <div class="site-header__bar">
+    <a href={localizePath('/', lang)} class="site-header__logo touch-target">
+      <span class="font-display text-[17px] font-bold">{t(lang, 'site.name')}</span>
+      <span class="font-latin text-xs text-amber" lang="vi">
+        {t(lang, 'site.decorVi')}
+      </span>
+    </a>
+    <details class="site-header__lang">
+      <summary
+        class="glass glass-pill glass-press touch-target grid place-items-center"
+        aria-label={t(lang, 'nav.language')}
+      >
+        <Icon name="globe" />
+      </summary>
+      <ul class="glass glass--strong glass-radius site-header__menu">
+        {locales.map((l) => (
+          <li>
+            <a
+              href={localizePath(basePath, l)}
+              hreflang={l}
+              lang={l}
+              aria-current={l === lang ? 'true' : undefined}
+            >
+              {langLabel[l]}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  </div>
+</header>
+
+<script>
+  // Hide on scroll down, show on scroll up; become glass once past the top.
+  const h = document.querySelector<HTMLElement>('.site-header');
+  if (h) {
+    let last = scrollY;
+    let ticking = false;
+    const update = () => {
+      const y = scrollY;
+      h.classList.toggle('is-scrolled', y > 24);
+      h.classList.toggle('is-hidden', y > last && y > 120 && !h.querySelector('details[open]'));
+      last = y;
+      ticking = false;
+    };
+    addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) requestAnimationFrame(update);
+        ticking = true;
+      },
+      { passive: true },
+    );
+    update();
+  }
+</script>
+
+<style>
+  .site-header {
+    position: fixed;
+    z-index: 30;
+    inset: 0 0 auto;
+    padding: calc(var(--safe-top) + 8px) var(--spacing-gutter) 0;
+    transition: transform 280ms var(--ease-out-soft);
+  }
+  .site-header.is-hidden {
+    transform: translateY(-110%);
+  }
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    height: var(--header-h);
+    padding: 0 6px 0 16px;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    transition:
+      background-color 280ms,
+      border-color 280ms,
+      -webkit-backdrop-filter 280ms,
+      backdrop-filter 280ms;
+  }
+  .site-header:not([data-transparent]) .site-header__bar,
+  .site-header.is-scrolled .site-header__bar {
+    background: rgb(11 27 43 / 0.5);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    border-color: var(--glass-border);
+    box-shadow: var(--glass-highlight);
+  }
+  .site-header__logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+  .site-header__lang {
+    position: relative;
+  }
+  .site-header__lang summary {
+    list-style: none;
+  }
+  .site-header__lang summary::-webkit-details-marker {
+    display: none;
+  }
+  .site-header__menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 160px;
+    padding: 6px;
+    list-style: none;
+    margin: 0;
+  }
+  .site-header__menu a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: 14px;
+    text-decoration: none;
+  }
+  .site-header__menu a[aria-current='true'] {
+    color: var(--color-amber);
+  }
+  .site-header__menu a:hover {
+    background: rgb(255 255 255 / 0.1);
+  }
+</style>

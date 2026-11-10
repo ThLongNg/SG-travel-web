@@ -1,0 +1,171 @@
+---
+// Shared layout — FROZEN after phase 0 (owner: Lead). Props are listed in docs/CONTRACT.md.
+import '../styles/global.css';
+import SEO, { type Breadcrumb } from '../components/seo/SEO.astro';
+import RegisterSW from '../components/pwa/RegisterSW.astro';
+import GlassTabBar from '../components/glass/GlassTabBar.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import { heroMedia } from '../lib/media';
+import { htmlLang, localizePath, t, type I18nKey, type Locale } from '../lib/i18n';
+import type { IconName } from '../components/glass/Icon.astro';
+
+export type Tab = 'home' | 'spots' | 'courses' | 'phrases' | 'guide';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang: Locale;
+  /** Highlighted bottom tab. Omit for none. */
+  activeTab?: Tab;
+  /** Transparent header over a hero (home). */
+  transparentHeader?: boolean;
+  /** Preload the hero poster for LCP (home). */
+  preloadPoster?: boolean;
+  image?: string;
+  jsonLd?: Record<string, unknown>[];
+  breadcrumbs?: Breadcrumb[];
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = t(Astro.props.lang, 'site.description'),
+  lang,
+  activeTab,
+  transparentHeader = false,
+  preloadPoster = false,
+  image,
+  jsonLd,
+  breadcrumbs,
+  noindex,
+} = Astro.props;
+
+const tabs: { tab: Tab; href: string; key: I18nKey; icon: IconName }[] = [
+  { tab: 'home', href: '/', key: 'nav.home', icon: 'home' },
+  { tab: 'spots', href: '/spots/', key: 'nav.spots', icon: 'pin' },
+  { tab: 'courses', href: '/courses/', key: 'nav.courses', icon: 'route' },
+  { tab: 'phrases', href: '/phrases/', key: 'nav.phrases', icon: 'chat' },
+  { tab: 'guide', href: '/guide/', key: 'nav.guide', icon: 'info' },
+];
+const fullTitle = title === t(lang, 'site.name') ? title : `${title}｜${t(lang, 'site.name')}`;
+---
+
+<!doctype html>
+<html lang={htmlLang[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0B1B2B" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {preloadPoster && (
+      <>
+        <link
+          rel="preload"
+          as="image"
+          href={heroMedia.posterPortrait}
+          type="image/webp"
+          fetchpriority="high"
+          media="(orientation: portrait)"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href={heroMedia.posterLandscape}
+          type="image/webp"
+          fetchpriority="high"
+          media="(orientation: landscape)"
+        />
+      </>
+    )}
+    <script is:inline>
+      // navigator.userAgentData exists only in Chromium → enables optional glass refraction
+      if (navigator.userAgentData) document.documentElement.classList.add('is-chromium');
+    </script>
+    <SEO
+      title={fullTitle}
+      description={description}
+      lang={lang}
+      image={image}
+      jsonLd={jsonLd}
+      breadcrumbs={breadcrumbs}
+      noindex={noindex}
+    />
+    <RegisterSW />
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">
+      {t(lang, 'nav.skipToContent')}
+    </a>
+    <!-- Fixed blurred Saigon poster behind every page (the home video hero covers it at the top) -->
+    <div
+      class="site-bg"
+      aria-hidden="true"
+      style={`background-image:url(${heroMedia.background})`}
+    ></div>
+    <!-- Chromium-only refraction filter used by .glass--refract -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <filter id="glass-refract" x="0" y="0" width="100%" height="100%">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.008 0.012"
+          numOctaves="2"
+          seed="7"
+          result="n"
+        />
+        <feDisplacementMap
+          in="SourceGraphic"
+          in2="n"
+          scale="18"
+          xChannelSelector="R"
+          yChannelSelector="G"
+        />
+      </filter>
+    </svg>
+
+    <SiteHeader lang={lang} transparent={transparentHeader} />
+    <main
+      id="main"
+      class:list={[!transparentHeader && 'pt-[calc(var(--safe-top)+var(--header-h)+24px)]']}
+    >
+      <slot />
+    </main>
+    <SiteFooter lang={lang} />
+    <GlassTabBar
+      label={t(lang, 'nav.mainNav')}
+      active={tabs.findIndex((x) => x.tab === activeTab)}
+      items={tabs.map((x) => ({
+        href: localizePath(x.href, lang),
+        label: t(lang, x.key),
+        icon: x.icon,
+      }))}
+    />
+  </body>
+</html>
+
+<style>
+  .site-bg {
+    position: fixed;
+    inset: -80px;
+    z-index: -1;
+    background-size: cover;
+    background-position: center;
+    /* tiny pre-blurred image + CSS blur ≈ 50px blur at negligible cost; darkened for contrast */
+    filter: blur(24px) brightness(0.85);
+    transform: translateZ(0);
+  }
+  .skip-link {
+    position: absolute;
+    left: 16px;
+    top: -100px;
+    z-index: 100;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: var(--color-amber);
+    color: var(--color-ink-dark);
+  }
+  .skip-link:focus {
+    top: calc(var(--safe-top) + 8px);
+  }
+</style>

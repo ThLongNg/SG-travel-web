@@ -1,0 +1,31 @@
+---
+// STUB (owner: Agent C). Props are frozen by docs/CONTRACT.md — rewrite the internals only.
+// C adds: OG/Twitter, hreflang, JSON-LD (TouristAttraction, BreadcrumbList), OG image.
+import type { Locale } from '../../lib/i18n';
+
+export interface Breadcrumb {
+  name: string;
+  /** Absolute path, already localized */
+  href: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Locale;
+  /** OG image: absolute URL or public path. Defaults to the site OG image. */
+  image?: string;
+  /** Extra JSON-LD objects (e.g. TouristAttraction built by the page). */
+  jsonLd?: Record<string, unknown>[];
+  breadcrumbs?: Breadcrumb[];
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex" />}

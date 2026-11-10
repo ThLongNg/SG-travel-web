@@ -1,0 +1,29 @@
+---
+// STUB (owner: Agent A) — home page.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import VideoHero from '../../components/media/VideoHero.astro';
+import StubPage from '../../components/StubPage.astro';
+import { getCollection } from 'astro:content';
+import { getLocale, localeParams, t } from '../../lib/i18n';
+
+export const getStaticPaths = localeParams;
+const lang = getLocale(Astro.params.lang);
+const spots = await getCollection('spots');
+---
+
+<BaseLayout
+  title={t(lang, 'site.name')}
+  lang={lang}
+  activeTab="home"
+  transparentHeader
+  preloadPoster
+>
+  <VideoHero lang={lang}>
+    <div class="flex h-full items-end p-6 pb-28">
+      <h1 class="text-3xl">{t(lang, 'site.tagline')}</h1>
+    </div>
+  </VideoHero>
+  <div class="pt-8">
+    <StubPage title={t(lang, 'home.popular')} owner="A" data={spots.map((s) => s.data.nameJa)} />
+  </div>
+</BaseLayout>

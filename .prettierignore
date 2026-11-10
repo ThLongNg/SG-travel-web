@@ -1,0 +1,10 @@
+dist/
+.astro/
+node_modules/
+prompts/
+package-lock.json
+*.zip
+public/
+test-results/
+playwright-report/
+.lighthouseci/

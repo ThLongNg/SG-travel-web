@@ -1,0 +1,143 @@
+/* Fonts: unicode-range split by Fontsource → only the glyph chunks a page uses are downloaded. */
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/noto-sans-jp';
+@import '@fontsource/noto-serif-jp/700.css';
+@import 'tailwindcss';
+@import './glass.css';
+
+/* ───────── Design tokens (single source of truth) ───────── */
+@theme {
+  /* Saigon night palette — max 2 accents */
+  --color-night: #0b1b2b; /* deep night blue, base */
+  --color-night-2: #12283d;
+  --color-amber: #f2a541; /* street-lamp amber, primary accent */
+  --color-amber-strong: #ffb85c;
+  --color-river: #2ec4b6; /* Saigon river teal, secondary accent */
+  --color-ink: #f5f7fa; /* text on dark glass */
+  --color-ink-muted: #c3cdd8; /* ≥ 4.5:1 on night */
+  --color-ink-dark: #0b1b2b; /* text on amber */
+
+  --font-sans: 'Inter Variable', 'Noto Sans JP Variable', system-ui, sans-serif;
+  --font-serif: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
+  --font-latin: 'Inter Variable', system-ui, sans-serif;
+
+  --radius-glass: 26px;
+  --radius-pill: 9999px;
+
+  --spacing-touch: 44px;
+  --spacing-gutter: 16px;
+
+  --ease-spring: cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: dark;
+  /* Glass recipe — used by src/styles/glass.css; tweak here only */
+  --glass-bg: rgb(255 255 255 / 0.12);
+  --glass-bg-strong: rgb(16 34 52 / 0.72); /* long text: opaquer for readability */
+  --glass-bg-light: rgb(255 255 255 / 0.08); /* list items: no blur */
+  --glass-border: rgb(255 255 255 / 0.35);
+  --glass-blur: 24px;
+  --glass-saturate: 180%;
+  --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.45), inset 0 -1px 0 rgb(255 255 255 / 0.08);
+  --glass-shadow: 0 8px 32px rgb(0 0 0 / 0.18);
+  --glass-fallback: rgb(18 40 61 / 0.88);
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --tabbar-h: 64px;
+  --tabbar-gap: 12px;
+  --header-h: 56px;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  background: var(--color-night);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  font-size: 1rem; /* 16px */
+  line-height: 1.8;
+  color: var(--color-ink);
+  /* no body background: it would paint over the fixed .site-bg (z-index:-1); html carries the base color */
+  -webkit-font-smoothing: antialiased;
+  /* room for the floating tab bar */
+  padding-bottom: calc(var(--tabbar-h) + var(--tabbar-gap) * 2 + var(--safe-bottom));
+}
+
+:lang(vi),
+:lang(en),
+.font-latin {
+  font-family: var(--font-latin);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+.font-display {
+  font-family: var(--font-serif);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Magazine details */
+.vertical-title {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-serif);
+  letter-spacing: 0.2em;
+}
+
+.section-no {
+  font-family: var(--font-latin);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--color-amber);
+}
+
+/* Gạch bông (Saigon encaustic tile) — faint SVG pattern for footer, dividers, empty states */
+.tile-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23F2A541' stroke-opacity='.14' stroke-width='1'%3E%3Cpath d='M24 4 L44 24 L24 44 L4 24Z'/%3E%3Ccircle cx='24' cy='24' r='7'/%3E%3Cpath d='M24 17 Q28 24 24 31 Q20 24 24 17Z M17 24 Q24 20 31 24 Q24 28 17 24Z'/%3E%3Cpath d='M0 0 Q6 6 0 12 M48 0 Q42 6 48 12 M0 48 Q6 42 0 36 M48 48 Q42 42 48 36'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 48px 48px;
+}
+
+.tile-divider {
+  height: 12px;
+  border: 0;
+  margin: 2rem 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath d='M0 6 L6 0 L12 6 L18 0 L24 6 M0 6 L6 12 L12 6 L18 12 L24 6' fill='none' stroke='%23F2A541' stroke-opacity='.35'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

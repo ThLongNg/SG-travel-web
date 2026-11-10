@@ -1,0 +1,13 @@
+---
+// STUB (owner: Agent A) — single 404 for all locales (static hosts serve one 404.html).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StubPage from '../components/StubPage.astro';
+import { t } from '../lib/i18n';
+---
+
+<BaseLayout title={t('ja', 'notFound.title')} lang="ja" noindex>
+  <StubPage title={t('ja', 'notFound.title')} owner="A" />
+  <p class="mt-6 text-center">
+    <a href="/">{t('ja', 'notFound.backHome')}</a>
+  </p>
+</BaseLayout>

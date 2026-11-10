@@ -1,0 +1,51 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Common = {
+  /** Toggle state. Rendered as aria-pressed on buttons, aria-current on links. */
+  selected?: boolean;
+  /** light = no blur (use in long horizontal chip rows) */
+  variant?: 'default' | 'light';
+  class?: string;
+};
+
+type Props = Common &
+  (
+    | ({ href: string } & Omit<HTMLAttributes<'a'>, 'class'>)
+    | ({ href?: undefined } & Omit<HTMLAttributes<'button'>, 'class'>)
+  );
+
+const {
+  selected = false,
+  variant = 'default',
+  class: className,
+  ...rest
+} = Astro.props as Common & Record<string, unknown>;
+const isLink = typeof rest.href === 'string';
+const Tag = isLink ? 'a' : 'button';
+---
+
+<Tag
+  class:list={[
+    'glass glass-pill glass-press glass-chip touch-target inline-flex shrink-0 items-center gap-1.5 px-4 text-[15px] no-underline whitespace-nowrap',
+    variant === 'light' && 'glass--light',
+    className,
+  ]}
+  type={isLink ? undefined : 'button'}
+  aria-pressed={isLink ? undefined : selected ? 'true' : 'false'}
+  aria-current={isLink && selected ? 'true' : undefined}
+  data-selected={selected ? '' : undefined}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<style>
+  .glass-chip[aria-pressed='true'],
+  .glass-chip[aria-current='true'],
+  .glass-chip[data-selected] {
+    background: var(--color-amber);
+    color: var(--color-ink-dark);
+    font-weight: 600;
+  }
+</style>

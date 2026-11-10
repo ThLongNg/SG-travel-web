@@ -1,0 +1,26 @@
+---
+// STUB (owner: Agent A) — spot detail (most important page).
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { getLocale, localeParams } from '../../../lib/i18n';
+
+export const getStaticPaths = (async () => {
+  const spots = await getCollection('spots');
+  return localeParams().flatMap(({ params }) =>
+    spots.map((spot) => ({ params: { ...params, slug: spot.id }, props: { spot } })),
+  );
+}) satisfies GetStaticPaths;
+
+const { spot } = Astro.props;
+const lang = getLocale(Astro.params.lang);
+const { Content } = await render(spot);
+---
+
+<BaseLayout title={spot.data.nameJa} description={spot.data.summary} lang={lang} activeTab="spots">
+  <StubPage title={spot.data.nameJa} owner="A" data={spot.data.info} />
+  <div class="mx-auto max-w-3xl px-4">
+    <Content />
+  </div>
+</BaseLayout>

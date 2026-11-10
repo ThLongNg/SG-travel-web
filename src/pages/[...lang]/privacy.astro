@@ -1,0 +1,13 @@
+---
+// STUB (owner: Agent C)
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StubPage from '../../components/StubPage.astro';
+import { getLocale, localeParams, t } from '../../lib/i18n';
+
+export const getStaticPaths = localeParams;
+const lang = getLocale(Astro.params.lang);
+---
+
+<BaseLayout title={t(lang, 'privacy.title')} lang={lang}>
+  <StubPage title={t(lang, 'privacy.title')} owner="C" />
+</BaseLayout>

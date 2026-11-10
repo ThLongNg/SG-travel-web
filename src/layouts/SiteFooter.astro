@@ -1,0 +1,31 @@
+---
+import { localizePath, t, type Locale } from '../lib/i18n';
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const links = [
+  ['/about/', 'nav.about'],
+  ['/contact/', 'nav.contact'],
+  ['/privacy/', 'nav.privacy'],
+] as const;
+---
+
+<footer class="tile-pattern mt-16 border-t border-white/10 px-4 pt-10 pb-6 text-sm text-ink-muted">
+  <div class="mx-auto max-w-5xl space-y-4">
+    <nav aria-label={t(lang, 'nav.menu')}>
+      <ul class="flex flex-wrap gap-x-2 gap-y-1">
+        {links.map(([href, key]) => (
+          <li>
+            <a href={localizePath(href, lang)} class="inline-flex min-h-[44px] items-center px-2">
+              {t(lang, key)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <p>{t(lang, 'footer.disclaimer')}</p>
+    <p class="font-latin">{t(lang, 'footer.copyright')}</p>
+  </div>
+</footer>

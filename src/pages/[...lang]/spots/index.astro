@@ -1,0 +1,15 @@
+---
+// STUB (owner: Agent A) — spot list with client-side filters.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { getCollection } from 'astro:content';
+import { getLocale, localeParams, t } from '../../../lib/i18n';
+
+export const getStaticPaths = localeParams;
+const lang = getLocale(Astro.params.lang);
+const spots = await getCollection('spots');
+---
+
+<BaseLayout title={t(lang, 'spots.title')} lang={lang} activeTab="spots">
+  <StubPage title={t(lang, 'spots.title')} owner="A" data={spots.map((s) => s.id)} />
+</BaseLayout>

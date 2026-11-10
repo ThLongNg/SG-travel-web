@@ -1,0 +1,152 @@
+---
+// Design review page (Lead). Not in sitemap, noindex. Shows the video hero + every glass component.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import VideoHero from '../../components/media/VideoHero.astro';
+import GlassPanel from '../../components/glass/GlassPanel.astro';
+import GlassButton from '../../components/glass/GlassButton.astro';
+import GlassChip from '../../components/glass/GlassChip.astro';
+import GlassSearch from '../../components/glass/GlassSearch.astro';
+import GlassSheet from '../../components/glass/GlassSheet.astro';
+import Icon from '../../components/glass/Icon.astro';
+import { t } from '../../lib/i18n';
+
+const lang = 'ja' as const;
+const themes = ['beach', 'food', 'heritage', 'nature', 'shopping', 'walk'] as const;
+const info = [
+  ['clock', '営業時間', '8:00〜18:00'],
+  ['ticket', '料金', '150,000ドン（約900円）'],
+  ['hourglass', '所要時間', '1時間30分'],
+  ['calendar', 'ベストシーズン', '12月〜4月'],
+  ['toilet', 'トイレ', 'あり'],
+  ['card', 'カード払い', '不明'],
+] as const;
+---
+
+<BaseLayout title="Glass Demo" lang={lang} activeTab="home" transparentHeader preloadPoster noindex>
+  <VideoHero lang={lang}>
+    <div class="mx-auto flex h-full max-w-5xl flex-col justify-end gap-5 px-4 pb-[calc(var(--tabbar-h)+var(--tabbar-gap)*2+var(--safe-bottom)+16px)]">
+      <div class="flex items-end gap-4">
+        <p class="vertical-title text-sm text-ink/80" aria-hidden="true">
+          ベトナム旅のガイド
+        </p>
+        <div>
+          <p class="font-latin text-sm tracking-[0.3em] text-amber" lang="vi">
+            SÀI GÒN
+          </p>
+          <h1 class="text-[28px] leading-snug text-balance md:text-5xl">
+            {t(lang, 'site.tagline')}
+          </h1>
+        </div>
+      </div>
+      <GlassSearch
+        label={t(lang, 'home.searchLabel')}
+        placeholder={t(lang, 'common.searchPlaceholder')}
+        submitLabel={t(lang, 'common.search')}
+        id="demo-search"
+        class="glass--refract"
+      />
+      <div
+        class="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none]"
+        role="group"
+        aria-label={t(lang, 'home.themesLabel')}
+      >
+        {themes.map((k, i) => (
+          <GlassChip selected={i === 1}>{t(lang, `themes.${k}`)}</GlassChip>
+        ))}
+      </div>
+    </div>
+  </VideoHero>
+
+  <div class="mx-auto max-w-5xl space-y-10 px-4 pt-10">
+    <section class="space-y-4">
+      <p class="section-no text-sm">01 — GlassButton</p>
+      <div class="flex flex-wrap gap-3">
+        <GlassButton>ガラスボタン</GlassButton>
+        <GlassButton variant="accent" icon="map">
+          地図で開く
+        </GlassButton>
+        <GlassButton icon="share">共有</GlassButton>
+        <GlassButton iconOnly icon="heart" label="お気に入り" />
+        <GlassButton iconOnly icon="back" label="戻る" />
+        <GlassButton size="lg" data-sheet-open="demo-sheet" icon="filter">
+          絞り込み（シート）
+        </GlassButton>
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      <p class="section-no text-sm">02 — GlassPanel（default / 基本情報）</p>
+      <GlassPanel as="section" aria-labelledby="demo-info">
+        <h2 id="demo-info" class="mb-3 text-lg">
+          {t(lang, 'spots.basicInfo')}
+        </h2>
+        <dl class="grid grid-cols-2 gap-3 text-sm md:grid-cols-3">
+          {info.map(([icon, label, value]) => (
+            <div class="flex gap-2">
+              <Icon name={icon} class="mt-0.5 shrink-0 text-amber" />
+              <div>
+                <dt class="text-ink-muted">{label}</dt>
+                <dd class="m-0 font-medium">{value}</dd>
+              </div>
+            </div>
+          ))}
+        </dl>
+      </GlassPanel>
+    </section>
+
+    <section class="space-y-4">
+      <p class="section-no text-sm">03 — GlassPanel strong（長文）</p>
+      <GlassPanel variant="strong" padding="lg">
+        <h2 class="mb-2 text-xl">どんな場所？</h2>
+        <p>
+          長い文章は不透明度の高いガラスにのせて、読みやすさを優先します。
+          背景の夜景がほんのり透けることで、サイト全体にサイゴンらしい空気感を残しています。
+          本文は16px、行間は1.8です。
+        </p>
+      </GlassPanel>
+    </section>
+
+    <section class="space-y-4">
+      <p class="section-no text-sm">04 — GlassPanel light（リスト・ブラーなし）</p>
+      <ul class="grid gap-3 md:grid-cols-3">
+        {['ベンタイン市場', 'サイゴン中央郵便局', 'グエンフエ通り'].map((n) => (
+          <GlassPanel as="li" variant="light" padding="sm">
+            <p class="font-medium">{n}</p>
+            <p class="text-sm text-ink-muted">ホーチミン・南部（デモ）</p>
+          </GlassPanel>
+        ))}
+      </ul>
+    </section>
+
+    <hr class="tile-divider" />
+
+    <section class="tile-pattern glass-radius border border-white/10 p-8 text-center text-ink-muted">
+      gạch bông パターン（空状態・フッター用）
+    </section>
+  </div>
+
+  <GlassSheet id="demo-sheet" title={t(lang, 'spots.filter')} closeLabel={t(lang, 'common.close')}>
+    <p class="mb-2 text-sm text-ink-muted">{t(lang, 'spots.filterArea')}</p>
+    <div class="mb-4 flex flex-wrap gap-2">
+      <GlassChip variant="light" selected>
+        {t(lang, 'areas.south')}
+      </GlassChip>
+      <GlassChip variant="light">{t(lang, 'areas.central')}</GlassChip>
+      <GlassChip variant="light">{t(lang, 'areas.north')}</GlassChip>
+    </div>
+    <p class="mb-2 text-sm text-ink-muted">{t(lang, 'spots.filterTheme')}</p>
+    <div class="flex flex-wrap gap-2">
+      {themes.map((k) => (
+        <GlassChip variant="light">{t(lang, `themes.${k}`)}</GlassChip>
+      ))}
+    </div>
+    <div slot="footer" class="flex gap-3">
+      <GlassButton class="flex-1" data-sheet-close>
+        {t(lang, 'common.reset')}
+      </GlassButton>
+      <GlassButton class="flex-1" variant="accent" data-sheet-close>
+        {t(lang, 'common.apply')}
+      </GlassButton>
+    </div>
+  </GlassSheet>
+</BaseLayout>

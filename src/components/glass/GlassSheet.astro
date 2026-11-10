@@ -1,0 +1,141 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  /** DOM id. Open with any element carrying data-sheet-open="<id>", or el.showModal(). */
+  id: string;
+  title: string;
+  /** Accessible name of the close button (t(lang,'common.close')). */
+  closeLabel: string;
+  class?: string;
+}
+
+const { id, title, closeLabel, class: className } = Astro.props;
+---
+
+<dialog id={id} class:list={['glass-sheet', className]} aria-labelledby={`${id}-title`}>
+  <div class="glass-sheet__panel glass glass--strong">
+    <div class="glass-sheet__grip" aria-hidden="true"></div>
+    <header class="flex items-center justify-between gap-3 px-5 pb-2">
+      <h2 id={`${id}-title`} class="text-lg font-semibold">
+        {title}
+      </h2>
+      <button
+        type="button"
+        class="glass glass-pill glass-press touch-target grid place-items-center"
+        data-sheet-close
+        aria-label={closeLabel}
+      >
+        <Icon name="close" />
+      </button>
+    </header>
+    <div class="glass-sheet__body px-5 pb-4">
+      <slot />
+    </div>
+    {Astro.slots.has('footer') && (
+      <footer class="glass-sheet__footer px-5 pt-3">
+        <slot name="footer" />
+      </footer>
+    )}
+  </div>
+</dialog>
+
+<script>
+  // Native <dialog>: focus trap + Esc for free. Adds: open triggers, backdrop tap, swipe-down to close.
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    const opener = t.closest<HTMLElement>('[data-sheet-open]');
+    if (opener) {
+      document.getElementById(opener.dataset.sheetOpen!)?.closest('dialog')?.showModal();
+      return;
+    }
+    if (t.closest('[data-sheet-close]')) t.closest('dialog')?.close();
+    else if (t instanceof HTMLDialogElement && t.classList.contains('glass-sheet')) t.close();
+  });
+
+  for (const d of document.querySelectorAll<HTMLDialogElement>('dialog.glass-sheet')) {
+    const panel = d.querySelector<HTMLElement>('.glass-sheet__panel')!;
+    let y0 = 0;
+    let dy = 0;
+    panel.addEventListener(
+      'touchstart',
+      (e) => {
+        if (d.querySelector('.glass-sheet__body')!.scrollTop > 0) return;
+        y0 = e.touches[0].clientY;
+        dy = 0;
+      },
+      { passive: true },
+    );
+    panel.addEventListener(
+      'touchmove',
+      (e) => {
+        if (!y0) return;
+        dy = Math.max(0, e.touches[0].clientY - y0);
+        panel.style.transform = `translateY(${dy}px)`;
+      },
+      { passive: true },
+    );
+    panel.addEventListener('touchend', () => {
+      panel.style.transform = '';
+      if (dy > 90) d.close();
+      y0 = 0;
+    });
+  }
+</script>
+
+<style>
+  .glass-sheet {
+    margin: auto 0 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 88dvh;
+    border: 0;
+    background: transparent;
+    color: var(--color-ink);
+    overflow: visible;
+  }
+  @media (min-width: 768px) {
+    .glass-sheet {
+      margin: auto;
+      max-width: 560px;
+    }
+  }
+  .glass-sheet::backdrop {
+    background: rgb(5 12 20 / 0.5);
+  }
+  .glass-sheet__panel {
+    display: flex;
+    flex-direction: column;
+    max-height: 88dvh;
+    /* near-opaque: WebKit doesn't apply backdrop-filter inside the <dialog> top layer */
+    background: rgb(16 34 52 / 0.97);
+    border-radius: 28px 28px 0 0;
+    padding-bottom: calc(16px + var(--safe-bottom));
+    transition: transform 200ms var(--ease-out-soft);
+  }
+  @media (min-width: 768px) {
+    .glass-sheet__panel {
+      border-radius: 28px;
+    }
+  }
+  .glass-sheet[open] .glass-sheet__panel {
+    animation: sheet-in 320ms var(--ease-out-soft);
+  }
+  .glass-sheet__grip {
+    width: 40px;
+    height: 5px;
+    margin: 10px auto 8px;
+    border-radius: 3px;
+    background: rgb(255 255 255 / 0.4);
+  }
+  .glass-sheet__body {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  @keyframes sheet-in {
+    from {
+      transform: translateY(100%);
+    }
+  }
+</style>

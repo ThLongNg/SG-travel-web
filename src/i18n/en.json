@@ -1,0 +1,195 @@
+{
+  "site": {
+    "name": "サイゴン・トラベル",
+    "tagline": "活気と夜景の街、ホーチミンへ。",
+    "subTagline": "ベトナム旅のガイド",
+    "description": "日本人旅行者のためのベトナム観光ガイド。ホーチミンを中心に、観光地・モデルコース・旅の準備・指さし会話帳をまとめました。",
+    "decorVi": "Sài Gòn"
+  },
+  "nav": {
+    "home": "ホーム",
+    "spots": "観光地",
+    "courses": "コース",
+    "phrases": "会話帳",
+    "guide": "お役立ち",
+    "about": "このサイトについて",
+    "contact": "お問い合わせ",
+    "privacy": "プライバシーポリシー",
+    "language": "言語",
+    "skipToContent": "本文へスキップ",
+    "mainNav": "メインナビゲーション",
+    "back": "戻る",
+    "menu": "メニュー"
+  },
+  "common": {
+    "seeMore": "もっと見る",
+    "search": "検索",
+    "searchPlaceholder": "行きたい場所・キーワード",
+    "close": "閉じる",
+    "open": "開く",
+    "apply": "適用",
+    "reset": "リセット",
+    "share": "共有",
+    "favorite": "お気に入り",
+    "favorited": "お気に入り済み",
+    "loading": "読み込み中…",
+    "noResults": "条件に合う結果がありません",
+    "verifying": "情報確認中",
+    "lastUpdated": "情報更新日",
+    "sources": "出典",
+    "approx": "約",
+    "yen": "円",
+    "minutes": "分",
+    "hours": "時間",
+    "free": "無料",
+    "unknown": "不明",
+    "yes": "あり",
+    "no": "なし",
+    "dummyNotice": "ダミーデータです",
+    "untranslated": "この言語の翻訳は準備中のため、日本語で表示しています。"
+  },
+  "media": {
+    "playVideo": "背景動画を再生",
+    "pauseVideo": "背景動画を一時停止",
+    "videoAlt": "ホーチミンの夜景と街の様子"
+  },
+  "themes": {
+    "beach": "ビーチ",
+    "food": "グルメ",
+    "heritage": "世界遺産",
+    "nature": "自然",
+    "shopping": "ショッピング",
+    "walk": "街歩き",
+    "history": "歴史",
+    "nightview": "夜景",
+    "market": "市場"
+  },
+  "areas": {
+    "north": "北部",
+    "central": "中部",
+    "south": "南部",
+    "climate": "月別の気候",
+    "transport": "交通・移動",
+    "spotsInArea": "このエリアの観光地",
+    "rainy": "雨季",
+    "dry": "乾季",
+    "tempHigh": "最高気温",
+    "rainfall": "降水量"
+  },
+  "months": {
+    "1": "1月",
+    "2": "2月",
+    "3": "3月",
+    "4": "4月",
+    "5": "5月",
+    "6": "6月",
+    "7": "7月",
+    "8": "8月",
+    "9": "9月",
+    "10": "10月",
+    "11": "11月",
+    "12": "12月"
+  },
+  "home": {
+    "searchLabel": "観光地を検索",
+    "themesLabel": "テーマで探す",
+    "popular": "人気の観光地",
+    "byArea": "エリアから探す",
+    "courses": "モデルコース",
+    "prepare": "旅の準備"
+  },
+  "spots": {
+    "title": "観光地一覧",
+    "filter": "絞り込み",
+    "filterArea": "エリア",
+    "filterTheme": "テーマ",
+    "filterSeason": "ベストシーズン",
+    "resultCount": "{count}件",
+    "whatIs": "どんな場所？",
+    "basicInfo": "基本情報",
+    "area": "エリア",
+    "hours": "営業時間",
+    "price": "料金",
+    "duration": "所要時間の目安",
+    "bestSeason": "ベストシーズン",
+    "access": "アクセス",
+    "toilet": "トイレ",
+    "card": "カード払い",
+    "wifi": "Wi-Fi",
+    "highlights": "見どころ",
+    "howToEnjoy": "楽しみ方",
+    "tipsForJapanese": "日本人旅行者へのヒント",
+    "cautions": "注意点",
+    "map": "地図",
+    "openInMaps": "地図で開く",
+    "loadMap": "地図を表示",
+    "nearby": "近くの観光地",
+    "inCourses": "このスポットを含むモデルコース",
+    "gallery": "ギャラリー",
+    "photoOf": "{name}の写真",
+    "reading": "読み方"
+  },
+  "courses": {
+    "title": "モデルコース",
+    "day": "{n}日目",
+    "move": "移動",
+    "estimatedCost": "費用の目安",
+    "perPerson": "1人あたり",
+    "nights": "{n}泊{m}日"
+  },
+  "guide": {
+    "title": "旅の準備・お役立ち情報",
+    "converterTitle": "ベトナムドン ⇄ 円 換算",
+    "vnd": "ベトナムドン（VND）",
+    "jpy": "日本円（JPY）",
+    "rateAsOf": "{date}時点のレート",
+    "rateNote": "目安です。実際の両替レートとは異なります。",
+    "swap": "入れ替え"
+  },
+  "phrases": {
+    "title": "指さし会話帳",
+    "lead": "見せるだけで伝わる、ベトナム語のひとこと。",
+    "search": "フレーズを検索",
+    "play": "発音を聞く",
+    "show": "見せる",
+    "showModeTitle": "この画面を相手に見せてください",
+    "replay": "もう一度再生",
+    "noVoice": "この端末にはベトナム語の音声がないため、発音を再生できません。",
+    "kana": "読み方",
+    "southNote": "読み方は南部（ホーチミン）の発音に近づけています。"
+  },
+  "contact": {
+    "title": "お問い合わせ",
+    "lead": "サイトの内容についてのご質問・ご指摘はこちらから。",
+    "name": "お名前",
+    "email": "メールアドレス",
+    "message": "お問い合わせ内容",
+    "submit": "送信する",
+    "sending": "送信中…",
+    "success": "送信しました。ありがとうございます。",
+    "error": "送信できませんでした。時間をおいて再度お試しください。",
+    "required": "必須項目です",
+    "invalidEmail": "メールアドレスの形式が正しくありません",
+    "line": "LINEで問い合わせる",
+    "notConfigured": "現在準備中です"
+  },
+  "about": {
+    "title": "このサイトについて"
+  },
+  "privacy": {
+    "title": "プライバシーポリシー"
+  },
+  "notFound": {
+    "title": "ページが見つかりません",
+    "lead": "お探しのページは移動または削除された可能性があります。",
+    "backHome": "ホームへ戻る"
+  },
+  "footer": {
+    "copyright": "© サイゴン・トラベル",
+    "disclaimer": "掲載情報は確認日時点のものです。お出かけ前に最新情報をご確認ください。",
+    "credits": "写真・動画のクレジット"
+  },
+  "pwa": {
+    "offline": "オフラインです。保存済みのページを表示しています。"
+  }
+}

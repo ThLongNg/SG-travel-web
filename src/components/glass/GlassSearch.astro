@@ -1,0 +1,71 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  /** Visible-to-AT label (e.g. t(lang,'home.searchLabel')). */
+  label: string;
+  placeholder: string;
+  /** Form GET target, e.g. localizePath('/spots/', lang). Omit to stay on page (handle `input` events in JS). */
+  action?: string;
+  /** Query param name. */
+  name?: string;
+  value?: string;
+  id?: string;
+  /** Accessible name of the submit button (e.g. t(lang,'common.search')). */
+  submitLabel: string;
+  class?: string;
+}
+
+const {
+  label,
+  placeholder,
+  action,
+  name = 'q',
+  value,
+  id = 'glass-search',
+  submitLabel,
+  class: className,
+} = Astro.props;
+---
+
+<form
+  role="search"
+  action={action}
+  method="get"
+  class:list={['glass glass-pill flex items-center gap-1 py-1 pr-1 pl-5', className]}
+  onsubmit={action ? undefined : 'event.preventDefault()'}
+>
+  <label for={id} class="sr-only">
+    {label}
+  </label>
+  <input
+    id={id}
+    name={name}
+    type="search"
+    value={value}
+    placeholder={placeholder}
+    enterkeyhint="search"
+    autocomplete="off"
+    class="min-h-[44px] min-w-0 flex-1 bg-transparent text-base text-ink outline-none placeholder:text-ink-muted"
+  />
+  <button
+    type="submit"
+    class="glass-pill glass-press touch-target grid place-items-center bg-amber text-ink-dark"
+    aria-label={submitLabel}
+  >
+    <Icon name="search" />
+  </button>
+</form>
+
+<style>
+  form:focus-within {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 2px;
+  }
+  input:focus-visible {
+    outline: none;
+  }
+  input::-webkit-search-cancel-button {
+    filter: invert(1);
+  }
+</style>

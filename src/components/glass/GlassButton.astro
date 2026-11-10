@@ -1,0 +1,64 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import Icon, { type IconName } from './Icon.astro';
+
+type Common = {
+  /** glass = translucent pill · accent = amber pill (primary action) */
+  variant?: 'glass' | 'accent';
+  size?: 'md' | 'lg';
+  icon?: IconName;
+  /** Icon-only round button. `label` becomes the accessible name. */
+  iconOnly?: boolean;
+  /** Required when iconOnly; otherwise optional aria-label override. */
+  label?: string;
+  class?: string;
+};
+
+type Props = Common &
+  (
+    | ({ href: string } & Omit<HTMLAttributes<'a'>, 'class'>)
+    | ({ href?: undefined; type?: 'button' | 'submit' | 'reset' } & Omit<
+        HTMLAttributes<'button'>,
+        'class' | 'type'
+      >)
+  );
+
+const {
+  variant = 'glass',
+  size = 'md',
+  icon,
+  iconOnly = false,
+  label,
+  class: className,
+  ...rest
+} = Astro.props as Common & Record<string, unknown>;
+
+const Tag = rest.href ? 'a' : 'button';
+if (Tag === 'button' && !rest.type) rest.type = 'button';
+if (iconOnly && !label) throw new Error('GlassButton: iconOnly requires `label`');
+---
+
+<Tag
+  class:list={[
+    'glass glass-pill glass-press touch-target inline-flex items-center justify-center gap-2 font-medium no-underline select-none',
+    variant === 'accent' && 'glass-btn--accent',
+    iconOnly ? 'aspect-square p-0' : size === 'lg' ? 'px-6 py-3 text-lg' : 'px-5 py-2.5',
+    className,
+  ]}
+  aria-label={label}
+  {...rest}
+>
+  {icon && <Icon name={icon} size={size === 'lg' ? 24 : 20} />}
+  {!iconOnly && <slot />}
+</Tag>
+
+<style>
+  .glass-btn--accent {
+    background: var(--color-amber);
+    color: var(--color-ink-dark);
+    border-color: rgb(255 255 255 / 0.5);
+  }
+  .glass-btn--accent:active {
+    background: var(--color-amber-strong);
+  }
+</style>

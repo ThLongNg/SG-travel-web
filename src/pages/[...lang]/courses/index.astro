@@ -1,0 +1,15 @@
+---
+// STUB (owner: Agent A) — model course list.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { getLocale, localeParams, t } from '../../../lib/i18n';
+
+export const getStaticPaths = localeParams;
+const lang = getLocale(Astro.params.lang);
+const courses = await getCollection('courses');
+---
+
+<BaseLayout title={t(lang, 'courses.title')} lang={lang} activeTab="courses">
+  <StubPage title={t(lang, 'courses.title')} owner="A" data={courses.map((c) => c.data.title)} />
+</BaseLayout>

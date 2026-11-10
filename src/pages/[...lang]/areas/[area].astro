@@ -1,0 +1,22 @@
+---
+// STUB (owner: Agent A) — area overview. `area` param = areas collection id.
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { getLocale, localeParams } from '../../../lib/i18n';
+
+export const getStaticPaths = (async () => {
+  const areas = await getCollection('areas');
+  return localeParams().flatMap(({ params }) =>
+    areas.map((area) => ({ params: { ...params, area: area.id }, props: { area } })),
+  );
+}) satisfies GetStaticPaths;
+
+const { area } = Astro.props;
+const lang = getLocale(Astro.params.lang);
+---
+
+<BaseLayout title={area.data.nameJa} description={area.data.summary} lang={lang}>
+  <StubPage title={area.data.nameJa} owner="A" data={area.data.transport} />
+</BaseLayout>

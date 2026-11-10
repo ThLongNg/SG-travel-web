@@ -1,0 +1,11 @@
+slug: fixture-food
+titleJa: ダミー：食事
+order: 2
+verified: false
+fixture: true
+phrases:
+  - id: dummy-menu
+    ja: メニューを見せてください（ダミー）
+    vi: Cho tôi xem thực đơn
+    kana: ダミー
+    note: ダミーの注記

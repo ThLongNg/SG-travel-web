@@ -1,0 +1,19 @@
+---
+// STUB (owner: Agent C) — 指さし会話帳 with speech + 見せる mode.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { getLocale, localeParams, t } from '../../../lib/i18n';
+
+export const getStaticPaths = localeParams;
+const lang = getLocale(Astro.params.lang);
+const groups = await getCollection('phrases');
+---
+
+<BaseLayout title={t(lang, 'phrases.title')} lang={lang} activeTab="phrases">
+  <StubPage
+    title={t(lang, 'phrases.title')}
+    owner="C"
+    data={groups.map((g) => ({ group: g.data.titleJa, count: g.data.phrases.length }))}
+  />
+</BaseLayout>

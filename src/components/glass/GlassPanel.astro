@@ -1,0 +1,41 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
+  /** Rendered element. */
+  as?: 'div' | 'section' | 'article' | 'aside' | 'header' | 'footer' | 'li';
+  /**
+   * default = blurred glass · strong = opaque glass for long text ·
+   * light = no blur, for repeated list items (cards, phrases)
+   */
+  variant?: 'default' | 'strong' | 'light';
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+  /** Chromium-only refraction upgrade. Use on ≤1 hero panel per screen. */
+  refract?: boolean;
+}
+
+const {
+  as: Tag = 'div',
+  variant = 'default',
+  padding = 'md',
+  refract = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const pad = { none: '', sm: 'p-3', md: 'p-5', lg: 'p-6 md:p-8' }[padding];
+---
+
+<Tag
+  class:list={[
+    'glass glass-radius',
+    variant === 'strong' && 'glass--strong',
+    variant === 'light' && 'glass--light',
+    refract && 'glass--refract',
+    pad,
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</Tag>
