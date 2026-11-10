@@ -44,6 +44,9 @@ const { lang } = Astro.props;
         <Icon name="speaker" />
         {t(lang, 'phrases.replay')}
       </button>
+      <p class="text-center text-[13px] font-medium" data-sm-novoice hidden>
+        {t(lang, 'phrases.noVoice')}
+      </p>
       <p class="text-center text-[12px] font-medium opacity-75" data-sm-wake hidden>
         {xt(lang, 'phrases.wakeLockOn')}
       </p>

@@ -40,15 +40,6 @@ const countTpl = xt(lang, 'phrases.count', { n: '{n}' });
     <Icon name="info" size={16} class="mt-0.5 shrink-0 text-river" />
     {t(lang, 'phrases.southNote')}
   </p>
-  <p
-    class="glass glass--light glass-radius flex gap-2 p-3 text-[13px] text-ink-muted"
-    data-no-voice
-    hidden
-    role="status"
-  >
-    <Icon name="alert" size={18} class="mt-0.5 shrink-0 text-amber" />
-    {t(lang, 'phrases.noVoice')}
-  </p>
 
   {groups.map((g) => (
     <section class="space-y-3" data-group-section={g.id} aria-labelledby={`pg-${g.id}`}>
@@ -68,6 +59,18 @@ const countTpl = xt(lang, 'phrases.count', { n: '{n}' });
 
   <p class="tile-pattern glass-radius py-10 text-center text-ink-muted" data-empty hidden>
     {t(lang, 'common.noResults')}
+  </p>
+
+  <!-- Below the list on purpose: it appears ~1s after load (voice detection), and near the top it
+       would become the LCP element. The same note is shown inside 見せるモード. -->
+  <p
+    class="glass glass--light glass-radius flex gap-2 p-3 text-[13px] text-ink-muted"
+    data-no-voice
+    hidden
+    role="status"
+  >
+    <Icon name="alert" size={18} class="mt-0.5 shrink-0 text-amber" />
+    {t(lang, 'phrases.noVoice')}
   </p>
 </div>
 
@@ -125,10 +128,11 @@ const countTpl = xt(lang, 'phrases.count', { n: '{n}' });
     let decided = false;
     const noVoice = root.querySelector<HTMLElement>('[data-no-voice]')!;
     const replay = dialog.querySelector<HTMLButtonElement>('[data-sm-replay]')!;
+    const smNoVoice = dialog.querySelector<HTMLElement>('[data-sm-novoice]')!;
     const render = () => {
       for (const b of document.querySelectorAll<HTMLElement>('[data-speak]')) b.hidden = !voice;
       replay.hidden = !voice;
-      noVoice.hidden = !decided || !!voice;
+      noVoice.hidden = smNoVoice.hidden = !decided || !!voice;
     };
     const pickVoice = () => {
       const voices = synth?.getVoices() ?? [];

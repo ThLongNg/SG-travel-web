@@ -18,7 +18,7 @@ const yenPer = (n: number) => Math.round(n * rate.jpyPerVnd).toLocaleString('ja-
 const sourceKnown = !rate.source.startsWith('TODO');
 ---
 
-<GlassPanel refract padding="md" data-converter data-rate={rate.jpyPerVnd}>
+<GlassPanel padding="md" data-converter data-rate={rate.jpyPerVnd}>
   <form class="flex flex-col gap-2" data-cv-fields>
     <div class="cv-field" data-cv-row="vnd">
       <label for="cv-vnd" class="text-[12px] font-semibold text-ink-muted">
