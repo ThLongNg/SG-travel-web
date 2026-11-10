@@ -1,0 +1,243 @@
+---
+// 指さし会話帳: search + scene chips + phrase cards + 見せるモード.
+// Client JS: filtering, speechSynthesis (vi-VN; buttons hidden when the device has no Vietnamese
+// voice), full-screen show mode with Wake Lock and swipe-down-to-close.
+import type { CollectionEntry } from 'astro:content';
+import GlassSearch from '../glass/GlassSearch.astro';
+import GlassChip from '../glass/GlassChip.astro';
+import Icon from '../glass/Icon.astro';
+import PhraseCard from './PhraseCard.astro';
+import ShowMode from './ShowMode.astro';
+import { t, type Locale } from '../../lib/i18n';
+import { xt } from '../tools/extra-i18n';
+
+interface Props {
+  lang: Locale;
+  groups: CollectionEntry<'phrases'>[];
+}
+const { lang, groups } = Astro.props;
+const countTpl = xt(lang, 'phrases.count', { n: '{n}' });
+---
+
+<div class="space-y-5" data-phrasebook data-count-tpl={countTpl}>
+  <GlassSearch
+    label={t(lang, 'phrases.search')}
+    placeholder={t(lang, 'phrases.search')}
+    submitLabel={t(lang, 'common.search')}
+    id="phrase-search"
+  />
+
+  <div class="h-scroll" role="group" aria-label={xt(lang, 'phrases.groupsLabel')}>
+    <GlassChip selected data-group="all">
+      {xt(lang, 'phrases.all')}
+    </GlassChip>
+    {groups.map((g) => (
+      <GlassChip data-group={g.id}>{g.data.titleJa}</GlassChip>
+    ))}
+  </div>
+
+  <p class="flex gap-2 text-[12px] text-ink-muted">
+    <Icon name="info" size={16} class="mt-0.5 shrink-0 text-river" />
+    {t(lang, 'phrases.southNote')}
+  </p>
+  <p
+    class="glass glass--light glass-radius flex gap-2 p-3 text-[13px] text-ink-muted"
+    data-no-voice
+    hidden
+    role="status"
+  >
+    <Icon name="alert" size={18} class="mt-0.5 shrink-0 text-amber" />
+    {t(lang, 'phrases.noVoice')}
+  </p>
+
+  {groups.map((g) => (
+    <section class="space-y-3" data-group-section={g.id} aria-labelledby={`pg-${g.id}`}>
+      <h2 id={`pg-${g.id}`} class="font-sans! text-[15px] font-bold">
+        {g.data.titleJa}
+        <span class="font-normal text-ink-muted">
+          ・ <span data-count>{countTpl.replace('{n}', String(g.data.phrases.length))}</span>
+        </span>
+      </h2>
+      <ul class="m-0 grid list-none gap-3 p-0 md:grid-cols-2">
+        {g.data.phrases.map((p) => (
+          <PhraseCard lang={lang} ja={p.ja} vi={p.vi} kana={p.kana} note={p.note} />
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  <p class="tile-pattern glass-radius py-10 text-center text-ink-muted" data-empty hidden>
+    {t(lang, 'common.noResults')}
+  </p>
+</div>
+
+<ShowMode lang={lang} />
+
+<script>
+  import { searchKey } from './search';
+
+  const root = document.querySelector<HTMLElement>('[data-phrasebook]');
+  const dialog = document.querySelector<HTMLDialogElement>('#show-mode');
+
+  if (root && dialog) {
+    const countTpl = root.dataset.countTpl ?? '{n}';
+    const input = root.querySelector<HTMLInputElement>('#phrase-search')!;
+    const chips = [...root.querySelectorAll<HTMLButtonElement>('[data-group]')];
+    const sections = [...root.querySelectorAll<HTMLElement>('[data-group-section]')];
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    let group = 'all';
+
+    // ───── Filtering (scene chips + search) ─────
+    const apply = () => {
+      const q = searchKey(input.value.trim());
+      let total = 0;
+      for (const s of sections) {
+        let n = 0;
+        for (const card of s.querySelectorAll<HTMLElement>('[data-phrase]')) {
+          const hit = !q || (card.dataset.search ?? '').includes(q);
+          card.hidden = !hit;
+          if (hit) n++;
+        }
+        s.querySelector('[data-count]')!.textContent = countTpl.replace('{n}', String(n));
+        s.hidden = n === 0 || (group !== 'all' && s.dataset.groupSection !== group);
+        if (!s.hidden) total += n;
+      }
+      empty.hidden = total > 0;
+    };
+    const select = (g: string) => {
+      group = g;
+      for (const c of chips) c.setAttribute('aria-pressed', String(c.dataset.group === g));
+      for (const c of chips) c.toggleAttribute('data-selected', c.dataset.group === g);
+      apply();
+    };
+    for (const c of chips) c.addEventListener('click', () => select(c.dataset.group ?? 'all'));
+    input.addEventListener('input', () => {
+      // A search looks through every scene.
+      if (input.value.trim() && group !== 'all') select('all');
+      else apply();
+    });
+    const fromHash = decodeURIComponent(location.hash.slice(1));
+    if (chips.some((c) => c.dataset.group === fromHash)) select(fromHash);
+
+    // ───── Speech (vi-VN) ─────
+    const synth = 'speechSynthesis' in window ? window.speechSynthesis : null;
+    let voice: SpeechSynthesisVoice | null = null;
+    let decided = false;
+    const noVoice = root.querySelector<HTMLElement>('[data-no-voice]')!;
+    const replay = dialog.querySelector<HTMLButtonElement>('[data-sm-replay]')!;
+    const render = () => {
+      for (const b of document.querySelectorAll<HTMLElement>('[data-speak]')) b.hidden = !voice;
+      replay.hidden = !voice;
+      noVoice.hidden = !decided || !!voice;
+    };
+    const pickVoice = () => {
+      const voices = synth?.getVoices() ?? [];
+      voice =
+        voices.find((v) => /^vi[-_]VN$/i.test(v.lang)) ??
+        voices.find((v) => /^vi\b/i.test(v.lang)) ??
+        null;
+      if (voice || voices.length) decided = true;
+      render();
+    };
+    if (synth) {
+      pickVoice();
+      synth.addEventListener?.('voiceschanged', pickVoice);
+      // Some engines never fire voiceschanged when they have no voices at all.
+      setTimeout(() => {
+        decided = true;
+        pickVoice();
+      }, 1500);
+    } else {
+      decided = true;
+      render();
+    }
+    const speak = (text: string) => {
+      if (!synth || !voice) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.voice = voice;
+      u.lang = voice.lang || 'vi-VN';
+      u.rate = 0.85;
+      synth.speak(u);
+    };
+
+    // ───── 見せるモード ─────
+    const smJa = dialog.querySelector<HTMLElement>('[data-sm-ja]')!;
+    const smVi = dialog.querySelector<HTMLElement>('[data-sm-vi]')!;
+    const smKana = dialog.querySelector<HTMLElement>('[data-sm-kana]')!;
+    const wakeNote = dialog.querySelector<HTMLElement>('[data-sm-wake]')!;
+    let lock: WakeLockSentinel | null = null;
+
+    const keepAwake = async () => {
+      if (!('wakeLock' in navigator) || lock) return;
+      try {
+        lock = await navigator.wakeLock.request('screen');
+        wakeNote.hidden = false;
+        lock.addEventListener('release', () => {
+          lock = null;
+          wakeNote.hidden = true;
+        });
+      } catch {
+        wakeNote.hidden = true; // denied (battery saver, not visible…): the mode still works
+      }
+    };
+    document.addEventListener('visibilitychange', () => {
+      if (dialog.open && document.visibilityState === 'visible') void keepAwake();
+    });
+
+    const open = (card: HTMLElement) => {
+      smJa.textContent = card.dataset.ja ?? '';
+      smVi.textContent = card.dataset.vi ?? '';
+      smKana.textContent = card.dataset.kana ?? '';
+      dialog.showModal();
+      document.documentElement.style.overflow = 'hidden';
+      void keepAwake();
+      speak(card.dataset.vi ?? '');
+    };
+    dialog.addEventListener('close', () => {
+      document.documentElement.style.overflow = '';
+      synth?.cancel();
+      void lock?.release();
+      lock = null;
+      wakeNote.hidden = true;
+    });
+
+    root.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const card = target.closest<HTMLElement>('[data-phrase]');
+      if (!card) return;
+      if (target.closest('[data-show]')) open(card);
+      else if (target.closest('[data-speak]')) speak(card.dataset.vi ?? '');
+    });
+    dialog.querySelector('[data-show-close]')!.addEventListener('click', () => dialog.close());
+    replay.addEventListener('click', () => speak(smVi.textContent ?? ''));
+
+    // Swipe down to close
+    const inner = dialog.querySelector<HTMLElement>('.show-mode__inner')!;
+    let y0: number | null = null;
+    let dy = 0;
+    dialog.addEventListener(
+      'touchstart',
+      (e) => {
+        y0 = e.touches[0].clientY;
+        dy = 0;
+      },
+      { passive: true },
+    );
+    dialog.addEventListener(
+      'touchmove',
+      (e) => {
+        if (y0 === null) return;
+        dy = Math.max(0, e.touches[0].clientY - y0);
+        inner.style.transform = `translateY(${dy}px)`;
+      },
+      { passive: true },
+    );
+    dialog.addEventListener('touchend', () => {
+      inner.style.transform = '';
+      if (dy > 100) dialog.close();
+      y0 = null;
+      dy = 0;
+    });
+  }
+</script>

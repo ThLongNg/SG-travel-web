@@ -1,0 +1,105 @@
+---
+// 見せるモード: full-screen amber <dialog> with the Vietnamese phrase in huge type.
+// Opened/filled by PhraseBook.astro's script (keeps the screen awake via the Wake Lock API).
+import Icon from '../glass/Icon.astro';
+import { t, type Locale } from '../../lib/i18n';
+import { xt } from '../tools/extra-i18n';
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+---
+
+<dialog id="show-mode" class="show-mode" aria-labelledby="show-mode-title">
+  <div class="show-mode__inner">
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        class="show-mode__close glass-press touch-target grid place-items-center rounded-full"
+        data-show-close
+        aria-label={t(lang, 'common.close')}
+      >
+        <Icon name="close" />
+      </button>
+      <h2 id="show-mode-title" class="font-sans! text-[16px] font-bold">
+        {xt(lang, 'phrases.showModeHeading')}
+      </h2>
+    </div>
+
+    <div class="flex flex-1 flex-col justify-center gap-4 py-6 text-center">
+      <p class="text-[13px] font-semibold opacity-75">{t(lang, 'phrases.showModeTitle')}</p>
+      <p class="text-[16px] leading-relaxed" data-sm-ja></p>
+      <p class="show-mode__vi font-latin font-bold" lang="vi" data-sm-vi></p>
+      <p class="text-[18px] font-medium opacity-80" data-sm-kana></p>
+    </div>
+
+    <div class="space-y-3">
+      <button
+        type="button"
+        class="show-mode__replay glass-press touch-target flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[17px] font-bold"
+        data-sm-replay
+        hidden
+      >
+        <Icon name="speaker" />
+        {t(lang, 'phrases.replay')}
+      </button>
+      <p class="text-center text-[12px] font-medium opacity-75" data-sm-wake hidden>
+        {xt(lang, 'phrases.wakeLockOn')}
+      </p>
+      <p class="sr-only">{xt(lang, 'phrases.swipeToClose')}</p>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .show-mode {
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--color-amber);
+    color: var(--color-ink-dark);
+    overscroll-behavior: contain;
+  }
+  .show-mode::backdrop {
+    background: var(--color-amber);
+  }
+  .show-mode[open] .show-mode__inner {
+    animation: show-in 280ms var(--ease-out-soft);
+  }
+  .show-mode__inner {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: calc(var(--safe-top) + 12px) calc(var(--spacing-gutter) + 4px)
+      calc(var(--safe-bottom) + 20px);
+    transition: transform 200ms var(--ease-out-soft);
+  }
+  .show-mode__vi {
+    font-size: clamp(44px, 13vw, 112px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+  }
+  .show-mode__close {
+    background: rgb(11 27 43 / 0.12);
+    color: var(--color-ink-dark);
+  }
+  .show-mode__replay {
+    background: var(--color-ink-dark);
+    color: var(--color-ink);
+  }
+  .show-mode :focus-visible {
+    outline-color: var(--color-ink-dark);
+  }
+  @keyframes show-in {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+</style>
