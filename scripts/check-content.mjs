@@ -96,8 +96,7 @@ for (const collection of collections) {
       const idx = fm.findIndex((l) => /^sources:/.test(l));
       const inline = idx === -1 ? '' : fm[idx].replace(/^sources:/, '').trim();
       const hasItem =
-        idx !== -1 &&
-        (inline.startsWith('[') ? inline !== '[]' : /^\s+- /.test(fm[idx + 1] ?? ''));
+        idx !== -1 && (inline.startsWith('[') ? inline !== '[]' : /^\s+- /.test(fm[idx + 1] ?? ''));
       const hasUrl = idx !== -1 && fm.slice(idx).some((l) => /url:\s*\S+/.test(l));
       if (!hasItem || !hasUrl) missingSources.push(where);
     }
