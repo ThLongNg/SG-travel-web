@@ -4,6 +4,7 @@ nameJa: ランドマーク81（スカイビュー）
 nameVi: Landmark 81 SkyView
 reading: ランドマーク・エイティワン・スカイビュー
 area: south
+areaSlug: hcmc-center
 city: ホーチミン
 themes: [nightview, shopping]
 bestSeasons: [12, 1, 2, 3, 4]

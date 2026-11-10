@@ -1,7 +1,0 @@
-# Owner: Agent C
-User-agent: *
-Allow: /
-Disallow: /dev/
-
-# TODO(Integrator): replace the host with the production SITE_URL (see docs/change-requests/agent-C.md)
-Sitemap: https://saigon-travel.example/sitemap-index.xml

@@ -9,14 +9,13 @@ import Icon from '../glass/Icon.astro';
 import PhraseCard from './PhraseCard.astro';
 import ShowMode from './ShowMode.astro';
 import { t, type Locale } from '../../lib/i18n';
-import { xt } from '../tools/extra-i18n';
 
 interface Props {
   lang: Locale;
   groups: CollectionEntry<'phrases'>[];
 }
 const { lang, groups } = Astro.props;
-const countTpl = xt(lang, 'phrases.count', { n: '{n}' });
+const countTpl = t(lang, 'phrases.count', { n: '{n}' });
 ---
 
 <div class="space-y-5" data-phrasebook data-count-tpl={countTpl}>
@@ -27,9 +26,9 @@ const countTpl = xt(lang, 'phrases.count', { n: '{n}' });
     id="phrase-search"
   />
 
-  <div class="h-scroll" role="group" aria-label={xt(lang, 'phrases.groupsLabel')}>
+  <div class="h-scroll" role="group" aria-label={t(lang, 'phrases.groupsLabel')}>
     <GlassChip selected data-group="all">
-      {xt(lang, 'phrases.all')}
+      {t(lang, 'phrases.all')}
     </GlassChip>
     {groups.map((g) => (
       <GlassChip data-group={g.id}>{g.data.titleJa}</GlassChip>

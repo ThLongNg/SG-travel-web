@@ -46,7 +46,8 @@
     "yes": "あり",
     "no": "なし",
     "dummyNotice": "ダミーデータです",
-    "untranslated": "この言語の翻訳は準備中のため、日本語で表示しています。"
+    "untranslated": "この言語の翻訳は準備中のため、日本語で表示しています。",
+    "seeAll": "すべて見る"
   },
   "media": {
     "playVideo": "背景動画を再生",
@@ -144,7 +145,24 @@
     "jpy": "日本円（JPY）",
     "rateAsOf": "{date}時点のレート",
     "rateNote": "目安です。実際の両替レートとは異なります。",
-    "swap": "入れ替え"
+    "swap": "入れ替え",
+    "categories": "旅の基本情報",
+    "jumpTo": "項目へ移動",
+    "cat": {
+      "visa": "ビザ・入国",
+      "money": "お金・両替",
+      "sim": "SIM・通信",
+      "grab": "Grab・移動",
+      "tip": "チップ",
+      "safety": "安全・トラブル",
+      "hygiene": "衛生・飲み水",
+      "power": "電圧・プラグ",
+      "weather": "季節と天気",
+      "manners": "マナー・文化"
+    },
+    "amount": "金額",
+    "quick": "よく使う金額",
+    "rateSource": "出典"
   },
   "phrases": {
     "title": "指さし会話帳",
@@ -156,7 +174,14 @@
     "replay": "もう一度再生",
     "noVoice": "この端末にはベトナム語の音声がないため、発音を再生できません。",
     "kana": "読み方",
-    "southNote": "読み方は南部（ホーチミン）の発音に近づけています。"
+    "southNote": "読み方は南部（ホーチミン）の発音に近づけています。",
+    "all": "すべて",
+    "count": "{n}フレーズ",
+    "groupsLabel": "シーンで選ぶ",
+    "showModeHeading": "見せるモード",
+    "wakeLockOn": "表示中は画面がスリープしません",
+    "swipeToClose": "下にスワイプして閉じる",
+    "searchResults": "検索結果"
   },
   "contact": {
     "title": "お問い合わせ",
@@ -171,7 +196,13 @@
     "required": "必須項目です",
     "invalidEmail": "メールアドレスの形式が正しくありません",
     "line": "LINEで問い合わせる",
-    "notConfigured": "現在準備中です"
+    "notConfigured": "現在準備中です",
+    "or": "または",
+    "requiredTag": "必須",
+    "formTitle": "フォームで送る",
+    "lineLead": "LINE公式アカウントからも受け付けています。",
+    "privacyNote": "送信内容の取り扱いは{link}をご覧ください。",
+    "errorSummary": "入力内容を確認してください。"
   },
   "about": {
     "title": "このサイトについて"
@@ -191,5 +222,9 @@
   },
   "pwa": {
     "offline": "オフラインです。保存済みのページを表示しています。"
+  },
+  "offline": {
+    "title": "オフラインです",
+    "lead": "保存済みの指さし会話帳は電波がなくても使えます。"
   }
 }

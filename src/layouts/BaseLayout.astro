@@ -56,7 +56,7 @@ const fullTitle = title === t(lang, 'site.name') ? title : `${title}｜${t(lang,
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#0B1B2B" />
+    <meta name="theme-color" content="#F7F3EC" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     {preloadPoster && (
       <>
@@ -99,7 +99,7 @@ const fullTitle = title === t(lang, 'site.name') ? title : `${title}｜${t(lang,
       {t(lang, 'nav.skipToContent')}
     </a>
     <!-- Fixed blurred Saigon poster behind every page (the home video hero covers it at the top) -->
-    <div class="site-bg" aria-hidden="true" style={`--bg-img:url(${heroMedia.background})`}></div>
+    <div class="site-bg" aria-hidden="true"></div>
     <!-- Chromium-only refraction filter used by .glass--refract -->
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
       <filter id="glass-refract" x="0" y="0" width="100%" height="100%">
@@ -145,17 +145,13 @@ const fullTitle = title === t(lang, 'site.name') ? title : `${title}｜${t(lang,
     position: fixed;
     inset: -80px;
     z-index: -1;
-    /* Aurora: Saigon light (amber street lamps, teal river, indigo sky) over the blurred poster.
-       The tiny pre-blurred image + CSS blur ≈ 50px blur at negligible cost. */
-    background-color: var(--color-night);
+    /* Bright aurora: soft peach (sunlight), mint (river), periwinkle (sky) washes on cream.
+       Pure gradients: no image request, nothing for the GPU to re-blur. */
+    background-color: var(--color-cream);
     background-image:
-      linear-gradient(rgb(6 12 28 / 0.35), rgb(6 12 28 / 0.55)),
-      radial-gradient(60% 45% at 12% 18%, rgb(242 165 65 / 0.38), transparent 70%),
-      radial-gradient(55% 40% at 92% 46%, rgb(46 196 182 / 0.3), transparent 70%),
-      radial-gradient(70% 50% at 30% 92%, rgb(98 70 200 / 0.4), transparent 70%), var(--bg-img);
-    background-size: cover;
-    background-position: center;
-    filter: blur(24px) saturate(1.2);
+      radial-gradient(55% 40% at 8% 6%, rgb(255 206 150 / 0.55), transparent 70%),
+      radial-gradient(50% 38% at 96% 38%, rgb(150 222 208 / 0.45), transparent 70%),
+      radial-gradient(65% 45% at 30% 96%, rgb(186 200 255 / 0.4), transparent 70%);
     transform: translateZ(0);
   }
   .skip-link {

@@ -1,4 +1,4 @@
-// Owner: Agent C. Generates the static OG images (public/og/*.png) and PWA icons (public/icons/*.png)
+// Owner: Integrator (from Agent C). Run: npm run images. Generates the static OG images (public/og/*.png) and PWA icons (public/icons/*.png)
 // with sharp (bundled with Astro). Output is committed; re-run after changing titles or the poster:
 //
 //   node src/components/seo/generate-images.mjs
@@ -9,7 +9,7 @@ import sharp from 'sharp';
 import { mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
-const root = fileURLToPath(new URL('../../../', import.meta.url));
+const root = fileURLToPath(new URL('../', import.meta.url));
 const out = (p) => `${root}public/${p}`;
 const SERIF = "'Noto Serif JP', 'Yu Mincho', 'YuMincho', 'Hiragino Mincho ProN', serif";
 const SANS = "'Noto Sans JP', 'Yu Gothic', 'Hiragino Sans', 'Meiryo', sans-serif";

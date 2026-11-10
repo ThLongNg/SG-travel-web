@@ -46,7 +46,8 @@
     "yes": "Yes",
     "no": "No",
     "dummyNotice": "This is dummy data",
-    "untranslated": "A translation for this language is in preparation, so the content is shown in Japanese."
+    "untranslated": "A translation for this language is in preparation, so the content is shown in Japanese.",
+    "seeAll": "See all"
   },
   "media": {
     "playVideo": "Play background video",
@@ -144,7 +145,24 @@
     "jpy": "Japanese yen (JPY)",
     "rateAsOf": "Rate as of {date}",
     "rateNote": "For reference only; actual exchange rates will differ.",
-    "swap": "Swap"
+    "swap": "Swap",
+    "categories": "Travel basics",
+    "jumpTo": "Jump to a topic",
+    "cat": {
+      "visa": "Visa & entry",
+      "money": "Money & exchange",
+      "sim": "SIM & data",
+      "grab": "Grab & getting around",
+      "tip": "Tipping",
+      "safety": "Safety & scams",
+      "hygiene": "Hygiene & water",
+      "power": "Power & plugs",
+      "weather": "Seasons & weather",
+      "manners": "Manners & culture"
+    },
+    "amount": "Amount",
+    "quick": "Common amounts",
+    "rateSource": "Source"
   },
   "phrases": {
     "title": "Point-and-show phrasebook",
@@ -156,7 +174,14 @@
     "replay": "Play again",
     "noVoice": "This device has no Vietnamese voice, so pronunciation cannot be played.",
     "kana": "Reading",
-    "southNote": "Readings approximate the Southern (Ho Chi Minh City) accent."
+    "southNote": "Readings approximate the Southern (Ho Chi Minh City) accent.",
+    "all": "All",
+    "count": "{n} phrases",
+    "groupsLabel": "Choose a situation",
+    "showModeHeading": "Show mode",
+    "wakeLockOn": "The screen stays on while this is shown",
+    "swipeToClose": "Swipe down to close",
+    "searchResults": "Results"
   },
   "contact": {
     "title": "Contact",
@@ -171,7 +196,13 @@
     "required": "Required",
     "invalidEmail": "Please enter a valid email address",
     "line": "Contact us on LINE",
-    "notConfigured": "Coming soon"
+    "notConfigured": "Coming soon",
+    "or": "or",
+    "requiredTag": "Required",
+    "formTitle": "Send a message",
+    "lineLead": "You can also reach us on our LINE Official Account.",
+    "privacyNote": "See our {link} for how we handle your message.",
+    "errorSummary": "Please check the highlighted fields."
   },
   "about": {
     "title": "About this site"
@@ -191,5 +222,9 @@
   },
   "pwa": {
     "offline": "You are offline. Showing saved pages."
+  },
+  "offline": {
+    "title": "You are offline",
+    "lead": "Saved phrasebook pages work without a connection."
   }
 }

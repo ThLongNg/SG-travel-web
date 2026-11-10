@@ -26,7 +26,9 @@ const { area } = Astro.props;
 const lang = getLocale(Astro.params.lang);
 const d = area.data;
 const { Content } = await render(area);
-const spots = (await getSortedSpots()).filter((s) => s.data.area === d.region);
+const spots = (await getSortedSpots()).filter((s) =>
+  s.data.areaSlug ? s.data.areaSlug === area.id : s.data.area === d.region,
+);
 const spotsHref = localizePath('/spots/', lang);
 const pageHref = localizePath(`/areas/${area.id}/`, lang);
 ---
@@ -102,7 +104,7 @@ const pageHref = localizePath(`/areas/${area.id}/`, lang);
         <div class="section-head">
           <h2 id="area-spots">{t(lang, 'areas.spotsInArea')}</h2>
           <a href={`${spotsHref}?area=${d.region}`} class="section-more">
-            {t(lang, 'common.seeMore')}
+            {t(lang, 'common.seeAll')}
             <Icon name="chevronRight" size={16} />
           </a>
         </div>

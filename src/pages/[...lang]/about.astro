@@ -40,7 +40,7 @@ const links: { href: string; key: I18nKey; icon: IconName }[] = [
     <GlassPanel variant="strong" padding="lg" class="space-y-4">
       <p class="font-display m-0 text-[22px] leading-snug">{t(lang, 'site.tagline')}</p>
       <p class="m-0 text-[16px]">{t(lang, 'site.description')}</p>
-      <p class="m-0 flex gap-2 border-t border-white/10 pt-4 text-[14px] text-ink-muted">
+      <p class="m-0 flex gap-2 border-t border-line pt-4 text-[14px] text-ink-muted">
         <Icon name="info" size={18} class="mt-1 shrink-0 text-river" />
         {t(lang, 'footer.disclaimer')}
       </p>
@@ -62,7 +62,7 @@ const links: { href: string; key: I18nKey; icon: IconName }[] = [
       ))}
     </ul>
 
-    <GlassPanel variant="light" padding="none" class="divide-y divide-white/10">
+    <GlassPanel variant="light" padding="none" class="divide-y divide-line">
       {links.map((l) => (
         <a
           href={localizePath(l.href, lang)}

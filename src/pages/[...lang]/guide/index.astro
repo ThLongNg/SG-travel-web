@@ -5,9 +5,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import GlassPanel from '../../../components/glass/GlassPanel.astro';
 import Icon, { type IconName } from '../../../components/glass/Icon.astro';
 import CurrencyConverter from '../../../components/tools/CurrencyConverter.astro';
-import { xt, type XKey } from '../../../components/tools/extra-i18n';
 import { formatJaDate } from '../../../lib/format';
-import { getLocale, localeParams, t } from '../../../lib/i18n';
+import { getLocale, localeParams, t, type I18nKey } from '../../../lib/i18n';
 
 export const getStaticPaths = localeParams;
 const lang = getLocale(Astro.params.lang);
@@ -57,22 +56,22 @@ const guides = await Promise.all(
       <div class="section-head">
         <h2 id="g-basics">
           <span class="section-no">02</span>
-          {xt(lang, 'guide.categories')}
+          {t(lang, 'guide.categories')}
         </h2>
       </div>
-      <nav class="h-scroll mb-3" aria-label={xt(lang, 'guide.jumpTo')}>
+      <nav class="h-scroll mb-3" aria-label={t(lang, 'guide.jumpTo')}>
         {guides.map((g) => (
           <a
             href={`#${g.id}`}
             class="glass glass--light glass-pill glass-press touch-target inline-flex items-center gap-1.5 px-4 text-[14px] whitespace-nowrap no-underline"
           >
             <Icon name={icons[g.data.category]} size={16} class="text-river" />
-            {xt(lang, `guide.cat.${g.data.category}` as XKey)}
+            {t(lang, `guide.cat.${g.data.category}` as I18nKey)}
           </a>
         ))}
       </nav>
 
-      <GlassPanel variant="strong" padding="none" class="divide-y divide-white/10">
+      <GlassPanel variant="strong" padding="none" class="divide-y divide-line">
         {guides.map(({ id, data, Content }) => (
           <details id={id} class="group scroll-mt-28 px-4">
             <summary class="flex min-h-[64px] cursor-pointer list-none items-center gap-3 py-3 [&::-webkit-details-marker]:hidden">
@@ -80,7 +79,9 @@ const guides = await Promise.all(
                 <Icon name={icons[data.category]} size={20} />
               </span>
               <span class="min-w-0 flex-1">
-                <span class="eyebrow block">{xt(lang, `guide.cat.${data.category}` as XKey)}</span>
+                <span class="eyebrow block">
+                  {t(lang, `guide.cat.${data.category}` as I18nKey)}
+                </span>
                 <span class="block font-bold">{data.title}</span>
                 <span class="block text-[13px] leading-snug text-ink-muted">{data.summary}</span>
               </span>
@@ -91,7 +92,7 @@ const guides = await Promise.all(
             </summary>
             <div class="guide-body pb-5 text-[15px]">
               <Content />
-              <p class="mt-4 border-t border-white/10 pt-3 text-[12px] text-ink-muted">
+              <p class="mt-4 border-t border-line pt-3 text-[12px] text-ink-muted">
                 {t(lang, 'common.lastUpdated')}: {formatJaDate(data.lastVerified)}
                 {!data.verified && import.meta.env.DEV && (
                   <span class="tag tag--amber ml-2">{t(lang, 'common.verifying')}</span>

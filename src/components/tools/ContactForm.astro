@@ -5,7 +5,6 @@
 import GlassPanel from '../glass/GlassPanel.astro';
 import GlassButton from '../glass/GlassButton.astro';
 import { localizePath, t, type Locale } from '../../lib/i18n';
-import { xt } from './extra-i18n';
 
 interface Props {
   lang: Locale;
@@ -13,7 +12,7 @@ interface Props {
 const { lang } = Astro.props;
 const id = import.meta.env.PUBLIC_FORMSPREE_ID?.trim() || '';
 const endpoint = id ? `https://formspree.io/f/${encodeURIComponent(id)}` : '';
-const [before, after] = xt(lang, 'contact.privacyNote').split('{link}');
+const [before, after] = t(lang, 'contact.privacyNote').split('{link}');
 const fields = [
   { name: 'name', type: 'text', key: 'contact.name', autocomplete: 'name' },
   { name: 'email', type: 'email', key: 'contact.email', autocomplete: 'email' },
@@ -22,7 +21,7 @@ const fields = [
 
 <GlassPanel as="section" variant="strong" aria-labelledby="c-form">
   <h2 id="c-form" class="mb-4 text-[18px]">
-    {xt(lang, 'contact.formTitle')}
+    {t(lang, 'contact.formTitle')}
   </h2>
   <form
     action={endpoint || undefined}
@@ -36,14 +35,13 @@ const fields = [
     data-msg-sending={t(lang, 'contact.sending')}
     data-msg-success={t(lang, 'contact.success')}
     data-msg-error={t(lang, 'contact.error')}
-    data-msg-summary={xt(lang, 'contact.errorSummary')}
+    data-msg-summary={t(lang, 'contact.errorSummary')}
     data-msg-nc={t(lang, 'contact.notConfigured')}
   >
     {fields.map((f) => (
       <div class="space-y-1.5">
         <label for={`c-${f.name}`} class="block text-[14px] font-semibold">
-          {t(lang, f.key)}{' '}
-          <span class="tag tag--amber ml-1">{xt(lang, 'contact.requiredTag')}</span>
+          {t(lang, f.key)} <span class="tag tag--amber ml-1">{t(lang, 'contact.requiredTag')}</span>
         </label>
         <input
           id={`c-${f.name}`}
@@ -60,7 +58,7 @@ const fields = [
     <div class="space-y-1.5">
       <label for="c-message" class="block text-[14px] font-semibold">
         {t(lang, 'contact.message')}{' '}
-        <span class="tag tag--amber ml-1">{xt(lang, 'contact.requiredTag')}</span>
+        <span class="tag tag--amber ml-1">{t(lang, 'contact.requiredTag')}</span>
       </label>
       <textarea
         id="c-message"
@@ -168,8 +166,8 @@ const fields = [
 
 <style>
   .c-input {
-    background: rgb(255 255 255 / 0.07);
-    border: 1px solid rgb(255 255 255 / 0.24);
+    background: rgb(255 255 255 / 0.85);
+    border: 1px solid rgb(23 32 51 / 0.16);
     color: var(--color-ink);
     font-size: 16px; /* ≥16px: no iOS zoom on focus */
     line-height: 1.6;

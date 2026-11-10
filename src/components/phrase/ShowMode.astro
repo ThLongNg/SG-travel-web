@@ -3,7 +3,6 @@
 // Opened/filled by PhraseBook.astro's script (keeps the screen awake via the Wake Lock API).
 import Icon from '../glass/Icon.astro';
 import { t, type Locale } from '../../lib/i18n';
-import { xt } from '../tools/extra-i18n';
 
 interface Props {
   lang: Locale;
@@ -23,7 +22,7 @@ const { lang } = Astro.props;
         <Icon name="close" />
       </button>
       <h2 id="show-mode-title" class="font-sans! text-[16px] font-bold">
-        {xt(lang, 'phrases.showModeHeading')}
+        {t(lang, 'phrases.showModeHeading')}
       </h2>
     </div>
 
@@ -48,9 +47,9 @@ const { lang } = Astro.props;
         {t(lang, 'phrases.noVoice')}
       </p>
       <p class="text-center text-[12px] font-medium opacity-75" data-sm-wake hidden>
-        {xt(lang, 'phrases.wakeLockOn')}
+        {t(lang, 'phrases.wakeLockOn')}
       </p>
-      <p class="sr-only">{xt(lang, 'phrases.swipeToClose')}</p>
+      <p class="sr-only">{t(lang, 'phrases.swipeToClose')}</p>
     </div>
   </div>
 </dialog>

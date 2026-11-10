@@ -4,6 +4,7 @@ nameJa: クチトンネル
 nameVi: Địa đạo Củ Chi
 reading: ディア・ダオ・クー・チー
 area: south
+areaSlug: hcmc-suburbs
 city: ホーチミン近郊（クチ）
 themes: [history, nature]
 bestSeasons: [12, 1, 2, 3, 4]

@@ -5,17 +5,19 @@
 
 ## Trạng thái hiện tại
 
-**Toàn bộ ảnh và video hiện là placeholder tự tạo, không có tư liệu của bên thứ ba.** Khi thay bằng ảnh thật, cập nhật bảng bên dưới (tác giả, nguồn, giấy phép, URL) trong cùng commit.
+**Video nền là tư liệu của bên thứ ba (Explorepia), dùng theo xác nhận của chủ dự án.** Ảnh nội dung vẫn là placeholder tự tạo. Khi thay bằng ảnh thật, cập nhật bảng bên dưới (tác giả, nguồn, giấy phép, URL) trong cùng commit.
 
 ## Video / poster nền — `public/media/`
 
-| File                                | Nội dung                                                             | Tác giả / nguồn                    | Giấy phép                             |
-| ----------------------------------- | -------------------------------------------------------------------- | ---------------------------------- | ------------------------------------- |
-| `hero-saigon-desktop.mp4` / `.webm` | Đường chân trời vẽ bằng SVG + hiệu ứng Ken Burns 10 giây (1920×1080) | Placeholder do Lead tự tạo (pha 0) | Tự tạo, không dùng tư liệu bên thứ ba |
-| `hero-saigon-mobile.mp4` / `.webm`  | Như trên, bản dọc (720×1280)                                         | Placeholder do Lead tự tạo (pha 0) | Tự tạo, không dùng tư liệu bên thứ ba |
-| `hero-saigon-poster.webp`           | Poster ngang 1920×1080                                               | Placeholder do Lead tự tạo (pha 0) | Tự tạo, không dùng tư liệu bên thứ ba |
-| `hero-saigon-poster-portrait.webp`  | Poster dọc 720×1280                                                  | Placeholder do Lead tự tạo (pha 0) | Tự tạo, không dùng tư liệu bên thứ ba |
-| `hero-saigon-bg.webp`               | Nền mờ nhỏ                                                           | Placeholder do Lead tự tạo (pha 0) | Tự tạo, không dùng tư liệu bên thứ ba |
+Nguồn gốc: video flycam TP.HCM về đêm của kênh **Explorepia** ("NEVER STOP EXPLORING"), chủ dự án cung cấp qua Cloudinary (`https://res.cloudinary.com/dbjejsbh7/video/upload/1111_zhjwfy.mp4`) ngày 2026-11-11. Chủ dự án xác nhận được phép sử dụng nguyên trạng (giữ logo và phụ đề tiếng Anh gốc). Video đã được cắt đoạn 0:03–0:13, bỏ âm thanh, encode lại; không chỉnh sửa logo/phụ đề.
+
+| File                                | Nội dung                                                                     | Tác giả / nguồn        | Giấy phép                                              |
+| ----------------------------------- | ---------------------------------------------------------------------------- | ---------------------- | ------------------------------------------------------ |
+| `hero-saigon-desktop.mp4` / `.webm` | Đoạn 10 giây, 1920×1080, không âm thanh                                      | Explorepia             | Theo phép của chủ sở hữu — **chủ dự án lưu giấy phép** |
+| `hero-saigon-mobile.mp4` / `.webm`  | Cùng đoạn, cắt giữa thành khung dọc 720×1280 (logo góc phải nằm ngoài khung) | Explorepia             | Như trên                                               |
+| `hero-saigon-poster.webp`           | Khung hình tại 0:03.2, ngang                                                 | Explorepia             | Như trên                                               |
+| `hero-saigon-poster-portrait.webp`  | Khung hình tại 0:03.2, cắt dọc                                               | Explorepia             | Như trên                                               |
+| `hero-saigon-bg.webp`               | Poster dọc thu nhỏ + làm mờ (nền các trang)                                  | Explorepia (phái sinh) | Như trên                                               |
 
 ## Ảnh nội dung — `src/assets/content/`
 

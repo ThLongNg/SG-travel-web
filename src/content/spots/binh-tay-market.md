@@ -4,6 +4,7 @@ nameJa: ビンタイ市場（チョロン）
 nameVi: Chợ Bình Tây
 reading: チョ・ビン・タイ
 area: south
+areaSlug: cholon
 city: ホーチミン
 themes: [market, history, shopping]
 bestSeasons: [12, 1, 2, 3, 4]

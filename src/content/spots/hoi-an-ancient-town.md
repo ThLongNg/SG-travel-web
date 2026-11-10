@@ -4,6 +4,7 @@ nameJa: ホイアン旧市街
 nameVi: Phố cổ Hội An
 reading: フォー・コー・ホイ・アン
 area: central
+areaSlug: central-vietnam
 city: ホイアン（ダナン市）
 themes: [heritage, walk, nightview, history]
 bestSeasons: [2, 3, 4, 5]

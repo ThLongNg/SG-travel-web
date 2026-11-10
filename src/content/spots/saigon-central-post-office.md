@@ -4,6 +4,7 @@ nameJa: サイゴン中央郵便局
 nameVi: Bưu điện Trung tâm Sài Gòn
 reading: ブウ・ディエン・チュン・タム・サイ・ゴン
 area: south
+areaSlug: hcmc-center
 city: ホーチミン
 themes: [history, walk]
 bestSeasons: [12, 1, 2, 3, 4]

@@ -21,7 +21,7 @@ const { lang, height = 'full', class: className } = Astro.props;
 ---
 
 <section
-  class:list={['video-hero relative isolate overflow-hidden', className]}
+  class:list={['video-hero on-dark relative isolate overflow-hidden rounded-b-[32px]', className]}
   style={`height:${height === 'full' ? '100dvh' : '60dvh'}`}
   aria-label={t(lang, 'media.videoAlt')}
   data-video-hero

@@ -57,7 +57,7 @@ const days = [...schedule].sort((a, b) => a.day - b.day);
                   </p>
                 )}
                 {!isLast && item.moveMinutes !== undefined && (
-                  <p class="m-0 mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1 text-[12px] text-ink-muted">
+                  <p class="m-0 mt-3 inline-flex items-center gap-1.5 rounded-full bg-sand px-3 py-1 text-[12px] text-ink-muted">
                     <Icon name="route" size={14} class="text-river" />
                     {t(lang, 'courses.move')}
                     {item.moveBy && <span>· {item.moveBy}</span>}
@@ -90,7 +90,7 @@ const days = [...schedule].sort((a, b) => a.day - b.day);
     height: 10px;
     border-radius: 9999px;
     background: var(--color-river);
-    box-shadow: 0 0 0 3px rgb(46 196 182 / 0.22);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-river) 18%, transparent);
     justify-self: center;
   }
   /* vertical rail between dots */
@@ -101,7 +101,10 @@ const days = [...schedule].sort((a, b) => a.day - b.day);
     top: 16px;
     width: 2px;
     height: calc(100% + 200px);
-    background: linear-gradient(rgb(46 196 182 / 0.45), rgb(46 196 182 / 0.15));
+    background: linear-gradient(
+      color-mix(in srgb, var(--color-river) 45%, transparent),
+      color-mix(in srgb, var(--color-river) 12%, transparent)
+    );
   }
   .timeline__item {
     overflow: hidden;

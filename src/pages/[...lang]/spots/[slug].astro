@@ -120,7 +120,7 @@ const jsonLd = [
     </section>
 
     <InfoBox spot={spot} lang={lang}>
-      <p class="mt-5 border-t border-white/10 pt-3 text-xs text-ink-muted">
+      <p class="mt-5 border-t border-line pt-3 text-xs text-ink-muted">
         {t(lang, 'common.lastUpdated')}
         {formatJaDate(d.lastVerified)}
       </p>
@@ -144,7 +144,7 @@ const jsonLd = [
       </GlassButton>
     </div>
 
-    <GlassPanel variant="strong" padding="none" class="divide-y divide-white/10">
+    <GlassPanel variant="strong" padding="none" class="divide-y divide-line">
       {accordion.map((item, i) => (
         <details class="group px-5" open={i === 0} id={`spot-${item.id}`}>
           <summary class="flex min-h-[56px] cursor-pointer list-none items-center justify-between gap-3 font-bold [&::-webkit-details-marker]:hidden">

@@ -12,11 +12,11 @@ import GlassSearch from '../../components/glass/GlassSearch.astro';
 import GlassSheet from '../../components/glass/GlassSheet.astro';
 import Icon, { type IconName } from '../../components/glass/Icon.astro';
 import { t } from '../../lib/i18n';
-import img1 from '../../assets/content/fixture-spot-1.webp';
-import img2 from '../../assets/content/fixture-spot-2.webp';
-import img3 from '../../assets/content/fixture-area-1.webp';
-import img4 from '../../assets/content/fixture-area-2.webp';
-import img5 from '../../assets/content/fixture-course-1.webp';
+import img1 from '../../assets/content/ben-thanh-market.webp';
+import img2 from '../../assets/content/nguyen-hue-walking-street.webp';
+import img3 from '../../assets/content/area-hcmc-center.webp';
+import img4 from '../../assets/content/area-cholon.webp';
+import img5 from '../../assets/content/course-hcmc-2n3d.webp';
 
 const lang = 'ja' as const;
 const themes = ['beach', 'food', 'heritage', 'nature', 'shopping', 'walk'] as const;
@@ -129,7 +129,7 @@ const info: [IconName, string, string][] = [
                 />
                 <div class="absolute top-2.5 left-2.5 flex gap-1.5">
                   {s.tags.map((tag) => (
-                    <span class="tag bg-night/70! backdrop-blur-sm">{tag}</span>
+                    <span class="tag shadow-sm">{tag}</span>
                   ))}
                 </div>
               </div>
@@ -287,7 +287,7 @@ const info: [IconName, string, string][] = [
             </div>
           ))}
         </dl>
-        <p class="mt-5 border-t border-white/10 pt-3 text-xs text-ink-muted">
+        <p class="mt-5 border-t border-line pt-3 text-xs text-ink-muted">
           ※ ダミーデータ ・ {t(lang, 'common.lastUpdated')} 2026年11月11日
         </p>
       </GlassPanel>
@@ -299,7 +299,7 @@ const info: [IconName, string, string][] = [
         <GlassButton icon="share">共有</GlassButton>
       </div>
 
-      <GlassPanel variant="strong" padding="none" class="divide-y divide-white/10">
+      <GlassPanel variant="strong" padding="none" class="divide-y divide-line">
         {[
           [
             '見どころ',

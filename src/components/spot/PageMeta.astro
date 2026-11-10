@@ -13,7 +13,7 @@ interface Props {
 const { lang, lastVerified, sources } = Astro.props;
 ---
 
-<footer class="space-y-3 border-t border-white/10 pt-5 text-[13px] text-ink-muted">
+<footer class="space-y-3 border-t border-line pt-5 text-[13px] text-ink-muted">
   <p class="flex items-center gap-2">
     <Icon name="calendar" size={16} />
     {t(lang, 'common.lastUpdated')}：

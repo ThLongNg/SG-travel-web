@@ -32,6 +32,8 @@ const spots = defineCollection({
       nameVi: z.string().min(1), // Vietnamese with diacritics
       reading: z.string().min(1), // how to read nameVi, in katakana
       area,
+      /** id in the `areas` collection; finer than `area` (several areas share one region) */
+      areaSlug: z.string().optional(),
       city: z.string().min(1),
       themes: z.array(theme).min(1),
       bestSeasons: z.array(month).min(1),
@@ -96,7 +98,8 @@ const areas = defineCollection({
       fixture,
     }),
 });
-// Spots belong to an area via spot.area === area.region (and optionally spot.city).
+// Spots belong to an area via spot.areaSlug === area.id; spots without areaSlug fall back to
+// spot.area === area.region.
 
 const courses = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/courses' }),

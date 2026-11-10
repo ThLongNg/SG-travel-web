@@ -4,6 +4,7 @@ nameJa: グエンフエ通り（歩行者天国）
 nameVi: Phố đi bộ Nguyễn Huệ
 reading: フォー・ディー・ボー・グエン・フエ
 area: south
+areaSlug: hcmc-center
 city: ホーチミン
 themes: [walk, nightview]
 bestSeasons: [12, 1, 2, 3, 4]

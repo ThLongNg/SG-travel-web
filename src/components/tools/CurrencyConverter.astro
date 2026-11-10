@@ -6,7 +6,6 @@ import GlassButton from '../glass/GlassButton.astro';
 import { rate } from './rate.config';
 import { formatJaDate } from '../../lib/format';
 import { t, type Locale } from '../../lib/i18n';
-import { xt } from './extra-i18n';
 
 interface Props {
   lang: Locale;
@@ -68,7 +67,7 @@ const sourceKnown = !rate.source.startsWith('TODO');
   </form>
 
   <p class="mt-4 mb-1 text-[12px] font-semibold text-ink-muted" id="cv-quick-label">
-    {xt(lang, 'guide.quick')}
+    {t(lang, 'guide.quick')}
   </p>
   <div class="h-scroll" role="group" aria-labelledby="cv-quick-label">
     {quick.map((v) => (
@@ -78,7 +77,7 @@ const sourceKnown = !rate.source.startsWith('TODO');
     ))}
   </div>
 
-  <div class="mt-3 border-t border-white/10 pt-3 text-[12px] text-ink-muted">
+  <div class="mt-3 border-t border-line pt-3 text-[12px] text-ink-muted">
     <p class="font-semibold text-ink" data-rate-date>
       {t(lang, 'guide.rateAsOf', { date: formatJaDate(rate.asOf) })}
       <span class="font-latin font-normal text-ink-muted">
@@ -89,7 +88,7 @@ const sourceKnown = !rate.source.startsWith('TODO');
       {t(lang, 'guide.rateNote')}
       {sourceKnown && (
         <span>
-          （{xt(lang, 'guide.rateSource')}: {rate.source}）
+          （{t(lang, 'guide.rateSource')}: {rate.source}）
         </span>
       )}
     </p>

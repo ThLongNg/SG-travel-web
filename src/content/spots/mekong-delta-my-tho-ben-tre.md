@@ -4,6 +4,7 @@ nameJa: メコンデルタ（ミトー／ベンチェー）
 nameVi: Đồng bằng sông Cửu Long (Mỹ Tho / Bến Tre)
 reading: ドン・バン・ソン・クー・ロン（ミー・トー／ベン・チェー）
 area: south
+areaSlug: hcmc-suburbs
 city: ミトー／ベンチェー
 themes: [nature, food]
 bestSeasons: [12, 1, 2, 3, 4]

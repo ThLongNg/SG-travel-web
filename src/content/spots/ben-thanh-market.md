@@ -4,6 +4,7 @@ nameJa: ベンタイン市場
 nameVi: Chợ Bến Thành
 reading: チョ・ベン・タン
 area: south
+areaSlug: hcmc-center
 city: ホーチミン
 themes: [market, shopping, food]
 bestSeasons: [12, 1, 2, 3, 4]

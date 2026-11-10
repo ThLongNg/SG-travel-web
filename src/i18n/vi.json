@@ -46,7 +46,8 @@
     "yes": "Có",
     "no": "Không",
     "dummyNotice": "Đây là dữ liệu mẫu",
-    "untranslated": "Bản dịch cho ngôn ngữ này đang được chuẩn bị, nội dung được hiển thị bằng tiếng Nhật."
+    "untranslated": "Bản dịch cho ngôn ngữ này đang được chuẩn bị, nội dung được hiển thị bằng tiếng Nhật.",
+    "seeAll": "Xem tất cả"
   },
   "media": {
     "playVideo": "Phát video nền",
@@ -144,7 +145,24 @@
     "jpy": "Yên Nhật (JPY)",
     "rateAsOf": "Tỷ giá tại thời điểm {date}",
     "rateNote": "Chỉ mang tính tham khảo, khác với tỷ giá đổi tiền thực tế.",
-    "swap": "Đổi chiều"
+    "swap": "Đổi chiều",
+    "categories": "Thông tin cơ bản",
+    "jumpTo": "Đi tới mục",
+    "cat": {
+      "visa": "Thị thực & nhập cảnh",
+      "money": "Tiền & đổi tiền",
+      "sim": "SIM & mạng",
+      "grab": "Grab & di chuyển",
+      "tip": "Tiền tip",
+      "safety": "An toàn & lừa đảo",
+      "hygiene": "Vệ sinh & nước uống",
+      "power": "Điện & ổ cắm",
+      "weather": "Mùa & thời tiết",
+      "manners": "Ứng xử & văn hóa"
+    },
+    "amount": "Số tiền",
+    "quick": "Số tiền thường dùng",
+    "rateSource": "Nguồn"
   },
   "phrases": {
     "title": "Sổ tay hội thoại",
@@ -156,7 +174,14 @@
     "replay": "Phát lại",
     "noVoice": "Thiết bị này không có giọng đọc tiếng Việt nên không thể phát âm.",
     "kana": "Cách đọc",
-    "southNote": "Cách đọc được ghi gần với giọng miền Nam (TP. Hồ Chí Minh)."
+    "southNote": "Cách đọc được ghi gần với giọng miền Nam (TP. Hồ Chí Minh).",
+    "all": "Tất cả",
+    "count": "{n} câu",
+    "groupsLabel": "Chọn tình huống",
+    "showModeHeading": "Chế độ hiển thị",
+    "wakeLockOn": "Màn hình sẽ không tắt khi đang hiển thị",
+    "swipeToClose": "Vuốt xuống để đóng",
+    "searchResults": "Kết quả"
   },
   "contact": {
     "title": "Liên hệ",
@@ -171,7 +196,13 @@
     "required": "Mục bắt buộc",
     "invalidEmail": "Địa chỉ email không hợp lệ",
     "line": "Liên hệ qua LINE",
-    "notConfigured": "Đang chuẩn bị"
+    "notConfigured": "Đang chuẩn bị",
+    "or": "hoặc",
+    "requiredTag": "Bắt buộc",
+    "formTitle": "Gửi tin nhắn",
+    "lineLead": "Bạn cũng có thể liên hệ qua LINE Official Account.",
+    "privacyNote": "Xem {link} để biết cách chúng tôi xử lý thông tin.",
+    "errorSummary": "Vui lòng kiểm tra lại các mục đã đánh dấu."
   },
   "about": {
     "title": "Giới thiệu"
@@ -191,5 +222,9 @@
   },
   "pwa": {
     "offline": "Bạn đang ngoại tuyến. Đang hiển thị các trang đã lưu."
+  },
+  "offline": {
+    "title": "Bạn đang ngoại tuyến",
+    "lead": "Sổ tay hội thoại đã lưu vẫn dùng được khi không có mạng."
   }
 }

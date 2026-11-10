@@ -102,14 +102,14 @@ const { id, title, closeLabel, class: className } = Astro.props;
     }
   }
   .glass-sheet::backdrop {
-    background: rgb(5 12 20 / 0.5);
+    background: rgb(23 32 51 / 0.28);
   }
   .glass-sheet__panel {
     display: flex;
     flex-direction: column;
     max-height: 88dvh;
     /* near-opaque: WebKit doesn't apply backdrop-filter inside the <dialog> top layer */
-    background: rgb(16 34 52 / 0.97);
+    background: rgb(255 255 255 / 0.97);
     border-radius: 28px 28px 0 0;
     padding-bottom: calc(16px + var(--safe-bottom));
     transition: transform 200ms var(--ease-out-soft);
@@ -127,7 +127,7 @@ const { id, title, closeLabel, class: className } = Astro.props;
     height: 5px;
     margin: 10px auto 8px;
     border-radius: 3px;
-    background: rgb(255 255 255 / 0.4);
+    background: rgb(23 32 51 / 0.18);
   }
   .glass-sheet__body {
     overflow-y: auto;

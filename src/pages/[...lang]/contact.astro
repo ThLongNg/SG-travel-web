@@ -5,7 +5,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ContactForm from '../../components/tools/ContactForm.astro';
 import GlassPanel from '../../components/glass/GlassPanel.astro';
 import GlassButton from '../../components/glass/GlassButton.astro';
-import { xt } from '../../components/tools/extra-i18n';
 import { getLocale, localeParams, t } from '../../lib/i18n';
 
 export const getStaticPaths = localeParams;
@@ -25,7 +24,7 @@ const lineUrl = import.meta.env.PUBLIC_LINE_URL?.trim() || '';
       <h2 id="c-line" class="sr-only">
         LINE
       </h2>
-      <p class="mb-3 text-[14px] text-ink-muted">{xt(lang, 'contact.lineLead')}</p>
+      <p class="mb-3 text-[14px] text-ink-muted">{t(lang, 'contact.lineLead')}</p>
       {lineUrl ? (
         <GlassButton
           href={lineUrl}
@@ -50,9 +49,9 @@ const lineUrl = import.meta.env.PUBLIC_LINE_URL?.trim() || '';
     </GlassPanel>
 
     <p class="flex items-center gap-3 text-[13px] text-ink-muted" aria-hidden="true">
-      <span class="h-px flex-1 bg-white/15"></span>
-      {xt(lang, 'contact.or')}
-      <span class="h-px flex-1 bg-white/15"></span>
+      <span class="h-px flex-1 bg-line"></span>
+      {t(lang, 'contact.or')}
+      <span class="h-px flex-1 bg-line"></span>
     </p>
 
     <ContactForm lang={lang} />

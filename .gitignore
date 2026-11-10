@@ -29,3 +29,4 @@ playwright-report/
 .lighthouseci/
 *.zip
 
+tests/screenshots/

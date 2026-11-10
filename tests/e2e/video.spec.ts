@@ -1,6 +1,5 @@
 // Hero video must not download when the user asked for less motion / less data (SPEC §1).
 // Depends on VideoHero (owner: Agent A). The phase-0 stub always autoplays, so these are marked
-// fixme until A's VideoHero is merged — the Integrator removes the `.fixme`.
 import { expect, test, type Page } from '@playwright/test';
 
 const VIDEO = /\.(mp4|webm)(\?|$)/i;
@@ -18,7 +17,7 @@ async function videoRequests(page: Page) {
 test.describe('reduced motion', () => {
   test.use({ reducedMotion: 'reduce' });
 
-  test.fixme('no video is requested, poster is shown', async ({ page }) => {
+  test('no video is requested, poster is shown', async ({ page }) => {
     const hits = await videoRequests(page);
     expect(hits).toEqual([]);
     const video = page.locator('.video-hero video');
@@ -29,7 +28,7 @@ test.describe('reduced motion', () => {
 });
 
 test.describe('save-data', () => {
-  test.fixme('no video is requested when navigator.connection.saveData is on', async ({ page }) => {
+  test('no video is requested when navigator.connection.saveData is on', async ({ page }) => {
     await page.addInitScript(() => {
       Object.defineProperty(navigator, 'connection', {
         value: { saveData: true, effectiveType: '4g', addEventListener() {} },

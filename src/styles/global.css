@@ -7,15 +7,18 @@
 
 /* ───────── Design tokens (single source of truth) ───────── */
 @theme {
-  /* Saigon night palette — max 2 accents */
-  --color-night: #0b1b2b; /* deep night blue, base */
-  --color-night-2: #12283d;
-  --color-amber: #f2a541; /* street-lamp amber, primary accent */
-  --color-amber-strong: #ffb85c;
-  --color-river: #2ec4b6; /* Saigon river teal, secondary accent */
-  --color-ink: #f5f7fa; /* text on dark glass */
-  --color-ink-muted: #cbd5e1; /* ≥ 4.5:1 on night and on glass */
-  --color-ink-dark: #0b1b2b; /* text on amber */
+  /* Bright Saigon palette — warm cream base, max 2 accents (both ≥ 4.5:1 on white and cream) */
+  --color-cream: #f7f3ec; /* page base */
+  --color-sand: #ece5d9; /* image placeholders, subtle fills */
+  --color-night: #0b1b2b; /* dark overlays only (video scrim, lightbox) */
+  --color-night-2: #ece5d9; /* legacy alias of sand (media placeholders) */
+  --color-amber: #b8500b; /* terracotta / lamp orange: primary action, selected, numbers */
+  --color-amber-strong: #9a4208;
+  --color-river: #0f766e; /* Saigon river teal: links, tags, info icons */
+  --color-ink: #172033; /* body text */
+  --color-ink-muted: #586374; /* secondary text, ≥ 4.5:1 on cream */
+  --color-ink-dark: #ffffff; /* text ON an accent fill (amber buttons, chips, show mode) */
+  --color-line: rgb(23 32 51 / 0.1); /* hairlines: border-line, divide-line */
 
   --font-sans: 'Inter Variable', 'Noto Sans JP Variable', system-ui, sans-serif;
   --font-serif: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
@@ -32,29 +35,23 @@
 }
 
 :root {
-  color-scheme: dark;
-  /* Glass recipe — used by src/styles/glass.css; tweak here only */
-  /* Clear liquid glass: light gradient fill (brighter top-left), bright rim, colour comes from what's behind */
+  color-scheme: light;
+  /* Glass recipe — used by src/styles/glass.css; tweak here only.
+     Bright frosted glass (iOS light mode): milky white fill, white rim, soft cool shadow. */
   --glass-bg: linear-gradient(
     150deg,
-    rgb(255 255 255 / 0.2) 0%,
-    rgb(255 255 255 / 0.07) 45%,
-    rgb(255 255 255 / 0.1) 100%
+    rgb(255 255 255 / 0.78) 0%,
+    rgb(255 255 255 / 0.55) 55%,
+    rgb(255 255 255 / 0.62) 100%
   );
-  --glass-bg-strong: linear-gradient(
-    160deg,
-    rgb(28 36 78 / 0.78),
-    rgb(12 22 46 / 0.86)
-  ); /* long text: indigo-tinted, opaque enough for paragraphs */
-  --glass-bg-light: rgb(255 255 255 / 0.07); /* list items: no blur */
-  --glass-border: rgb(255 255 255 / 0.24);
-  --glass-blur: 22px;
-  --glass-saturate: 190%;
-  --glass-highlight:
-    inset 0 1px 0 rgb(255 255 255 / 0.55), inset 1px 0 0 rgb(255 255 255 / 0.12),
-    inset 0 -1px 0 rgb(255 255 255 / 0.06);
-  --glass-shadow: 0 12px 32px -8px rgb(2 6 23 / 0.55);
-  --glass-fallback: rgb(22 30 66 / 0.9);
+  --glass-bg-strong: rgb(255 255 255 / 0.88); /* long text: near-opaque white */
+  --glass-bg-light: rgb(255 255 255 / 0.72); /* list items: no blur */
+  --glass-border: rgb(255 255 255 / 0.9);
+  --glass-blur: 20px;
+  --glass-saturate: 170%;
+  --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 1), 0 0 0 0.5px rgb(23 32 51 / 0.06);
+  --glass-shadow: 0 10px 30px -10px rgb(30 41 70 / 0.18), 0 1px 3px rgb(30 41 70 / 0.06);
+  --glass-fallback: rgb(255 255 255 / 0.94);
 
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -65,7 +62,26 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  background: var(--color-night);
+  background: var(--color-cream);
+}
+
+/* Dark context: anything placed on video / dark imagery (home hero, transparent header, lightbox).
+   Re-points the colour tokens, so every utility (text-ink, text-amber, glass…) inside just works. */
+.on-dark,
+.site-header[data-transparent]:not(.is-scrolled),
+.spot-lightbox {
+  --color-ink: #f8fafc;
+  --color-ink-muted: #dbe2ea;
+  --color-amber: #f7a84a;
+  --color-river: #5eead4;
+  --color-ink-dark: #172033;
+  --color-line: rgb(255 255 255 / 0.18);
+  --glass-bg: linear-gradient(150deg, rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.1));
+  --glass-bg-light: rgb(11 27 43 / 0.42);
+  --glass-border: rgb(255 255 255 / 0.32);
+  --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.5);
+  --glass-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.45);
+  color: var(--color-ink);
 }
 
 body {
@@ -178,13 +194,13 @@ a {
   height: 40px;
   border-radius: 9999px;
   color: var(--color-river);
-  background: rgb(46 196 182 / 0.16);
-  box-shadow: inset 0 0 0 1px rgb(46 196 182 / 0.3);
+  background: color-mix(in srgb, var(--color-river) 11%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-river) 18%, transparent);
 }
 .icon-badge--amber {
   color: var(--color-amber);
-  background: rgb(242 165 65 / 0.16);
-  box-shadow: inset 0 0 0 1px rgb(242 165 65 / 0.3);
+  background: color-mix(in srgb, var(--color-amber) 11%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-amber) 18%, transparent);
 }
 
 /* Small non-interactive tag (teal), e.g. themes on a card; .tag--amber for duration badges */
@@ -196,12 +212,12 @@ a {
   font-size: 12px;
   font-weight: 600;
   line-height: 1.6;
-  color: #7ff0e4;
-  background: rgb(46 196 182 / 0.16);
+  color: var(--color-river);
+  background: color-mix(in srgb, var(--color-river) 11%, white);
 }
 .tag--amber {
-  color: #ffd08a;
-  background: rgb(242 165 65 / 0.18);
+  color: var(--color-amber);
+  background: color-mix(in srgb, var(--color-amber) 11%, white);
 }
 
 /* Horizontal swipe row with snap; full-bleed on mobile, keeps 16px gutter */
