@@ -1,0 +1,71 @@
+---
+// 04 旅の準備: 2×2 tiles (pattern from /dev/glass §04) linking to Agent C's pages.
+// Tiles: converter + phrasebook (fixed) + the first guides from the `guides` collection.
+import { getCollection, type CollectionEntry } from 'astro:content';
+import GlassPanel from '../glass/GlassPanel.astro';
+import Icon, { type IconName } from '../glass/Icon.astro';
+import { localizePath, t, type Locale } from '../../lib/i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+type Category = CollectionEntry<'guides'>['data']['category'];
+const categoryIcon: Record<Category, IconName> = {
+  visa: 'ticket',
+  money: 'yen',
+  sim: 'wifi',
+  grab: 'route',
+  tip: 'yen',
+  safety: 'shield',
+  hygiene: 'check',
+  power: 'info',
+  weather: 'sun',
+  manners: 'heart',
+};
+const guides = (await getCollection('guides'))
+  .sort((a, b) => Number(a.data.fixture) - Number(b.data.fixture) || a.data.order - b.data.order)
+  .slice(0, 2);
+
+const tiles: { href: string; icon: IconName; title: string; desc: string; amber?: boolean }[] = [
+  {
+    href: localizePath('/guide/', lang) + '#converter',
+    icon: 'yen',
+    title: t(lang, 'guide.converterTitle'),
+    desc: t(lang, 'guide.rateNote'),
+    amber: true,
+  },
+  {
+    href: localizePath('/phrases/', lang),
+    icon: 'chat',
+    title: t(lang, 'phrases.title'),
+    desc: t(lang, 'phrases.lead'),
+  },
+  ...guides.map((g, i) => ({
+    href: localizePath('/guide/', lang) + `#${g.id}`,
+    icon: categoryIcon[g.data.category],
+    title: g.data.title,
+    desc: g.data.summary,
+    amber: i === 1,
+  })),
+];
+---
+
+<ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 md:grid-cols-4">
+  {tiles.map((p) => (
+    <GlassPanel as="li" variant="light" padding="none">
+      <a href={p.href} class="flex h-full flex-col gap-3 p-4 no-underline">
+        <span class:list={['icon-badge', p.amber && 'icon-badge--amber']}>
+          <Icon name={p.icon} size={20} />
+        </span>
+        <span>
+          <span class="block leading-snug font-bold">{p.title}</span>
+          <span class="mt-1 line-clamp-2 block text-[13px] leading-normal text-ink-muted">
+            {p.desc}
+          </span>
+        </span>
+      </a>
+    </GlassPanel>
+  ))}
+</ul>

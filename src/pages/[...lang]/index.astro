@@ -1,14 +1,28 @@
 ---
-// STUB (owner: Agent A) — home page.
+// Home (owner: Agent A). Layout follows /dev/glass: video hero → 01 popular spots (swipe) →
+// 02 areas (rows) → 03 model courses → 04 旅の準備 (links to Agent C's pages).
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import VideoHero from '../../components/media/VideoHero.astro';
-import StubPage from '../../components/StubPage.astro';
-import { getCollection } from 'astro:content';
-import { getLocale, localeParams, t } from '../../lib/i18n';
+import GlassSearch from '../../components/glass/GlassSearch.astro';
+import GlassChip from '../../components/glass/GlassChip.astro';
+import Icon from '../../components/glass/Icon.astro';
+import SpotCard from '../../components/spot/SpotCard.astro';
+import AreaRow from '../../components/area/AreaRow.astro';
+import CourseCard from '../../components/course/CourseCard.astro';
+import PrepGrid from '../../components/home/PrepGrid.astro';
+import { getSortedAreas, getSortedCourses, getSortedSpots } from '../../components/spot/spot-utils';
+import { getLocale, localeParams, localizePath, t } from '../../lib/i18n';
 
 export const getStaticPaths = localeParams;
 const lang = getLocale(Astro.params.lang);
-const spots = await getCollection('spots');
+
+const spots = (await getSortedSpots()).slice(0, 6);
+const areas = (await getSortedAreas()).slice(0, 5);
+const courses = (await getSortedCourses()).slice(0, 2);
+const quickThemes = ['beach', 'food', 'heritage', 'nature', 'shopping', 'walk'] as const;
+const spotsHref = localizePath('/spots/', lang);
+// Break the Japanese slogan only after 、 (never mid-word like ホーチ／ミン)
+const taglineParts = t(lang, 'site.tagline').split(/(?<=、)/);
 ---
 
 <BaseLayout
@@ -19,11 +33,121 @@ const spots = await getCollection('spots');
   preloadPoster
 >
   <VideoHero lang={lang}>
-    <div class="flex h-full items-end p-6 pb-28">
-      <h1 class="text-3xl">{t(lang, 'site.tagline')}</h1>
+    <div class="mx-auto flex h-full max-w-5xl flex-col justify-end gap-4 px-4 pb-[calc(var(--tabbar-h)+var(--tabbar-gap)*2+var(--safe-bottom)+20px)]">
+      <p
+        class="vertical-title absolute top-[calc(var(--safe-top)+var(--header-h)+88px)] right-5 text-[15px] text-ink/85"
+        aria-hidden="true"
+      >
+        {t(lang, 'site.subTagline')}
+      </p>
+      <div>
+        <p class="font-latin mb-2 text-[13px] font-semibold tracking-[0.35em] text-amber" lang="vi">
+          {t(lang, 'site.decorVi').toUpperCase()}
+        </p>
+        <h1 class="max-w-[13em] text-[30px] leading-[1.35] [text-shadow:0_2px_24px_rgb(0_0_0/0.5)] md:text-5xl">
+          {taglineParts.map((part) => (
+            <span class:list={[taglineParts.length > 1 && 'inline-block']}>{part}</span>
+          ))}
+        </h1>
+      </div>
+      <GlassSearch
+        label={t(lang, 'home.searchLabel')}
+        placeholder={t(lang, 'common.searchPlaceholder')}
+        submitLabel={t(lang, 'common.search')}
+        action={spotsHref}
+        id="home-search"
+        class="glass--refract"
+      />
+      <ul class="h-scroll m-0 list-none" aria-label={t(lang, 'home.themesLabel')}>
+        {quickThemes.map((k) => (
+          <li>
+            <GlassChip href={`${spotsHref}?theme=${k}`} variant="light" class="hero-chip">
+              {t(lang, `themes.${k}`)}
+            </GlassChip>
+          </li>
+        ))}
+      </ul>
     </div>
   </VideoHero>
-  <div class="pt-8">
-    <StubPage title={t(lang, 'home.popular')} owner="A" data={spots.map((s) => s.data.nameJa)} />
+
+  <div class="mx-auto max-w-5xl space-y-14 px-4 pt-12">
+    {spots.length > 0 && (
+      <section aria-labelledby="home-popular">
+        <div class="section-head">
+          <h2 id="home-popular">
+            <span class="section-no">01</span>
+            {t(lang, 'home.popular')}
+          </h2>
+          <a href={spotsHref} class="section-more">
+            {t(lang, 'common.seeMore')}
+            <Icon name="chevronRight" size={16} />
+          </a>
+        </div>
+        <ul class="h-scroll m-0 list-none">
+          {spots.map((spot) => (
+            <li>
+              <SpotCard spot={spot} lang={lang} />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {areas.length > 0 && (
+      <section aria-labelledby="home-areas">
+        <div class="section-head">
+          <h2 id="home-areas">
+            <span class="section-no">02</span>
+            {t(lang, 'home.byArea')}
+          </h2>
+        </div>
+        <ul class="m-0 grid list-none gap-3 p-0 md:grid-cols-3">
+          {areas.map((area) => (
+            <AreaRow area={area} lang={lang} />
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {courses.length > 0 && (
+      <section aria-labelledby="home-courses">
+        <div class="section-head">
+          <h2 id="home-courses">
+            <span class="section-no">03</span>
+            {t(lang, 'home.courses')}
+          </h2>
+          <a href={localizePath('/courses/', lang)} class="section-more">
+            {t(lang, 'common.seeMore')}
+            <Icon name="chevronRight" size={16} />
+          </a>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          {courses.map((course, i) => (
+            <CourseCard course={course} lang={lang} variant={i === 0 ? 'default' : 'light'} />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section aria-labelledby="home-prepare">
+      <div class="section-head">
+        <h2 id="home-prepare">
+          <span class="section-no">04</span>
+          {t(lang, 'home.prepare')}
+        </h2>
+        <a href={localizePath('/guide/', lang)} class="section-more">
+          {t(lang, 'common.seeMore')}
+          <Icon name="chevronRight" size={16} />
+        </a>
+      </div>
+      <PrepGrid lang={lang} />
+    </section>
   </div>
 </BaseLayout>
+
+<style>
+  /* Light chips (no blur, keeps the hero ≤ 6 blurred glass elements) need a darker fill on video */
+  :global(.hero-chip:not([aria-current='true'])) {
+    background: rgb(11 27 43 / 0.45);
+  }
+</style>

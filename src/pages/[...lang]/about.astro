@@ -1,13 +1,78 @@
 ---
-// STUB (owner: Agent A)
+// About (owner: Agent A). Only i18n strings — body copy keys are requested in
+// docs/change-requests/agent-A.md (about.lead / about.policy…); until then it reuses site.* / footer.*.
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import StubPage from '../../components/StubPage.astro';
-import { getLocale, localeParams, t } from '../../lib/i18n';
+import GlassPanel from '../../components/glass/GlassPanel.astro';
+import Icon, { type IconName } from '../../components/glass/Icon.astro';
+import { getLocale, localeParams, localizePath, t, type I18nKey } from '../../lib/i18n';
 
 export const getStaticPaths = localeParams;
 const lang = getLocale(Astro.params.lang);
+
+const sections: { href: string; key: I18nKey; icon: IconName; amber?: boolean }[] = [
+  { href: '/spots/', key: 'spots.title', icon: 'pin', amber: true },
+  { href: '/courses/', key: 'courses.title', icon: 'route' },
+  { href: '/phrases/', key: 'phrases.title', icon: 'chat' },
+  { href: '/guide/', key: 'guide.title', icon: 'info', amber: true },
+];
+const links: { href: string; key: I18nKey; icon: IconName }[] = [
+  { href: '/contact/', key: 'nav.contact', icon: 'chat' },
+  { href: '/privacy/', key: 'nav.privacy', icon: 'shield' },
+];
 ---
 
-<BaseLayout title={t(lang, 'about.title')} lang={lang}>
-  <StubPage title={t(lang, 'about.title')} owner="A" />
+<BaseLayout
+  title={t(lang, 'about.title')}
+  lang={lang}
+  breadcrumbs={[
+    { name: t(lang, 'nav.home'), href: localizePath('/', lang) },
+    { name: t(lang, 'about.title'), href: localizePath('/about/', lang) },
+  ]}
+>
+  <div class="mx-auto max-w-3xl space-y-8 px-4">
+    <header>
+      <p class="eyebrow font-latin tracking-[0.3em]" lang="vi">
+        {t(lang, 'site.decorVi').toUpperCase()}
+      </p>
+      <h1 class="mt-1 text-[28px] md:text-4xl">{t(lang, 'about.title')}</h1>
+    </header>
+
+    <GlassPanel variant="strong" padding="lg" class="space-y-4">
+      <p class="font-display m-0 text-[22px] leading-snug">{t(lang, 'site.tagline')}</p>
+      <p class="m-0 text-[16px]">{t(lang, 'site.description')}</p>
+      <p class="m-0 flex gap-2 border-t border-white/10 pt-4 text-[14px] text-ink-muted">
+        <Icon name="info" size={18} class="mt-1 shrink-0 text-river" />
+        {t(lang, 'footer.disclaimer')}
+      </p>
+    </GlassPanel>
+
+    <ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 md:grid-cols-4">
+      {sections.map((s) => (
+        <GlassPanel as="li" variant="light" padding="none">
+          <a
+            href={localizePath(s.href, lang)}
+            class="flex h-full flex-col gap-3 p-4 font-bold no-underline"
+          >
+            <span class:list={['icon-badge', s.amber && 'icon-badge--amber']}>
+              <Icon name={s.icon} size={20} />
+            </span>
+            <span class="leading-snug">{t(lang, s.key)}</span>
+          </a>
+        </GlassPanel>
+      ))}
+    </ul>
+
+    <GlassPanel variant="light" padding="none" class="divide-y divide-white/10">
+      {links.map((l) => (
+        <a
+          href={localizePath(l.href, lang)}
+          class="flex min-h-[56px] items-center gap-3 px-5 no-underline"
+        >
+          <Icon name={l.icon} size={20} class="text-river" />
+          <span class="flex-1">{t(lang, l.key)}</span>
+          <Icon name="chevronRight" class="text-ink-muted" />
+        </a>
+      ))}
+    </GlassPanel>
+  </div>
 </BaseLayout>

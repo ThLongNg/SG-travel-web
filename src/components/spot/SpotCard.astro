@@ -1,0 +1,56 @@
+---
+// Spot card (pattern from /dev/glass §01): 4:3 image + tags on image, eyebrow, serif name, Vietnamese name.
+// size="scroll" → fixed 240px for .h-scroll rows; size="grid" → fills a grid cell.
+import { Image } from 'astro:assets';
+import { localizePath, type Locale } from '../../lib/i18n';
+import { spotEyebrow, themeLabel, type Spot } from './spot-utils';
+
+interface Props {
+  spot: Spot;
+  lang: Locale;
+  size?: 'scroll' | 'grid';
+  /** Above-the-fold images load eagerly. */
+  eager?: boolean;
+}
+
+const { spot, lang, size = 'scroll', eager = false } = Astro.props;
+const d = spot.data;
+const tags = d.themes.slice(0, size === 'grid' ? 2 : 3);
+---
+
+<a
+  href={localizePath(`/spots/${spot.id}/`, lang)}
+  class:list={['spot-card group block no-underline', size === 'scroll' && 'w-[240px]']}
+>
+  <div class="media-frame aspect-[4/3]">
+    <Image
+      src={d.heroImage}
+      alt={d.heroAlt}
+      widths={size === 'scroll' ? [240, 480] : [200, 400, 600]}
+      sizes={
+        size === 'scroll'
+          ? '240px'
+          : '(min-width: 1024px) 240px, (min-width: 768px) 30vw, calc(50vw - 22px)'
+      }
+      loading={eager ? 'eager' : 'lazy'}
+      class="transition-transform duration-500 group-hover:scale-[1.03]"
+    />
+    <div class="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5 pr-2">
+      {tags.map((th) => (
+        <span class="tag bg-night/70! backdrop-blur-sm">{themeLabel(lang, th)}</span>
+      ))}
+    </div>
+  </div>
+  <p class="eyebrow mt-3 truncate">{spotEyebrow(lang, spot)}</p>
+  <p
+    class:list={[
+      'font-display leading-snug font-bold',
+      size === 'scroll' ? 'text-[18px]' : 'text-[16px]',
+    ]}
+  >
+    {d.nameJa}
+  </p>
+  <p class="font-latin truncate text-[13px] text-ink-muted" lang="vi">
+    {d.nameVi}
+  </p>
+</a>

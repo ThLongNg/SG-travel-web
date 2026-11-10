@@ -1,15 +1,42 @@
 ---
-// STUB (owner: Agent A) — model course list.
-import { getCollection } from 'astro:content';
+// Model course list (owner: Agent A). Large course cards; the first is blurred glass, the rest light.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import StubPage from '../../../components/StubPage.astro';
-import { getLocale, localeParams, t } from '../../../lib/i18n';
+import CourseCard from '../../../components/course/CourseCard.astro';
+import { getSortedCourses } from '../../../components/spot/spot-utils';
+import { getLocale, localeParams, localizePath, t } from '../../../lib/i18n';
 
 export const getStaticPaths = localeParams;
 const lang = getLocale(Astro.params.lang);
-const courses = await getCollection('courses');
+const courses = await getSortedCourses();
 ---
 
-<BaseLayout title={t(lang, 'courses.title')} lang={lang} activeTab="courses">
-  <StubPage title={t(lang, 'courses.title')} owner="A" data={courses.map((c) => c.data.title)} />
+<BaseLayout
+  title={t(lang, 'courses.title')}
+  lang={lang}
+  activeTab="courses"
+  breadcrumbs={[
+    { name: t(lang, 'nav.home'), href: localizePath('/', lang) },
+    { name: t(lang, 'courses.title'), href: localizePath('/courses/', lang) },
+  ]}
+>
+  <div class="mx-auto max-w-5xl space-y-6 px-4">
+    <header>
+      <p class="eyebrow font-latin tracking-[0.3em]" lang="vi">
+        {t(lang, 'site.decorVi').toUpperCase()}
+      </p>
+      <h1 class="mt-1 text-[28px] md:text-4xl">{t(lang, 'courses.title')}</h1>
+    </header>
+    <ul class="m-0 grid list-none gap-4 p-0 md:grid-cols-2">
+      {courses.map((course, i) => (
+        <li>
+          <CourseCard
+            course={course}
+            lang={lang}
+            variant={i === 0 ? 'default' : 'light'}
+            headingLevel="h2"
+          />
+        </li>
+      ))}
+    </ul>
+  </div>
 </BaseLayout>

@@ -1,10 +1,17 @@
 ---
-// STUB (owner: Agent A) — course detail with day/time timeline.
+// Course detail (owner: Agent A): image → title → cost box → overview → day-by-day timeline → 更新日/出典
 import type { GetStaticPaths } from 'astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import StubPage from '../../../components/StubPage.astro';
-import { getLocale, localeParams } from '../../../lib/i18n';
+import GlassPanel from '../../../components/glass/GlassPanel.astro';
+import Icon from '../../../components/glass/Icon.astro';
+import Timeline from '../../../components/course/Timeline.astro';
+import Prose from '../../../components/spot/Prose.astro';
+import PageMeta from '../../../components/spot/PageMeta.astro';
+import ContentNotes from '../../../components/spot/ContentNotes.astro';
+import { themeLabel } from '../../../components/spot/spot-utils';
+import { getLocale, localeParams, localizePath, t } from '../../../lib/i18n';
 
 export const getStaticPaths = (async () => {
   const courses = await getCollection('courses');
@@ -15,13 +22,96 @@ export const getStaticPaths = (async () => {
 
 const { course } = Astro.props;
 const lang = getLocale(Astro.params.lang);
+const d = course.data;
+const { Content } = await render(course);
+const spotIds = new Set((await getCollection('spots')).map((s) => s.id));
+const yen = (n: number) => n.toLocaleString('ja-JP');
+const cost = `${t(lang, 'common.approx')}${yen(d.estimatedCostJpy.min)}〜${yen(d.estimatedCostJpy.max)}${t(lang, 'common.yen')}`;
+const coursesHref = localizePath('/courses/', lang);
 ---
 
 <BaseLayout
-  title={course.data.title}
-  description={course.data.summary}
+  title={d.title}
+  description={d.summary}
   lang={lang}
   activeTab="courses"
+  image={d.heroImage.src}
+  breadcrumbs={[
+    { name: t(lang, 'nav.home'), href: localizePath('/', lang) },
+    { name: t(lang, 'courses.title'), href: coursesHref },
+    { name: d.title, href: localizePath(`/courses/${course.id}/`, lang) },
+  ]}
 >
-  <StubPage title={course.data.title} owner="A" data={course.data.schedule} />
+  <article class="mx-auto max-w-3xl space-y-8 px-4">
+    <div class="space-y-5">
+      <div class="media-frame aspect-[16/9]">
+        <Image
+          src={d.heroImage}
+          alt={d.heroAlt}
+          widths={[390, 780, 1200]}
+          sizes="(min-width: 768px) 768px, 100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <a
+          href={coursesHref}
+          class="glass glass-pill glass-press touch-target course-back grid place-items-center"
+          aria-label={t(lang, 'nav.back')}
+        >
+          <Icon name="back" size={20} />
+        </a>
+      </div>
+      <header class="space-y-3">
+        <ContentNotes lang={lang} verified={d.verified} />
+        <div class="flex flex-wrap gap-2">
+          <span class="tag tag--amber">
+            {t(lang, 'courses.nights', { n: d.nights, m: d.days })}
+          </span>
+          {d.themes.map((th) => (
+            <span class="tag">{themeLabel(lang, th)}</span>
+          ))}
+        </div>
+        <h1 class="text-[26px] leading-snug md:text-4xl">{d.title}</h1>
+        <p class="text-[16px]">{d.summary}</p>
+      </header>
+    </div>
+
+    <GlassPanel variant="strong" class="flex items-center gap-4">
+      <span class="icon-badge icon-badge--amber">
+        <Icon name="yen" size={20} />
+      </span>
+      <div class="min-w-0">
+        <p class="m-0 text-xs text-ink-muted">
+          {t(lang, 'courses.estimatedCost')}（{t(lang, 'courses.perPerson')}）
+        </p>
+        <p class="font-latin m-0 text-[20px] font-bold">{cost}</p>
+        {d.estimatedCostJpy.note && (
+          <p class="m-0 text-xs text-ink-muted">{d.estimatedCostJpy.note}</p>
+        )}
+      </div>
+    </GlassPanel>
+
+    <GlassPanel variant="strong">
+      <Prose>
+        <Content />
+      </Prose>
+    </GlassPanel>
+
+    <section aria-labelledby="course-schedule">
+      <div class="section-head">
+        <h2 id="course-schedule">{t(lang, 'courses.nights', { n: d.nights, m: d.days })}</h2>
+      </div>
+      <Timeline lang={lang} schedule={d.schedule} spotIds={spotIds} />
+    </section>
+
+    <PageMeta lang={lang} lastVerified={d.lastVerified} sources={d.sources} />
+  </article>
 </BaseLayout>
+
+<style>
+  .course-back {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+  }
+</style>

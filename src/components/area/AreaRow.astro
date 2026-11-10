@@ -1,0 +1,33 @@
+---
+// Area row (pattern from /dev/glass §02): 72px thumbnail + eyebrow + serif name + one-line summary + chevron.
+import { Image } from 'astro:assets';
+import GlassPanel from '../glass/GlassPanel.astro';
+import Icon from '../glass/Icon.astro';
+import { localizePath, type Locale } from '../../lib/i18n';
+import { regionLabel, type Area } from '../spot/spot-utils';
+
+interface Props {
+  area: Area;
+  lang: Locale;
+}
+
+const { area, lang } = Astro.props;
+const d = area.data;
+---
+
+<GlassPanel as="li" variant="light" padding="none">
+  <a
+    href={localizePath(`/areas/${area.id}/`, lang)}
+    class="flex items-center gap-4 p-3 pr-4 no-underline"
+  >
+    <div class="media-frame size-[72px] shrink-0 rounded-2xl">
+      <Image src={d.heroImage} alt="" widths={[72, 144]} sizes="72px" />
+    </div>
+    <div class="min-w-0 flex-1">
+      <p class="eyebrow">{regionLabel(lang, d.region)}</p>
+      <p class="font-display text-[17px] leading-snug font-bold">{d.nameJa}</p>
+      <p class="truncate text-[13px] text-ink-muted">{d.summary}</p>
+    </div>
+    <Icon name="chevronRight" class="shrink-0 text-ink-muted" />
+  </a>
+</GlassPanel>

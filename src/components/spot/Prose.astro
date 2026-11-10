@@ -1,0 +1,58 @@
+---
+// Typography for Markdown bodies (spot 楽しみ方, area / course overview). Long text sits on strong glass.
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<div class:list={['prose-body', className]}>
+  <slot />
+</div>
+
+<style>
+  .prose-body {
+    font-size: 16px;
+    line-height: 1.85;
+  }
+  .prose-body :global(> * + *) {
+    margin-top: 0.9em;
+  }
+  .prose-body :global(h2),
+  .prose-body :global(h3) {
+    margin-top: 1.6em;
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  .prose-body :global(h2::before) {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 0.9em;
+    margin-right: 10px;
+    border-radius: 2px;
+    background: var(--color-amber);
+    vertical-align: -0.05em;
+  }
+  .prose-body :global(ul),
+  .prose-body :global(ol) {
+    padding-left: 1.3em;
+  }
+  .prose-body :global(ul) {
+    list-style: disc;
+  }
+  .prose-body :global(ol) {
+    list-style: decimal;
+  }
+  .prose-body :global(li::marker) {
+    color: var(--color-river);
+  }
+  .prose-body :global(a) {
+    color: var(--color-river);
+    text-underline-offset: 3px;
+  }
+  .prose-body :global(strong) {
+    color: #ffd08a;
+  }
+</style>
