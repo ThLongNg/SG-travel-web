@@ -53,7 +53,7 @@ const countTemplate = t(lang, 'spots.resultCount');
       id="spot-q"
     />
 
-    <div class="flex items-center gap-3">
+    <div class="flex flex-wrap items-center gap-3">
       <GlassButton icon="filter" data-sheet-open="spot-filter" class="shrink-0">
         {t(lang, 'spots.filter')}
         <span
@@ -61,12 +61,24 @@ const countTemplate = t(lang, 'spots.resultCount');
           data-active-count
         ></span>
       </GlassButton>
-      <p class="m-0 ml-auto text-sm text-ink-muted" aria-live="polite">
+      <GlassButton icon="pin" variant="accent" data-near aria-pressed="false" class="shrink-0">
+        {t(lang, 'spots.nearMe')}
+      </GlassButton>
+      <p class="m-0 ml-auto text-sm whitespace-nowrap text-ink-muted" aria-live="polite">
         <span data-result-count data-template={countTemplate}>
           {t(lang, 'spots.resultCount', { count: spots.length })}
         </span>
       </p>
     </div>
+    <p
+      class="m-0 -mt-2 text-[12px] leading-relaxed text-ink-muted"
+      aria-live="polite"
+      data-near-status
+      data-locating={t(lang, 'spots.locating')}
+      data-error={t(lang, 'spots.locationError')}
+    >
+      {t(lang, 'spots.locationNote')}
+    </p>
 
     <ul class="h-scroll m-0 list-none" aria-label={t(lang, 'spots.filterTheme')}>
       {usedThemes.map((th) => (
@@ -94,8 +106,19 @@ const countTemplate = t(lang, 'spots.resultCount');
             regionLabel(lang, spot.data.area),
             ...spot.data.themes.map((th) => themeLabel(lang, th)),
           ].join(' ')}
+          data-lat={spot.data.coordinates.lat}
+          data-lng={spot.data.coordinates.lng}
+          class="relative"
         >
           <SpotCard spot={spot} lang={lang} size="grid" eager={i < 4} />
+          <!-- overlay sized like the 4:3 card image, so the distance sits at its bottom-right corner -->
+          <span class="pointer-events-none absolute inset-x-0 top-0 z-10 aspect-[4/3]">
+            <span
+              class="tag tag--amber absolute right-2.5 bottom-2.5 font-latin shadow-sm"
+              data-dist
+              hidden
+            ></span>
+          </span>
         </li>
       ))}
     </ul>
@@ -157,6 +180,7 @@ const countTemplate = t(lang, 'spots.resultCount');
 
 <script>
   import { normalizeKana } from '../../../lib/format';
+  import { distanceKm, formatDistance } from '../../../lib/geo';
 
   type Key = 'area' | 'theme' | 'month';
   /** kana-insensitive (ひらがな = カタカナ, half-width) + Vietnamese-diacritic-insensitive */
@@ -250,4 +274,48 @@ const countTemplate = t(lang, 'spots.resultCount');
   });
   input.form?.addEventListener('submit', () => input.blur());
   render();
+
+  // ── Nearest first: sort the cards by distance from the user's real location ──
+  // Location stays in the browser (never sent). We only prompt on a tap; if permission was
+  // already granted on an earlier visit, sort straight away without asking again.
+  const nearBtn = root.querySelector<HTMLButtonElement>('[data-near]')!;
+  const nearStatus = root.querySelector<HTMLElement>('[data-near-status]')!;
+  const grid = items[0]?.el.parentElement;
+
+  function sortByDistance(lat: number, lng: number) {
+    const ranked = items
+      .map((it) => ({
+        it,
+        d: distanceKm(lat, lng, Number(it.el.dataset.lat), Number(it.el.dataset.lng)),
+      }))
+      .sort((a, b) => a.d - b.d);
+    for (const { it, d } of ranked) {
+      const badge = it.el.querySelector<HTMLElement>('[data-dist]')!;
+      badge.textContent = formatDistance(d);
+      badge.hidden = false;
+      grid?.append(it.el);
+    }
+    nearBtn.setAttribute('aria-pressed', 'true');
+    nearStatus.hidden = true;
+  }
+
+  function locate() {
+    if (!('geolocation' in navigator)) {
+      nearStatus.textContent = nearStatus.dataset.error!;
+      return;
+    }
+    nearStatus.hidden = false;
+    nearStatus.textContent = nearStatus.dataset.locating!;
+    navigator.geolocation.getCurrentPosition(
+      (p) => sortByDistance(p.coords.latitude, p.coords.longitude),
+      () => (nearStatus.textContent = nearStatus.dataset.error!),
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 5 * 60 * 1000 },
+    );
+  }
+
+  nearBtn.addEventListener('click', locate);
+  navigator.permissions
+    ?.query({ name: 'geolocation' })
+    .then((s) => s.state === 'granted' && locate())
+    .catch(() => {});
 </script>

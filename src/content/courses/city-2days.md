@@ -43,13 +43,26 @@ schedule:
         note: いちばん暑い時間帯は無理をせず、エアコンの効いた場所で休みましょう。
         moveMinutes: 15
         moveBy: Grab
-      - time: '15:00'
+      - time: '14:30'
+        title: ホーチミン市博物館（旧ザーロン宮殿）
+        spot: hcmc-museum
+        note: 白亜のコロニアル建築で、サイゴンの成り立ちをたどります。地下通路は改修のため閉鎖中です。
+        costVnd: 60000
+        moveMinutes: 5
+        moveBy: 徒歩
+      - time: '15:45'
         title: サイゴン中央郵便局と聖母マリア教会（外観）
         spot: saigon-central-post-office
         note: 'となりの聖母マリア教会（サイゴン大教会）は修復工事中のため、外観の見学になります（TODO: 要確認：工事の進み具合）。'
         moveMinutes: 15
         moveBy: 徒歩
       - time: '16:30'
+        title: ドンコイ通りを歩いて市民劇場へ
+        spot: saigon-opera-house
+        note: フランス統治時代の建物が並ぶ目抜き通りを散歩。
+        moveMinutes: 15
+        moveBy: 徒歩
+      - time: '17:15'
         title: ベンタイン市場
         spot: ben-thanh-market
         note: まずは一周して雰囲気をつかみ、お土産の下見を。
@@ -63,7 +76,7 @@ schedule:
         title: グエンフエ通りを夜さんぽ
         spot: nguyen-hue-walking-street
   - day: 2
-    title: チョロンの華人街と夕暮れ
+    title: チョロンの華人街と、寺と教会の街歩き
     items:
       - time: '07:00'
         title: チョロンへ移動
@@ -76,24 +89,31 @@ schedule:
         moveMinutes: 15
         moveBy: 徒歩
       - time: '09:30'
-        title: チョロンの寺院・会館を歩いてめぐる
-        note: 'ティエンハウ廟（天后宮）など、華人の歴史を伝える寺院や会館が点在しています（TODO: 要確認：各寺院の開門時間）。'
+        title: ティエンハウ廟（天后宮）
+        spot: thien-hau-temple
+        note: 渦巻き線香が吊るされた、チョロンを代表する廟。周辺の会館も歩いてめぐれます。
         moveMinutes: 20
         moveBy: 徒歩
       - time: '12:00'
         title: 昼食（チョロンの中華系料理）
         moveMinutes: 30
         moveBy: Grab
-      - time: '13:30'
+      - time: '13:00'
         title: ホテルで休憩・翌日の準備
         note: 3日目は早朝出発のプランもあります。服装（肩・ひざが隠れるもの）、帽子、水、日焼け止めを準備しておきましょう。
-        moveMinutes: 30
+        moveMinutes: 15
         moveBy: Grab
-      - time: '17:30'
-        title: （お好みで）ランドマーク81から夕景
-        spot: landmark-81-skyview
-        note: 体力と相談して。3日目に早起きする方は早めの夕食・就寝がおすすめです。
-        moveMinutes: 30
+      - time: '15:30'
+        title: 玉皇殿（ジェイド・エンペラー・パゴダ）
+        spot: jade-emperor-pagoda
+        note: 線香の煙がたちこめる道教寺院。肩・ひざが隠れる服装で。
+        moveMinutes: 15
+        moveBy: 徒歩
+      - time: '16:30'
+        title: タンディン教会（ピンク教会）
+        spot: tan-dinh-church
+        note: 通りの向かいから全景を。周辺の古い住宅街もぶらぶらと。
+        moveMinutes: 20
         moveBy: Grab
       - time: '19:30'
         title: 夕食・早めに休む
@@ -110,11 +130,11 @@ verified: false
 
 ## 1日目：現代史をたどる
 
-朝いちばんに統一会堂で「戦争が終わった場所」を見て、戦争証跡博物館で「戦争の中身」を知る。午後はフランス統治時代の建築と市場、夜は歩行者天国へ。ホーチミンの過去と今を1日で体感できます。
+朝いちばんに統一会堂で「戦争が終わった場所」を見て、戦争証跡博物館で「戦争の中身」を知る。午後はホーチミン市博物館、中央郵便局、市民劇場とフランス統治時代の建築をたどって市場へ。夜は歩行者天国へ。ホーチミンの過去と今を1日で体感できます。
 
 ## 2日目：チョロンを歩く
 
-華人の商人たちが築いたチョロンは、中心部とはまったく違う顔を持つ街です。朝の市場の熱気、線香の香りが漂う寺院。午後はしっかり休んで、3日目の日帰り旅に備えましょう。
+華人の商人たちが築いたチョロンは、中心部とはまったく違う顔を持つ街です。朝の市場の熱気、線香の香りが漂う天后宮。昼はしっかり休み、夕方は玉皇殿とピンクのタンディン教会へ。仏教・道教・キリスト教の建物が並ぶ、ホーチミンらしい1日です。
 
 ## 3日目は2つのプランから
 

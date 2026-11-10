@@ -129,7 +129,11 @@
     "inCourses": "Lịch trình mẫu có điểm này",
     "gallery": "Thư viện ảnh",
     "photoOf": "Ảnh {name}",
-    "reading": "Cách đọc"
+    "reading": "Cách đọc",
+    "nearMe": "Gần tôi nhất",
+    "locating": "Đang lấy vị trí…",
+    "locationError": "Không lấy được vị trí. Hãy kiểm tra cài đặt vị trí của thiết bị hoặc trình duyệt.",
+    "locationNote": "Vị trí chỉ được dùng trên thiết bị này, không gửi đi và không lưu lại."
   },
   "courses": {
     "title": "Lịch trình mẫu",

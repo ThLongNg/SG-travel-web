@@ -131,3 +131,17 @@ test.describe('tab bar keyboard access', () => {
     );
   });
 });
+
+test.describe('spots: nearest first', () => {
+  // Standing next to the Ben Duoc tunnels: the Cu Chi card must come first, with a distance badge.
+  test.use({ geolocation: { latitude: 11.14, longitude: 106.46 }, permissions: ['geolocation'] });
+
+  test('sorts cards by distance from the real location', async ({ page }) => {
+    await page.goto('/spots/');
+    await page.locator('[data-near]').click();
+    const first = page.locator('li[data-spot]').first();
+    await expect(first.locator('a').first()).toHaveAttribute('href', /\/spots\/cu-chi-tunnels\/$/);
+    await expect(first.locator('[data-dist]')).toHaveText(/^\d+(\.\d)?k?m$/);
+    await expect(page.locator('[data-near]')).toHaveAttribute('aria-pressed', 'true');
+  });
+});

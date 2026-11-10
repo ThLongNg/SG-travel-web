@@ -129,7 +129,11 @@
     "inCourses": "Itineraries including this sight",
     "gallery": "Gallery",
     "photoOf": "Photo of {name}",
-    "reading": "Pronunciation"
+    "reading": "Pronunciation",
+    "nearMe": "Nearest first",
+    "locating": "Getting your location…",
+    "locationError": "Could not get your location. Check the location settings of your device or browser.",
+    "locationNote": "Your location is used only on this device and is never sent or stored."
   },
   "courses": {
     "title": "Model itineraries",
