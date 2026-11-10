@@ -42,106 +42,118 @@ const clean = (s: string) => s.replace(/TODO:\s*/g, '');
       )}
     </header>
 
+    <section aria-labelledby="g-rate" id="converter" class="scroll-mt-28">
+      <div class="section-head">
+        <h2 id="g-rate">
+          <span class="section-no">01</span>
+          {t(lang, 'guide.converterTitle')}
+        </h2>
+      </div>
+      <CurrencyConverter lang={lang} />
+    </section>
+
     <section aria-labelledby="g-basics">
       <div class="section-head">
         <h2 id="g-basics">
-          <span class="section-no">01</span>
+          <span class="section-no">02</span>
           {t(lang, 'guide.categories')}
         </h2>
       </div>
-      <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
+      <!-- Collapsed cards: title + one-line lead; tap to open the points and links. -->
+      <div class="grid grid-cols-1 items-start gap-3 md:grid-cols-2">
         {guides.map(({ id, data }) => {
           const List = data.ordered ? 'ol' : 'ul';
           return (
-            <GlassPanel
-              as="article"
-              id={id}
-              variant="light"
-              class="flex scroll-mt-28 flex-col gap-3"
-              aria-labelledby={`${id}-title`}
-            >
-              <header class="flex items-center gap-3">
-                <span class:list={['icon-badge', amber.has(data.category) && 'icon-badge--amber']}>
-                  <Icon name={icons[data.category]} size={20} />
-                </span>
-                <h3 id={`${id}-title`} class="m-0 min-w-0 text-[18px] leading-snug font-bold">
-                  {data.title}
-                </h3>
-              </header>
-              <p class="m-0 text-[15px] leading-relaxed font-medium">{clean(data.summary)}</p>
-              <List
-                class:list={[
-                  'guide-points m-0 list-none space-y-2 p-0',
-                  data.ordered && 'is-steps',
-                ]}
-              >
-                {data.points.map((point) => (
-                  <li class="flex gap-2.5 text-[14px] leading-relaxed">
-                    {!data.ordered && (
-                      <Icon name="check" size={16} class="mt-1 shrink-0 text-river" />
-                    )}
-                    <span>{clean(point)}</span>
-                  </li>
-                ))}
-              </List>
-              {data.links.length > 0 && (
-                <div class="flex flex-wrap gap-2">
-                  {data.links.map((l) => (
-                    <a
-                      href={l.url}
-                      target="_blank"
-                      rel="noopener"
-                      class="glass-press touch-target inline-flex items-center gap-1.5 rounded-full bg-amber px-4 text-[14px] font-semibold text-ink-dark no-underline"
-                    >
-                      {l.label}
-                      <Icon name="external" size={16} />
-                    </a>
-                  ))}
-                </div>
-              )}
-              <details class="mt-auto border-t border-line pt-1 text-[12px] text-ink-muted">
-                <summary class="flex min-h-[36px] cursor-pointer list-none items-center gap-1 [&::-webkit-details-marker]:hidden">
-                  {t(lang, 'common.sources')}・{t(lang, 'common.lastUpdated')}
-                  <Icon name="chevronDown" size={14} />
-                  {!data.verified && import.meta.env.DEV && (
-                    <span class="tag tag--amber ml-1">{t(lang, 'common.verifying')}</span>
-                  )}
+            <GlassPanel as="article" variant="light" padding="none">
+              <details id={id} class="guide-card group scroll-mt-28">
+                <summary class="flex min-h-[64px] cursor-pointer list-none items-center gap-3 p-4 [&::-webkit-details-marker]:hidden">
+                  <span
+                    class:list={['icon-badge', amber.has(data.category) && 'icon-badge--amber']}
+                  >
+                    <Icon name={icons[data.category]} size={20} />
+                  </span>
+                  <span class="min-w-0 flex-1">
+                    <span class="block text-[17px] leading-snug font-bold">{data.title}</span>
+                    <span class="block text-[13px] leading-snug text-ink-muted">
+                      {clean(data.summary)}
+                    </span>
+                  </span>
+                  <Icon
+                    name="chevronDown"
+                    class="shrink-0 text-ink-muted transition-transform group-open:rotate-180"
+                  />
                 </summary>
-                <ul class="m-0 list-none space-y-1 p-0 pb-1 leading-relaxed">
-                  {data.sources.map((s) => (
-                    <li>
-                      <a
-                        href={s.url}
-                        class="underline underline-offset-2"
-                        rel="noopener"
-                        target="_blank"
-                      >
-                        {s.title}
-                      </a>
-                    </li>
-                  ))}
-                  <li>
-                    {t(lang, 'common.lastUpdated')}: {formatJaDate(data.lastVerified)}
-                  </li>
-                </ul>
+                <div class="space-y-3 px-4 pb-4">
+                  <List
+                    class:list={[
+                      'm-0 list-none space-y-2 border-t border-line p-0 pt-3',
+                      data.ordered && 'is-steps',
+                    ]}
+                  >
+                    {data.points.map((point) => (
+                      <li class="flex gap-2.5 text-[14px] leading-relaxed">
+                        {!data.ordered && (
+                          <Icon name="check" size={16} class="mt-1 shrink-0 text-river" />
+                        )}
+                        <span>{clean(point)}</span>
+                      </li>
+                    ))}
+                  </List>
+                  {data.links.length > 0 && (
+                    <div class="flex flex-wrap gap-2">
+                      {data.links.map((l) => (
+                        <a
+                          href={l.url}
+                          target="_blank"
+                          rel="noopener"
+                          class="glass-press touch-target inline-flex items-center gap-1.5 rounded-full bg-amber px-4 text-[14px] font-semibold text-ink-dark no-underline"
+                        >
+                          {l.label}
+                          <Icon name="external" size={16} />
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                  <p class="m-0 text-[11px] leading-relaxed text-ink-muted">
+                    {t(lang, 'common.sources')}:{' '}
+                    {data.sources.map((s, i) => (
+                      <>
+                        {i > 0 && '、'}
+                        <a
+                          href={s.url}
+                          class="underline underline-offset-2"
+                          rel="noopener"
+                          target="_blank"
+                        >
+                          {s.title}
+                        </a>
+                      </>
+                    ))}
+                    {' ・ '}
+                    {t(lang, 'common.lastUpdated')} {formatJaDate(data.lastVerified)}
+                    {!data.verified && import.meta.env.DEV && (
+                      <span class="tag tag--amber ml-1">{t(lang, 'common.verifying')}</span>
+                    )}
+                  </p>
+                </div>
               </details>
             </GlassPanel>
           );
         })}
       </div>
     </section>
-
-    <section aria-labelledby="g-rate" id="converter" class="scroll-mt-28">
-      <div class="section-head">
-        <h2 id="g-rate">
-          <span class="section-no">02</span>
-          {t(lang, 'guide.converterTitle')}
-        </h2>
-      </div>
-      <CurrencyConverter lang={lang} />
-    </section>
   </div>
 </BaseLayout>
+
+<script>
+  // Deep links from the home page (/guide/#payment) open that card.
+  const openFromHash = () => {
+    const el = location.hash ? document.getElementById(location.hash.slice(1)) : null;
+    if (el instanceof HTMLDetailsElement) el.open = true;
+  };
+  addEventListener('hashchange', openFromHash);
+  openFromHash();
+</script>
 
 <style>
   /* Numbered steps (VNPAY how-to): amber number discs instead of check marks */

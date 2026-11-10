@@ -26,10 +26,14 @@ test.describe('VND ⇄ JPY converter', () => {
   test('guide cards: deep links resolve and external links open safely', async ({ page }) => {
     // the home page links to /guide/#<guide id>; every card must carry that id
     await page.goto('/guide/#payment');
-    await expect(page.locator('article#payment')).toBeVisible();
-    await expect(page.locator('article#payment ol li')).toHaveCount(4);
-    // eSIM purchase button (the card's call to action)
-    const esim = page.locator('article#sim a[href*="trip.com"]');
+    // cards are collapsed by default; the deep-linked one opens itself
+    await expect(page.locator('details#payment')).toHaveAttribute('open', '');
+    await expect(page.locator('details#sim')).not.toHaveAttribute('open', '');
+    await expect(page.locator('details#payment ol li')).toHaveCount(4);
+    // eSIM purchase button (the card's call to action), visible once the card is opened
+    await page.locator('details#sim summary').click();
+    const esim = page.locator('details#sim a[href*="trip.com"]');
+    await expect(esim).toBeVisible();
     await expect(esim).toHaveAttribute('target', '_blank');
     await expect(esim).toHaveAttribute('rel', /noopener/);
     // internal markers never reach readers
