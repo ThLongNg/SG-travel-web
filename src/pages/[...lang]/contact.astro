@@ -1,13 +1,60 @@
 ---
-// STUB (owner: Agent C) — Formspree form (PUBLIC_FORMSPREE_ID) + LINE link (PUBLIC_LINE_URL).
+// お問い合わせ (owner: Agent C). Formspree form (PUBLIC_FORMSPREE_ID) + LINE OA link (PUBLIC_LINE_URL).
+// Both env vars are optional: unset → the page still renders and shows 「現在準備中です」.
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import StubPage from '../../components/StubPage.astro';
+import ContactForm from '../../components/tools/ContactForm.astro';
+import GlassPanel from '../../components/glass/GlassPanel.astro';
+import GlassButton from '../../components/glass/GlassButton.astro';
+import { xt } from '../../components/tools/extra-i18n';
 import { getLocale, localeParams, t } from '../../lib/i18n';
 
 export const getStaticPaths = localeParams;
 const lang = getLocale(Astro.params.lang);
+const lineUrl = import.meta.env.PUBLIC_LINE_URL?.trim() || '';
 ---
 
-<BaseLayout title={t(lang, 'contact.title')} lang={lang}>
-  <StubPage title={t(lang, 'contact.title')} owner="C" />
+<BaseLayout title={t(lang, 'contact.title')} description={t(lang, 'contact.lead')} lang={lang}>
+  <div class="mx-auto max-w-2xl space-y-8 px-4">
+    <header>
+      <p class="eyebrow font-latin tracking-[0.3em]!">CONTACT</p>
+      <h1 class="mt-1 text-[28px] leading-snug">{t(lang, 'contact.title')}</h1>
+      <p class="mt-1 text-[15px] text-ink-muted">{t(lang, 'contact.lead')}</p>
+    </header>
+
+    <GlassPanel as="section" variant="light" aria-labelledby="c-line">
+      <h2 id="c-line" class="sr-only">
+        LINE
+      </h2>
+      <p class="mb-3 text-[14px] text-ink-muted">{xt(lang, 'contact.lineLead')}</p>
+      {lineUrl ? (
+        <GlassButton
+          href={lineUrl}
+          variant="accent"
+          icon="chat"
+          class="w-full"
+          rel="noopener"
+          target="_blank"
+        >
+          {t(lang, 'contact.line')}
+        </GlassButton>
+      ) : (
+        <>
+          <GlassButton icon="chat" class="w-full opacity-60" disabled aria-describedby="line-nc">
+            {t(lang, 'contact.line')}
+          </GlassButton>
+          <p id="line-nc" class="mt-2 text-center text-[12px] text-ink-muted">
+            {t(lang, 'contact.notConfigured')}
+          </p>
+        </>
+      )}
+    </GlassPanel>
+
+    <p class="flex items-center gap-3 text-[13px] text-ink-muted" aria-hidden="true">
+      <span class="h-px flex-1 bg-white/15"></span>
+      {xt(lang, 'contact.or')}
+      <span class="h-px flex-1 bg-white/15"></span>
+    </p>
+
+    <ContactForm lang={lang} />
+  </div>
 </BaseLayout>

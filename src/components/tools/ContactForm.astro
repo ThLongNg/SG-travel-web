@@ -1,0 +1,195 @@
+---
+// Formspree contact form with client-side validation and Japanese error messages.
+// Endpoint: https://formspree.io/f/<PUBLIC_FORMSPREE_ID>. Without JS it posts normally (Formspree
+// shows its own thank-you page); with JS it validates, posts via fetch and shows the result inline.
+import GlassPanel from '../glass/GlassPanel.astro';
+import GlassButton from '../glass/GlassButton.astro';
+import { localizePath, t, type Locale } from '../../lib/i18n';
+import { xt } from './extra-i18n';
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const id = import.meta.env.PUBLIC_FORMSPREE_ID?.trim() || '';
+const endpoint = id ? `https://formspree.io/f/${encodeURIComponent(id)}` : '';
+const [before, after] = xt(lang, 'contact.privacyNote').split('{link}');
+const fields = [
+  { name: 'name', type: 'text', key: 'contact.name', autocomplete: 'name' },
+  { name: 'email', type: 'email', key: 'contact.email', autocomplete: 'email' },
+] as const;
+---
+
+<GlassPanel as="section" variant="strong" aria-labelledby="c-form">
+  <h2 id="c-form" class="mb-4 text-[18px]">
+    {xt(lang, 'contact.formTitle')}
+  </h2>
+  <form
+    action={endpoint || undefined}
+    method="post"
+    novalidate
+    class="space-y-5"
+    data-contact
+    data-configured={endpoint ? '' : undefined}
+    data-msg-required={t(lang, 'contact.required')}
+    data-msg-email={t(lang, 'contact.invalidEmail')}
+    data-msg-sending={t(lang, 'contact.sending')}
+    data-msg-success={t(lang, 'contact.success')}
+    data-msg-error={t(lang, 'contact.error')}
+    data-msg-summary={xt(lang, 'contact.errorSummary')}
+    data-msg-nc={t(lang, 'contact.notConfigured')}
+  >
+    {fields.map((f) => (
+      <div class="space-y-1.5">
+        <label for={`c-${f.name}`} class="block text-[14px] font-semibold">
+          {t(lang, f.key)}{' '}
+          <span class="tag tag--amber ml-1">{xt(lang, 'contact.requiredTag')}</span>
+        </label>
+        <input
+          id={`c-${f.name}`}
+          name={f.name}
+          type={f.type}
+          required
+          autocomplete={f.autocomplete}
+          aria-describedby={`c-${f.name}-err`}
+          class="c-input min-h-[48px] w-full rounded-2xl px-4"
+        />
+        <p id={`c-${f.name}-err`} class="c-err" data-err hidden />
+      </div>
+    ))}
+    <div class="space-y-1.5">
+      <label for="c-message" class="block text-[14px] font-semibold">
+        {t(lang, 'contact.message')}{' '}
+        <span class="tag tag--amber ml-1">{xt(lang, 'contact.requiredTag')}</span>
+      </label>
+      <textarea
+        id="c-message"
+        name="message"
+        rows="6"
+        required
+        aria-describedby="c-message-err"
+        class="c-input w-full rounded-2xl px-4 py-3"
+      ></textarea>
+      <p id="c-message-err" class="c-err" data-err hidden></p>
+    </div>
+    <!-- Formspree honeypot -->
+    <input
+      type="text"
+      name="_gotcha"
+      tabindex="-1"
+      autocomplete="off"
+      class="hidden"
+      aria-hidden="true"
+    />
+    <input type="hidden" name="_language" value={lang} />
+
+    <p class="text-[12px] text-ink-muted">
+      {before}
+      <a href={localizePath('/privacy/', lang)} class="text-river underline underline-offset-2">
+        {t(lang, 'nav.privacy')}
+      </a>
+      {after}
+    </p>
+    <GlassButton type="submit" variant="accent" size="lg" class="w-full">
+      {t(lang, 'contact.submit')}
+    </GlassButton>
+    {!endpoint && (
+      <p class="text-center text-[12px] text-ink-muted">{t(lang, 'contact.notConfigured')}</p>
+    )}
+    <p
+      class="c-status text-center text-[14px] font-semibold"
+      role="status"
+      aria-live="polite"
+      data-status
+    ></p>
+  </form>
+</GlassPanel>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('form[data-contact]');
+  if (form) {
+    const m = form.dataset;
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[type="submit"]')!;
+    const inputs = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.c-input')];
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const check = (el: HTMLInputElement | HTMLTextAreaElement) => {
+      const v = el.value.trim();
+      const msg = !v ? m.msgRequired : el.type === 'email' && !emailRe.test(v) ? m.msgEmail : '';
+      const err = document.getElementById(`${el.id}-err`)!;
+      err.textContent = msg ?? '';
+      err.hidden = !msg;
+      if (msg) el.setAttribute('aria-invalid', 'true');
+      else el.removeAttribute('aria-invalid');
+      return !msg;
+    };
+    for (const el of inputs) {
+      el.addEventListener('blur', () => el.value && check(el));
+      el.addEventListener('input', () => el.hasAttribute('aria-invalid') && check(el));
+    }
+
+    const setStatus = (text = '', kind: 'ok' | 'error' | '' = '') => {
+      status.textContent = text;
+      status.dataset.kind = kind;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const invalid = inputs.filter((el) => !check(el));
+      if (invalid.length) {
+        setStatus(m.msgSummary, 'error');
+        invalid[0].focus();
+        return;
+      }
+      if (!('configured' in m)) {
+        setStatus(m.msgNc, 'error');
+        return;
+      }
+      submit.disabled = true;
+      setStatus(m.msgSending);
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        setStatus(m.msgSuccess, 'ok');
+      } catch {
+        setStatus(m.msgError, 'error');
+      } finally {
+        submit.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .c-input {
+    background: rgb(255 255 255 / 0.07);
+    border: 1px solid rgb(255 255 255 / 0.24);
+    color: var(--color-ink);
+    font-size: 16px; /* ≥16px: no iOS zoom on focus */
+    line-height: 1.6;
+  }
+  .c-input:focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 2px;
+  }
+  .c-input[aria-invalid='true'] {
+    border-color: var(--color-amber);
+  }
+  .c-err {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-amber-strong);
+  }
+  .c-status[data-kind='error'] {
+    color: var(--color-amber-strong);
+  }
+  .c-status[data-kind='ok'] {
+    color: var(--color-river);
+  }
+</style>

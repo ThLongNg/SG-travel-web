@@ -1,15 +1,151 @@
 ---
-// STUB (owner: Agent C) — practical guide + VND⇄JPY converter.
-import { getCollection } from 'astro:content';
+// 旅の準備・お役立ち情報 (owner: Agent C) — VND⇄JPY converter + guides collection as accordions.
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import StubPage from '../../../components/StubPage.astro';
+import GlassPanel from '../../../components/glass/GlassPanel.astro';
+import Icon, { type IconName } from '../../../components/glass/Icon.astro';
+import CurrencyConverter from '../../../components/tools/CurrencyConverter.astro';
+import { xt, type XKey } from '../../../components/tools/extra-i18n';
+import { formatJaDate } from '../../../lib/format';
 import { getLocale, localeParams, t } from '../../../lib/i18n';
 
 export const getStaticPaths = localeParams;
 const lang = getLocale(Astro.params.lang);
-const guides = await getCollection('guides');
+
+const icons = {
+  visa: 'ticket',
+  money: 'yen',
+  sim: 'wifi',
+  grab: 'route',
+  tip: 'card',
+  safety: 'shield',
+  hygiene: 'check',
+  power: 'info',
+  weather: 'sun',
+  manners: 'chat',
+} as const satisfies Record<string, IconName>;
+const amber = new Set(['money', 'safety']);
+
+const guides = await Promise.all(
+  (await getCollection('guides'))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(async (g) => ({ ...g, Content: (await render(g)).Content })),
+);
 ---
 
 <BaseLayout title={t(lang, 'guide.title')} lang={lang} activeTab="guide">
-  <StubPage title={t(lang, 'guide.title')} owner="C" data={guides.map((g) => g.data.title)} />
+  <div class="mx-auto max-w-3xl space-y-14 px-4">
+    <header>
+      <p class="eyebrow font-latin tracking-[0.3em]!">TRAVEL GUIDE</p>
+      <h1 class="mt-1 text-[28px] leading-snug">{t(lang, 'guide.title')}</h1>
+      {lang !== 'ja' && (
+        <p class="mt-2 text-[12px] text-ink-muted">{t(lang, 'common.untranslated')}</p>
+      )}
+    </header>
+
+    <section aria-labelledby="g-rate" id="converter" class="scroll-mt-28">
+      <div class="section-head">
+        <h2 id="g-rate">
+          <span class="section-no">01</span>
+          {t(lang, 'guide.converterTitle')}
+        </h2>
+      </div>
+      <CurrencyConverter lang={lang} />
+    </section>
+
+    <section aria-labelledby="g-basics">
+      <div class="section-head">
+        <h2 id="g-basics">
+          <span class="section-no">02</span>
+          {xt(lang, 'guide.categories')}
+        </h2>
+      </div>
+      <nav class="h-scroll mb-3" aria-label={xt(lang, 'guide.jumpTo')}>
+        {guides.map((g) => (
+          <a
+            href={`#${g.id}`}
+            class="glass glass--light glass-pill glass-press touch-target inline-flex items-center gap-1.5 px-4 text-[14px] whitespace-nowrap no-underline"
+          >
+            <Icon name={icons[g.data.category]} size={16} class="text-river" />
+            {xt(lang, `guide.cat.${g.data.category}` as XKey)}
+          </a>
+        ))}
+      </nav>
+
+      <GlassPanel variant="strong" padding="none" class="divide-y divide-white/10">
+        {guides.map(({ id, data, Content }) => (
+          <details id={id} class="group scroll-mt-28 px-4">
+            <summary class="flex min-h-[64px] cursor-pointer list-none items-center gap-3 py-3 [&::-webkit-details-marker]:hidden">
+              <span class:list={['icon-badge', amber.has(data.category) && 'icon-badge--amber']}>
+                <Icon name={icons[data.category]} size={20} />
+              </span>
+              <span class="min-w-0 flex-1">
+                <span class="eyebrow block">{xt(lang, `guide.cat.${data.category}` as XKey)}</span>
+                <span class="block font-bold">{data.title}</span>
+                <span class="block text-[13px] leading-snug text-ink-muted">{data.summary}</span>
+              </span>
+              <Icon
+                name="chevronDown"
+                class="shrink-0 transition-transform group-open:rotate-180"
+              />
+            </summary>
+            <div class="guide-body pb-5 text-[15px]">
+              <Content />
+              <p class="mt-4 border-t border-white/10 pt-3 text-[12px] text-ink-muted">
+                {t(lang, 'common.lastUpdated')}: {formatJaDate(data.lastVerified)}
+                {!data.verified && import.meta.env.DEV && (
+                  <span class="tag tag--amber ml-2">{t(lang, 'common.verifying')}</span>
+                )}
+              </p>
+              <p class="text-[12px] text-ink-muted">
+                {t(lang, 'common.sources')}:{' '}
+                {data.sources.map((s, i) => (
+                  <>
+                    {i > 0 && '、'}
+                    <a
+                      href={s.url}
+                      class="text-river underline underline-offset-2"
+                      rel="noopener"
+                      target="_blank"
+                    >
+                      {s.title}
+                    </a>
+                  </>
+                ))}
+              </p>
+            </div>
+          </details>
+        ))}
+      </GlassPanel>
+    </section>
+  </div>
 </BaseLayout>
+
+<script>
+  // Opening #anchor from the chip row (or a deep link) expands that accordion.
+  const openFromHash = () => {
+    const el = location.hash ? document.getElementById(location.hash.slice(1)) : null;
+    if (el instanceof HTMLDetailsElement) el.open = true;
+  };
+  addEventListener('hashchange', openFromHash);
+  openFromHash();
+</script>
+
+<style>
+  .guide-body :global(p) {
+    margin: 0 0 0.75em;
+  }
+  .guide-body :global(ul) {
+    margin: 0 0 0.75em;
+    padding-left: 1.25em;
+    list-style: disc;
+  }
+  .guide-body :global(h2),
+  .guide-body :global(h3) {
+    margin: 1.2em 0 0.4em;
+    font-size: 16px;
+  }
+  .guide-body :global(a) {
+    color: var(--color-river);
+  }
+</style>

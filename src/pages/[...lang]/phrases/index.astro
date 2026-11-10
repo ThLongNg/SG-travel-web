@@ -1,19 +1,32 @@
 ---
-// STUB (owner: Agent C) — 指さし会話帳 with speech + 見せる mode.
+// 指さし会話帳 (owner: Agent C) — scene chips, search, speech (vi-VN) and 見せるモード.
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import StubPage from '../../../components/StubPage.astro';
+import PhraseBook from '../../../components/phrase/PhraseBook.astro';
 import { getLocale, localeParams, t } from '../../../lib/i18n';
 
 export const getStaticPaths = localeParams;
 const lang = getLocale(Astro.params.lang);
-const groups = await getCollection('phrases');
+const groups = (await getCollection('phrases')).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<BaseLayout title={t(lang, 'phrases.title')} lang={lang} activeTab="phrases">
-  <StubPage
-    title={t(lang, 'phrases.title')}
-    owner="C"
-    data={groups.map((g) => ({ group: g.data.titleJa, count: g.data.phrases.length }))}
-  />
+<BaseLayout
+  title={t(lang, 'phrases.title')}
+  description={t(lang, 'phrases.lead')}
+  lang={lang}
+  activeTab="phrases"
+>
+  <div class="mx-auto max-w-3xl space-y-6 px-4">
+    <header>
+      <p class="eyebrow font-latin tracking-[0.3em]!" lang="vi">
+        TIẾNG VIỆT
+      </p>
+      <h1 class="mt-1 text-[28px] leading-snug">{t(lang, 'phrases.title')}</h1>
+      <p class="mt-1 text-[15px] text-ink-muted">{t(lang, 'phrases.lead')}</p>
+      {lang !== 'ja' && (
+        <p class="mt-2 text-[12px] text-ink-muted">{t(lang, 'common.untranslated')}</p>
+      )}
+    </header>
+    <PhraseBook lang={lang} groups={groups} />
+  </div>
 </BaseLayout>

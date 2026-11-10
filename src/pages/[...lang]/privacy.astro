@@ -1,13 +1,104 @@
 ---
-// STUB (owner: Agent C)
+// プライバシーポリシー (owner: Agent C). Body is Japanese-only content; vi/en show common.untranslated.
+// Keep in sync with what the site really does: Formspree (contact), Google Maps iframe (spot pages),
+// service-worker cache (offline), speechSynthesis (on device). No cookies or analytics of our own.
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import StubPage from '../../components/StubPage.astro';
-import { getLocale, localeParams, t } from '../../lib/i18n';
+import GlassPanel from '../../components/glass/GlassPanel.astro';
+import { formatJaDate } from '../../lib/format';
+import { getLocale, localeParams, localizePath, t } from '../../lib/i18n';
 
 export const getStaticPaths = localeParams;
 const lang = getLocale(Astro.params.lang);
+const enacted = '2026-11-11';
+const contactHref = localizePath('/contact/', lang);
+
+const sections: { title: string; body: string[] }[] = [
+  {
+    title: '取得する情報',
+    body: [
+      'お問い合わせフォームから送信された「お名前」「メールアドレス」「お問い合わせ内容」を取得します。',
+      'それ以外に、当サイトが閲覧者個人を特定する情報を取得することはありません。',
+    ],
+  },
+  {
+    title: '利用目的',
+    body: ['お問い合わせへの回答と、掲載情報の確認・修正のためにのみ利用します。'],
+  },
+  {
+    title: '外部サービスの利用',
+    body: [
+      'お問い合わせフォームの送信には外部サービス「Formspree」を利用しています。送信内容は同サービスのサーバーを経由して運営者に届きます。',
+      '観光地ページの地図には「Google マップ」を埋め込んでいます。地図を表示した場合、Google のプライバシーポリシーに基づいて情報が扱われます。',
+      'LINE 公式アカウントでのお問い合わせには、LINE の運営会社のプライバシーポリシーが適用されます。',
+    ],
+  },
+  {
+    title: 'Cookie・アクセス解析',
+    body: ['当サイト自身は Cookie を使用しておらず、アクセス解析ツールも導入していません。'],
+  },
+  {
+    title: '端末内への保存（オフライン機能）',
+    body: [
+      '電波の弱い場所でも使えるよう、閲覧したページと指さし会話帳をお使いの端末（ブラウザのキャッシュ）に保存します。この保存データがサーバーに送信されることはありません。ブラウザの設定からサイトデータを削除すると消去できます。',
+      '発音の再生には端末に内蔵された音声合成機能を使用します。',
+    ],
+  },
+  {
+    title: '第三者への提供',
+    body: [
+      '法令に基づく場合を除き、取得した情報を本人の同意なく第三者に提供することはありません。',
+    ],
+  },
+  {
+    title: '改定',
+    body: [
+      '本ポリシーの内容は、必要に応じて変更することがあります。変更後の内容は本ページに掲載した時点から有効となります。',
+    ],
+  },
+];
 ---
 
 <BaseLayout title={t(lang, 'privacy.title')} lang={lang}>
-  <StubPage title={t(lang, 'privacy.title')} owner="C" />
+  <div class="mx-auto max-w-2xl space-y-6 px-4">
+    <header>
+      <p class="eyebrow font-latin tracking-[0.3em]!">PRIVACY POLICY</p>
+      <h1 class="mt-1 text-[28px] leading-snug">{t(lang, 'privacy.title')}</h1>
+      {lang !== 'ja' && (
+        <p class="mt-2 text-[12px] text-ink-muted">{t(lang, 'common.untranslated')}</p>
+      )}
+    </header>
+
+    <GlassPanel variant="strong" padding="lg" class="space-y-7">
+      <p class="text-[15px]">
+        サイゴン・トラベル（以下「当サイト」）は、閲覧される皆さまの個人情報を次のとおり取り扱います。
+      </p>
+      {sections.map((s, i) => (
+        <section aria-labelledby={`pp-${i}`}>
+          <h2 id={`pp-${i}`} class="mb-2 flex items-baseline gap-2.5 text-[18px]">
+            <span class="section-no text-[13px]">{String(i + 1).padStart(2, '0')}</span>
+            {s.title}
+          </h2>
+          {s.body.map((p) => (
+            <p class="mb-2 text-[15px] text-ink-muted">{p}</p>
+          ))}
+        </section>
+      ))}
+      <section aria-labelledby="pp-contact">
+        <h2 id="pp-contact" class="mb-2 flex items-baseline gap-2.5 text-[18px]">
+          <span class="section-no text-[13px]">{String(sections.length + 1).padStart(2, '0')}</span>
+          お問い合わせ窓口
+        </h2>
+        <p class="text-[15px] text-ink-muted">
+          本ポリシーに関するお問い合わせは
+          <a href={contactHref} class="text-river underline underline-offset-2">
+            {t(lang, 'contact.title')}
+          </a>
+          ページからお願いします。
+        </p>
+      </section>
+      <p class="border-t border-white/10 pt-4 text-[13px] text-ink-muted">
+        制定日：{formatJaDate(enacted)}
+      </p>
+    </GlassPanel>
+  </div>
 </BaseLayout>

@@ -1,0 +1,53 @@
+---
+// One phrase: Japanese (small) → Vietnamese (large) → katakana reading, with play + 見せる buttons.
+// Light glass (no blur): phrase lists are long. Behaviour lives in PhraseBook.astro's script.
+import GlassButton from '../glass/GlassButton.astro';
+import { t, type Locale } from '../../lib/i18n';
+import { searchKey } from './search';
+
+interface Props {
+  lang: Locale;
+  ja: string;
+  vi: string;
+  kana: string;
+  note?: string;
+}
+
+const { lang, ja, vi, kana, note } = Astro.props;
+---
+
+<li
+  class="glass glass--light glass-radius p-4"
+  data-phrase
+  data-search={searchKey([ja, vi, kana, note ?? ''].join(' '))}
+  data-ja={ja}
+  data-vi={vi}
+  data-kana={kana}
+>
+  <p class="text-[14px] leading-relaxed text-ink-muted">{ja}</p>
+  <p class="font-latin mt-0.5 text-[22px] leading-snug font-semibold" lang="vi">
+    {vi}
+  </p>
+  <div class="mt-1 flex items-end justify-between gap-3">
+    <div class="min-w-0">
+      <p class="text-[13px] text-ink-muted">
+        <span class="sr-only">{t(lang, 'phrases.kana')}: </span>
+        {kana}
+      </p>
+      {note && <p class="mt-1 text-[12px] text-ink-muted">※ {note}</p>}
+    </div>
+    <div class="flex shrink-0 items-center gap-2">
+      <GlassButton
+        iconOnly
+        icon="speaker"
+        label={`${t(lang, 'phrases.play')}：${vi}`}
+        class="text-river"
+        data-speak
+        hidden
+      />
+      <GlassButton variant="accent" class="px-4! py-1.5!" data-show>
+        {t(lang, 'phrases.show')}
+      </GlassButton>
+    </div>
+  </div>
+</li>
