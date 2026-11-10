@@ -1,0 +1,40 @@
+slug: transport
+titleJa: 移動（タクシー・Grab）
+order: 3
+verified: true
+phrases:
+  - id: to-this-address
+    ja: この住所まで行ってください
+    vi: Cho tôi đến địa chỉ này
+    kana: チョー トイ デン ディア チー ナイ
+    note: 地図アプリの画面や住所のメモと一緒に見せましょう。
+  - id: to-the-airport
+    ja: 空港までお願いします
+    vi: Cho tôi ra sân bay
+    kana: チョー トイ ラー サン バイ
+  - id: stop-here
+    ja: ここで止めてください
+    vi: Dừng ở đây
+    kana: ユン オー ダイ
+  - id: drive-slowly
+    ja: ゆっくり走ってください
+    vi: Làm ơn chạy chậm lại
+    kana: ラム ウン チャイ チャム ライ
+  - id: turn-on-meter
+    ja: メーターを使ってください
+    vi: Làm ơn bật đồng hồ
+    kana: ラム ウン バッ ドン ホー
+    note: タクシーでメーターが動いていないときに使います。
+  - id: turn-left
+    ja: 左に曲がってください
+    vi: Quẹo trái
+    kana: ウェオ チャイ
+    note: 「Quẹo」は南部の言い方です（北部では「Rẽ」）。
+  - id: turn-right
+    ja: 右に曲がってください
+    vi: Quẹo phải
+    kana: ウェオ ファイ
+  - id: how-long
+    ja: どのくらい時間がかかりますか？
+    vi: Mất bao lâu?
+    kana: マッ バオ ラウ

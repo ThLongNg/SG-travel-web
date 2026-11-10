@@ -1,0 +1,42 @@
+slug: greetings
+titleJa: あいさつ
+order: 1
+verified: true
+phrases:
+  - id: hello
+    ja: こんにちは
+    vi: Xin chào
+    kana: シン チャオ
+    note: 朝・昼・夜を問わず使えるあいさつです。
+  - id: thank-you
+    ja: ありがとう
+    vi: Cảm ơn
+    kana: カム ウン
+    note: 南部では「Cám ơn」と書かれることもあります。
+  - id: sorry
+    ja: すみません／ごめんなさい
+    vi: Xin lỗi
+    kana: シン ローイ
+    note: 人に声をかけるときにも使えます。
+  - id: goodbye
+    ja: さようなら
+    vi: Tạm biệt
+    kana: タム ビエッ
+  - id: yes
+    ja: はい
+    vi: Dạ
+    kana: ヤー
+    note: 南部でよく使う丁寧な返事です。
+  - id: no-thanks
+    ja: いいえ、結構です
+    vi: Không, cảm ơn
+    kana: コン、カム ウン
+    note: 客引きや物売りを断るときに便利です。
+  - id: i-am-japanese
+    ja: 私は日本人です
+    vi: Tôi là người Nhật
+    kana: トイ ラー ングオイ ニャッ
+  - id: i-dont-understand
+    ja: わかりません
+    vi: Tôi không hiểu
+    kana: トイ コン ヒウ

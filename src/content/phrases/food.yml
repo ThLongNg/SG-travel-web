@@ -1,0 +1,41 @@
+slug: food
+titleJa: 食事
+order: 2
+verified: true
+phrases:
+  - id: menu-please
+    ja: メニューを見せてください
+    vi: Cho tôi xem thực đơn
+    kana: チョー トイ セム トゥック ドン
+  - id: this-one
+    ja: これをください
+    vi: Cho tôi cái này
+    kana: チョー トイ カイ ナイ
+    note: メニューや料理を指さしながら使いましょう。
+  - id: no-cilantro
+    ja: パクチーを入れないでください
+    vi: Đừng bỏ rau ngò
+    kana: ドゥン ボー ラウ ンゴー
+    note: 「rau ngò」は南部でパクチー（コリアンダー）のことです。
+  - id: no-ice
+    ja: 氷なしでお願いします
+    vi: Không đá
+    kana: コン ダー
+  - id: iced-milk-coffee
+    ja: アイスミルクコーヒーを1杯ください
+    vi: Cho tôi một ly cà phê sữa đá
+    kana: チョー トイ モッ リー カー フェー スア ダー
+    note: 練乳入りの甘いアイスコーヒーで、ベトナムの定番です。
+  - id: bottled-water
+    ja: ミネラルウォーターを1本ください
+    vi: Cho tôi một chai nước suối
+    kana: チョー トイ モッ チャイ ヌオック スオイ
+    note: 「nước suối」は南部でボトル入りの水を指す言い方です。
+  - id: delicious
+    ja: とてもおいしいです
+    vi: Ngon quá!
+    kana: ンゴン ワー
+  - id: check-please
+    ja: お会計をお願いします
+    vi: Tính tiền
+    kana: ティン ティエン
