@@ -15,6 +15,7 @@ const theme = z.enum([
   'history',
   'nightview',
   'market',
+  'hiking',
 ]);
 const month = z.number().int().min(1).max(12);
 const triState = z.union([z.boolean(), z.literal('unknown')]);

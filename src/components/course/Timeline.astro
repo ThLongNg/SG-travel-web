@@ -19,10 +19,12 @@ const days = [...schedule].sort((a, b) => a.day - b.day);
 ---
 
 <div class="space-y-5">
-  {days.map((day) => (
-    <GlassPanel as="section" variant="strong" aria-labelledby={`day-${day.day}`}>
-      <h3 id={`day-${day.day}`} class="mb-4 flex items-center gap-3 font-sans text-[17px]">
-        <span class="tag tag--amber font-latin">{t(lang, 'courses.day', { n: day.day })}</span>
+  {days.map((day, di) => (
+    <GlassPanel as="section" variant="strong" aria-labelledby={`day-${di}`}>
+      <h3 id={`day-${di}`} class="mb-4 flex items-center gap-3 font-sans text-[17px]">
+        <span class="tag tag--amber font-latin shrink-0 whitespace-nowrap">
+          {t(lang, 'courses.day', { n: day.day })}
+        </span>
         {day.title && <span class="font-bold">{day.title}</span>}
       </h3>
       <ol class="timeline m-0 list-none p-0">

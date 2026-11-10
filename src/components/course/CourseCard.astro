@@ -2,8 +2,8 @@
 // Course card (pattern from /dev/glass §03): 16:9 image, amber duration tag, serif title, summary.
 import { Image } from 'astro:assets';
 import GlassPanel from '../glass/GlassPanel.astro';
-import { localizePath, t, type Locale } from '../../lib/i18n';
-import { themeLabel, type Course } from '../spot/spot-utils';
+import { localizePath, type Locale } from '../../lib/i18n';
+import { courseLength, themeLabel, type Course } from '../spot/spot-utils';
 
 interface Props {
   course: Course;
@@ -30,7 +30,7 @@ const d = course.data;
     </div>
     <div class="p-5">
       <div class="flex flex-wrap gap-1.5">
-        <span class="tag tag--amber">{t(lang, 'courses.nights', { n: d.nights, m: d.days })}</span>
+        <span class="tag tag--amber">{courseLength(lang, d)}</span>
         {d.themes.slice(0, 2).map((th) => (
           <span class="tag">{themeLabel(lang, th)}</span>
         ))}

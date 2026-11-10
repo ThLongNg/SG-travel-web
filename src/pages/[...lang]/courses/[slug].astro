@@ -10,7 +10,7 @@ import Timeline from '../../../components/course/Timeline.astro';
 import Prose from '../../../components/spot/Prose.astro';
 import PageMeta from '../../../components/spot/PageMeta.astro';
 import ContentNotes from '../../../components/spot/ContentNotes.astro';
-import { themeLabel } from '../../../components/spot/spot-utils';
+import { courseLength, themeLabel } from '../../../components/spot/spot-utils';
 import { getLocale, localeParams, localizePath, t } from '../../../lib/i18n';
 
 export const getStaticPaths = (async () => {
@@ -64,9 +64,7 @@ const coursesHref = localizePath('/courses/', lang);
       <header class="space-y-3">
         <ContentNotes lang={lang} verified={d.verified} />
         <div class="flex flex-wrap gap-2">
-          <span class="tag tag--amber">
-            {t(lang, 'courses.nights', { n: d.nights, m: d.days })}
-          </span>
+          <span class="tag tag--amber">{courseLength(lang, d)}</span>
           {d.themes.map((th) => (
             <span class="tag">{themeLabel(lang, th)}</span>
           ))}
@@ -99,7 +97,7 @@ const coursesHref = localizePath('/courses/', lang);
 
     <section aria-labelledby="course-schedule">
       <div class="section-head">
-        <h2 id="course-schedule">{t(lang, 'courses.nights', { n: d.nights, m: d.days })}</h2>
+        <h2 id="course-schedule">{courseLength(lang, d)}</h2>
       </div>
       <Timeline lang={lang} schedule={d.schedule} spotIds={spotIds} />
     </section>

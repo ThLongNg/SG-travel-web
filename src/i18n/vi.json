@@ -63,7 +63,8 @@
     "walk": "Dạo phố",
     "history": "Lịch sử",
     "nightview": "Cảnh đêm",
-    "market": "Chợ"
+    "market": "Chợ",
+    "hiking": "Leo núi"
   },
   "areas": {
     "north": "Miền Bắc",
@@ -136,7 +137,8 @@
     "move": "Di chuyển",
     "estimatedCost": "Chi phí ước tính",
     "perPerson": "mỗi người",
-    "nights": "{m} ngày {n} đêm"
+    "nights": "{m} ngày {n} đêm",
+    "dayTrip": "Đi về trong ngày"
   },
   "guide": {
     "title": "Chuẩn bị chuyến đi & thông tin hữu ích",

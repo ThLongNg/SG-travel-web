@@ -63,7 +63,8 @@
     "walk": "City walk",
     "history": "History",
     "nightview": "Night view",
-    "market": "Market"
+    "market": "Market",
+    "hiking": "Hiking"
   },
   "areas": {
     "north": "North",
@@ -136,7 +137,8 @@
     "move": "Travel",
     "estimatedCost": "Estimated cost",
     "perPerson": "per person",
-    "nights": "{n} nights / {m} days"
+    "nights": "{n} nights / {m} days",
+    "dayTrip": "Day trip"
   },
   "guide": {
     "title": "Travel tips & practical info",

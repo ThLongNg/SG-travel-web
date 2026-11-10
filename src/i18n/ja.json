@@ -63,7 +63,8 @@
     "walk": "街歩き",
     "history": "歴史",
     "nightview": "夜景",
-    "market": "市場"
+    "market": "市場",
+    "hiking": "ハイキング"
   },
   "areas": {
     "north": "北部",
@@ -136,7 +137,8 @@
     "move": "移動",
     "estimatedCost": "費用の目安",
     "perPerson": "1人あたり",
-    "nights": "{n}泊{m}日"
+    "nights": "{n}泊{m}日",
+    "dayTrip": "日帰り"
   },
   "guide": {
     "title": "旅の準備・お役立ち情報",

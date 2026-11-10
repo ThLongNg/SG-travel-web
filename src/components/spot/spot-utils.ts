@@ -10,6 +10,7 @@ export type Theme = Spot['data']['themes'][number];
 
 export const regions: readonly Region[] = ['north', 'central', 'south'];
 export const allThemes: readonly Theme[] = [
+  'hiking',
   'beach',
   'food',
   'heritage',
@@ -75,7 +76,11 @@ export async function getSortedAreas(): Promise<Area[]> {
 export async function getSortedCourses(): Promise<Course[]> {
   const courses = await getCollection('courses');
   return courses.sort(
-    (a, b) => Number(a.data.fixture) - Number(b.data.fixture) || a.data.days - b.data.days,
+    // trip order: a course starting on day 1 comes before the day-3 options
+    (a, b) =>
+      Number(a.data.fixture) - Number(b.data.fixture) ||
+      a.data.schedule[0].day - b.data.schedule[0].day ||
+      a.data.days - b.data.days,
   );
 }
 
@@ -87,4 +92,11 @@ export function mapLinks(name: string, lat: number, lng: number) {
     apple: `https://maps.apple.com/?q=${q}&ll=${lat},${lng}`,
     embed: `https://maps.google.com/maps?q=${lat},${lng}&z=16&hl=ja&output=embed`,
   };
+}
+
+/** "N nights M days" label (courses.nights), or courses.dayTrip when nights = 0. */
+export function courseLength(lang: Locale, d: { nights: number; days: number }): string {
+  return d.nights === 0
+    ? t(lang, 'courses.dayTrip')
+    : t(lang, 'courses.nights', { n: d.nights, m: d.days });
 }
