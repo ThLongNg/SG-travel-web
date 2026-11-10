@@ -1,7 +1,20 @@
 ---
-// STUB (owner: Agent C). Props are frozen by docs/CONTRACT.md — rewrite the internals only.
-// C adds: OG/Twitter, hreflang, JSON-LD (TouristAttraction, BreadcrumbList), OG image.
-import type { Locale } from '../../lib/i18n';
+// Owner: Agent C. Props are frozen by docs/CONTRACT.md — only the internals change.
+// Renders: title/description, canonical, hreflang (ja/vi/en + x-default), robots, OG/Twitter,
+// JSON-LD (page objects + TouristAttraction for spot pages + BreadcrumbList + WebSite on home).
+// OG image per page: hero image of the spot/area/course (cropped to 1200×630 by astro:assets),
+// otherwise the static per-section image in public/og/ (made by src/components/seo/generate-og.mjs).
+import { getEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+  locales,
+  localizePath,
+  t,
+  unlocalizePath,
+  type I18nKey,
+  type Locale,
+} from '../../lib/i18n';
 
 export interface Breadcrumb {
   name: string;
@@ -21,11 +34,176 @@ interface Props {
   noindex?: boolean;
 }
 
-const { title, description, noindex = false } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const { title, description, lang, image, jsonLd = [], breadcrumbs, noindex = false } = Astro.props;
+
+const site = Astro.site ?? new URL('https://saigon-travel.example');
+const abs = (path: string) => new URL(path, site).href;
+/** "/vi/spots" → "/vi/spots/" (directory-style URLs, as built) */
+const withSlash = (p: string) => (p.endsWith('/') || /\.[a-z0-9]+$/i.test(p) ? p : `${p}/`);
+
+const pathname = withSlash(Astro.url.pathname);
+const basePath = unlocalizePath(pathname); // locale-free, e.g. /spots/ben-thanh/
+const canonical = abs(pathname);
+const siteName = t(lang, 'site.name');
+const pageName = title.replace(new RegExp(`｜${siteName}$`), '');
+const isHome = basePath === '/';
+const segments = basePath.split('/').filter(Boolean);
+const ogLocale = { ja: 'ja_JP', vi: 'vi_VN', en: 'en_US' } as const;
+
+// ───── Content entry behind this URL (spot / area / course) ─────
+type Hero = { img: ImageMetadata; alt: string };
+let hero: Hero | undefined;
+let attraction: Record<string, unknown> | undefined;
+if (segments.length === 2 && !noindex) {
+  const [kind, id] = segments;
+  if (kind === 'spots') {
+    const spot = await getEntry('spots', id);
+    if (spot) {
+      const d = spot.data;
+      hero = { img: d.heroImage, alt: d.heroAlt };
+      attraction = {
+        '@context': 'https://schema.org',
+        '@type': 'TouristAttraction',
+        name: d.nameJa,
+        alternateName: d.nameVi,
+        description: d.summary,
+        url: canonical,
+        inLanguage: 'ja',
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: d.coordinates.lat,
+          longitude: d.coordinates.lng,
+        },
+        address: { '@type': 'PostalAddress', addressLocality: d.city, addressCountry: 'VN' },
+        touristType: '日本人旅行者',
+        isAccessibleForFree: d.info.priceVnd === 0 ? true : undefined,
+      };
+    }
+  } else if (kind === 'areas') {
+    const area = await getEntry('areas', id);
+    if (area) hero = { img: area.data.heroImage, alt: area.data.heroAlt };
+  } else if (kind === 'courses') {
+    const course = await getEntry('courses', id);
+    if (course) hero = { img: course.data.heroImage, alt: course.data.heroAlt };
+  }
+}
+
+// ───── OG image ─────
+const sectionOg: Record<string, string> = {
+  spots: '/og/spots.png',
+  areas: '/og/spots.png',
+  courses: '/og/courses.png',
+  phrases: '/og/phrases.png',
+  guide: '/og/guide.png',
+  about: '/og/about.png',
+  contact: '/og/contact.png',
+  privacy: '/og/default.png',
+};
+let og = { url: abs(sectionOg[segments[0]] ?? '/og/default.png'), w: 1200, h: 630, alt: siteName };
+if (image) {
+  og = { url: abs(image), w: 0, h: 0, alt: pageName };
+} else if (hero) {
+  const img = await getImage({
+    src: hero.img,
+    width: 1200,
+    height: 630,
+    fit: 'cover',
+    format: 'jpg',
+  });
+  og = { url: abs(img.src), w: 1200, h: 630, alt: hero.alt };
+}
+if (attraction) attraction.image = og.url;
+
+// ───── Breadcrumbs: given by the page, or derived from the URL ─────
+const sectionKey: Record<string, I18nKey> = {
+  spots: 'nav.spots',
+  courses: 'nav.courses',
+  phrases: 'nav.phrases',
+  guide: 'nav.guide',
+  about: 'nav.about',
+  contact: 'nav.contact',
+  privacy: 'nav.privacy',
+};
+const sectionHasIndex = new Set(['spots', 'courses']);
+const crumbs: Breadcrumb[] =
+  breadcrumbs ??
+  (isHome || noindex
+    ? []
+    : [
+        { name: t(lang, 'nav.home'), href: localizePath('/', lang) },
+        ...(segments.length > 1 && sectionHasIndex.has(segments[0])
+          ? [
+              {
+                name: t(lang, sectionKey[segments[0]]),
+                href: localizePath(`/${segments[0]}/`, lang),
+              },
+            ]
+          : []),
+        { name: pageName, href: pathname },
+      ]);
+
+const graph: Record<string, unknown>[] = [...jsonLd];
+const has = (type: string) => graph.some((o) => o['@type'] === type);
+if (attraction && !has('TouristAttraction')) graph.push(attraction);
+if (crumbs.length > 1 && !has('BreadcrumbList')) {
+  graph.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: crumbs.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.name,
+      item: abs(c.href),
+    })),
+  });
+}
+if (isHome && !noindex && !has('WebSite')) {
+  graph.push({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteName,
+    url: abs(localizePath('/', lang)),
+    inLanguage: lang,
+    description,
+  });
+}
+// Escape "<" so content can never close the <script> element.
+const ld = (o: unknown) => JSON.stringify(o).replace(/</g, '\\u003c');
 ---
 
 <title>{title}</title>
 <meta name="description" content={description} />
-<link rel="canonical" href={canonical} />
-{noindex && <meta name="robots" content="noindex" />}
+{noindex ? (
+  <meta name="robots" content="noindex, nofollow" />
+) : (
+  <>
+    <link rel="canonical" href={canonical} />
+    {locales.map((l) => (
+      <link rel="alternate" hreflang={l} href={abs(localizePath(basePath, l))} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={abs(basePath)} />
+  </>
+)}
+
+<meta property="og:type" content={attraction ? 'article' : 'website'} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:title" content={pageName} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={ogLocale[lang]} />
+{locales
+  .filter((l) => l !== lang)
+  .map((l) => (
+    <meta property="og:locale:alternate" content={ogLocale[l]} />
+  ))}
+<meta property="og:image" content={og.url} />
+{og.w > 0 && <meta property="og:image:width" content={String(og.w)} />}
+{og.h > 0 && <meta property="og:image:height" content={String(og.h)} />}
+<meta property="og:image:alt" content={og.alt} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageName} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={og.url} />
+{graph.map((o) => (
+  <script type="application/ld+json" set:html={ld(o)} />
+))}

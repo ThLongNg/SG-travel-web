@@ -1,4 +1,20 @@
 ---
-// STUB (owner: Agent C). No props. Rendered once in BaseLayout <head>.
-// C adds: <link rel="manifest">, theme-color, apple-touch-icon, service worker registration.
+// Owner: Agent C. No props. Rendered once in BaseLayout <head>.
+// Manifest + icons, and service-worker registration (production builds only, so `astro dev` is
+// never served stale files). The worker itself is public/sw.js.
+const prod = import.meta.env.PROD;
 ---
+
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="サイゴン旅" />
+{prod && <script is:inline>
+  if ('serviceWorker' in navigator) {
+    addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    });
+  }
+</script>}
