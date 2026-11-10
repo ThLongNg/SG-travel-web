@@ -1,0 +1,147 @@
+---
+// Collapsed guide cards (title + one-line lead; tap to open points, links and sources).
+// Used by /guide/ (お役立ち) and /eat/ (食べる・買う). Deep links (#<guide id>) open the card.
+import type { CollectionEntry } from 'astro:content';
+import GlassPanel from '../glass/GlassPanel.astro';
+import Icon, { type IconName } from '../glass/Icon.astro';
+import { formatJaDate } from '../../lib/format';
+import { t, type Locale } from '../../lib/i18n';
+
+interface Props {
+  lang: Locale;
+  guides: CollectionEntry<'guides'>[];
+}
+
+const { lang, guides } = Astro.props;
+
+const icons = {
+  visa: 'ticket',
+  money: 'yen',
+  sim: 'wifi',
+  grab: 'route',
+  tip: 'card',
+  safety: 'shield',
+  hygiene: 'check',
+  power: 'info',
+  weather: 'sun',
+  manners: 'chat',
+  payment: 'card',
+  food: 'bowl',
+  shopping: 'bag',
+} as const satisfies Record<string, IconName>;
+const amber = new Set(['sim', 'payment', 'safety', 'food']);
+/** Readers see "要確認" instead of the internal "TODO: 要確認" marker. */
+const clean = (s: string) => s.replace(/TODO:\s*/g, '');
+---
+
+<div class="grid grid-cols-1 items-start gap-3 md:grid-cols-2">
+  {guides.map(({ id, data }) => {
+    const List = data.ordered ? 'ol' : 'ul';
+    return (
+      <GlassPanel as="article" variant="light" padding="none">
+        <details id={id} class="guide-card group scroll-mt-28">
+          <summary class="flex min-h-[64px] cursor-pointer list-none items-center gap-3 p-4 [&::-webkit-details-marker]:hidden">
+            <span class:list={['icon-badge', amber.has(data.category) && 'icon-badge--amber']}>
+              <Icon name={icons[data.category]} size={20} />
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block text-[17px] leading-snug font-bold">{data.title}</span>
+              <span class="block text-[13px] leading-snug text-ink-muted">
+                {clean(data.summary)}
+              </span>
+            </span>
+            <Icon
+              name="chevronDown"
+              class="shrink-0 text-ink-muted transition-transform group-open:rotate-180"
+            />
+          </summary>
+          <div class="space-y-3 px-4 pb-4">
+            <List
+              class:list={[
+                'm-0 list-none space-y-2 border-t border-line p-0 pt-3',
+                data.ordered && 'is-steps',
+              ]}
+            >
+              {data.points.map((point) => (
+                <li class="flex gap-2.5 text-[14px] leading-relaxed">
+                  {!data.ordered && (
+                    <Icon name="check" size={16} class="mt-1 shrink-0 text-river" />
+                  )}
+                  <span>{clean(point)}</span>
+                </li>
+              ))}
+            </List>
+            {data.links.length > 0 && (
+              <div class="flex flex-wrap gap-2">
+                {data.links.map((l) => (
+                  <a
+                    href={l.url}
+                    target="_blank"
+                    rel="noopener"
+                    class="glass-press touch-target inline-flex items-center gap-1.5 rounded-full bg-amber px-4 text-[14px] font-semibold text-ink-dark no-underline"
+                  >
+                    {l.label}
+                    <Icon name="external" size={16} />
+                  </a>
+                ))}
+              </div>
+            )}
+            <p class="m-0 text-[11px] leading-relaxed text-ink-muted">
+              {t(lang, 'common.sources')}:{' '}
+              {data.sources.map((s, i) => (
+                <>
+                  {i > 0 && '、'}
+                  <a
+                    href={s.url}
+                    class="underline underline-offset-2"
+                    rel="noopener"
+                    target="_blank"
+                  >
+                    {s.title}
+                  </a>
+                </>
+              ))}
+              {' ・ '}
+              {t(lang, 'common.lastUpdated')} {formatJaDate(data.lastVerified)}
+              {!data.verified && import.meta.env.DEV && (
+                <span class="tag tag--amber ml-1">{t(lang, 'common.verifying')}</span>
+              )}
+            </p>
+          </div>
+        </details>
+      </GlassPanel>
+    );
+  })}
+</div>
+
+<script>
+  // Deep links from the home page (/guide/#payment) open that card.
+  const openFromHash = () => {
+    const el = location.hash ? document.getElementById(location.hash.slice(1)) : null;
+    if (el instanceof HTMLDetailsElement) el.open = true;
+  };
+  addEventListener('hashchange', openFromHash);
+  openFromHash();
+</script>
+
+<style>
+  /* Numbered steps (VNPAY how-to): amber number discs instead of check marks */
+  .is-steps {
+    counter-reset: step;
+  }
+  .is-steps li::before {
+    counter-increment: step;
+    content: counter(step);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+    border-radius: 9999px;
+    background: var(--color-amber);
+    color: var(--color-ink-dark);
+    font-size: 12px;
+    font-weight: 700;
+  }
+</style>

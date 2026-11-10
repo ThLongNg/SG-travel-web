@@ -1,0 +1,60 @@
+---
+// 食べる・買う: what to eat, how to order, what to buy and how — so she can choose any place
+// nearby by herself (no specific restaurants). Cards come from the `guides` collection.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import GuideCards from '../../../components/guide/GuideCards.astro';
+import { EAT_CATEGORIES } from '../../../components/guide/categories';
+import { getLocale, localeParams, localizePath, t } from '../../../lib/i18n';
+
+export const getStaticPaths = localeParams;
+const lang = getLocale(Astro.params.lang);
+
+const guides = (await getCollection('guides'))
+  .filter((g) => EAT_CATEGORIES.includes(g.data.category))
+  .sort((a, b) => a.data.order - b.data.order);
+const food = guides.filter((g) => g.data.category === 'food');
+const shopping = guides.filter((g) => g.data.category === 'shopping');
+---
+
+<BaseLayout
+  title={t(lang, 'eat.title')}
+  description={t(lang, 'eat.lead')}
+  lang={lang}
+  activeTab="guide"
+  breadcrumbs={[
+    { name: t(lang, 'nav.home'), href: localizePath('/', lang) },
+    { name: t(lang, 'eat.title'), href: localizePath('/eat/', lang) },
+  ]}
+>
+  <div class="mx-auto max-w-5xl space-y-12 px-4">
+    <header>
+      <p class="eyebrow font-latin tracking-[0.3em]!">EAT &amp; SHOP</p>
+      <h1 class="mt-1 text-[28px] leading-snug">{t(lang, 'eat.title')}</h1>
+      <p class="mt-1 text-[15px] text-ink-muted">{t(lang, 'eat.lead')}</p>
+      {lang !== 'ja' && (
+        <p class="mt-2 text-[12px] text-ink-muted">{t(lang, 'common.untranslated')}</p>
+      )}
+    </header>
+
+    <section aria-labelledby="eat-food">
+      <div class="section-head">
+        <h2 id="eat-food">
+          <span class="section-no">01</span>
+          {t(lang, 'guide.cat.food')}
+        </h2>
+      </div>
+      <GuideCards lang={lang} guides={food} />
+    </section>
+
+    <section aria-labelledby="eat-shop">
+      <div class="section-head">
+        <h2 id="eat-shop">
+          <span class="section-no">02</span>
+          {t(lang, 'guide.cat.shopping')}
+        </h2>
+      </div>
+      <GuideCards lang={lang} guides={shopping} />
+    </section>
+  </div>
+</BaseLayout>

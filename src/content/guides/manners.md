@@ -2,7 +2,7 @@
 slug: manners
 title: マナー・チップ
 category: manners
-order: 8
+order: 11
 summary: 寺院の服装と、写真のひと声だけ覚えておけば大丈夫。
 points:
   - 寺院や宗教施設では肩とひざを隠す。靴を脱ぐ場所もあります

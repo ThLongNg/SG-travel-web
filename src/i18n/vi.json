@@ -165,7 +165,9 @@
       "power": "Điện & ổ cắm",
       "weather": "Mùa & thời tiết",
       "manners": "Ứng xử & văn hóa",
-      "payment": "Thanh toán QR (VNPAY)"
+      "payment": "Thanh toán QR (VNPAY)",
+      "food": "Ăn uống",
+      "shopping": "Quà lưu niệm"
     },
     "amount": "Số tiền",
     "quick": "Số tiền thường dùng",
@@ -233,5 +235,9 @@
   "offline": {
     "title": "Bạn đang ngoại tuyến",
     "lead": "Sổ tay hội thoại đã lưu vẫn dùng được khi không có mạng."
+  },
+  "eat": {
+    "title": "Ăn & mua sắm",
+    "lead": "Gợi ý để tự mình ăn uống và chọn quà một cách yên tâm."
   }
 }

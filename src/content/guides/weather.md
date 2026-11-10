@@ -2,7 +2,7 @@
 slug: weather
 title: 天気と暑さ対策
 category: weather
-order: 7
+order: 10
 summary: 一年中暑い南部。山歩きや屋外観光は朝のうちに。
 points:
   - 12〜4月は乾季、5〜11月は雨季（午後に激しいスコール）

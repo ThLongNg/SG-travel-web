@@ -38,6 +38,11 @@ test.describe('VND ⇄ JPY converter', () => {
     await expect(esim).toHaveAttribute('rel', /noopener/);
     // internal markers never reach readers
     await expect(page.locator('main')).not.toContainText('TODO');
+    // food & souvenir cards live on their own page, not here
+    await expect(page.locator('details#food')).toHaveCount(0);
+    await page.goto('/eat/#food');
+    await expect(page.locator('details#food')).toHaveAttribute('open', '');
+    await expect(page.locator('details#shopping')).toHaveCount(1);
   });
 });
 

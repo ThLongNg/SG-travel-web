@@ -2,7 +2,7 @@
 slug: money
 title: お金
 category: money
-order: 5
+order: 8
 summary: 屋台や市場は現金、ホテルや大型店はカードが基本です。
 points:
   - 通貨はドン（VND）。桁が多いので、紙幣の「0」の数をよく確認

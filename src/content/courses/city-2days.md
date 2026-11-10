@@ -3,7 +3,7 @@ slug: city-2days
 title: ホーチミン市内2日間 歩いてめぐる歴史散歩
 nights: 1
 days: 2
-summary: 2泊3日の旅の1・2日目。見どころが近くに集まるエリアを、徒歩ルートでつないで回ります。1日目は中心部を約6km、2日目はチョロンと北エリアを約5km（目安）。乗り物はチョロンの往復だけです。3日目は「タイニン」か「ブンタウ」の日帰りプランから選べます。
+summary: 2泊3日の旅の1・2日目。見どころが近くに集まるエリアを、徒歩ルートでつないで回ります。1日目は中心部を約6km、2日目はチョロンと北エリアを約5km（目安）。どちらの日も、夜のライトアップや川沿いまで21〜22時ごろまで楽しめます。3日目は「タイニン」か「ブンタウ」の日帰りプランから選べます。
 heroImage: ../../assets/content/course-city-2days.webp
 heroAlt: ホーチミン中心部の街並み（仮画像）
 themes: [walk, history, market]
@@ -71,7 +71,23 @@ schedule:
       - time: '18:30'
         title: ベンタイン市場と夕食
         spot: ben-thanh-market
-        note: 市場の周辺で南部料理の夕食を。帰りは徒歩かGrabで。
+        note: 市場の周辺で南部料理の夕食を。「お役立ち」の「まず食べたい南部の味」を参考に、看板の料理名で選んでみましょう。
+        moveMinutes: 12
+        moveBy: 徒歩（約0.9km）
+      - time: '20:00'
+        title: レロイ通りを歩いて、ライトアップの市民劇場へ
+        spot: saigon-opera-house
+        note: 夜はコロニアル建築がライトアップされ、昼とはまったく違う表情に。
+        moveMinutes: 5
+        moveBy: 徒歩（約0.4km）
+      - time: '20:30'
+        title: 夜のグエンフエ通り（歩行者天国）
+        spot: nguyen-hue-walking-street
+        note: 夜がいちばんにぎわう時間。人が多いので、スマホとバッグは体の前に。
+        moveMinutes: 15
+        moveBy: 徒歩・Grab
+      - time: '21:30'
+        title: ホテルへ
   - day: 2
     title: チョロンと北エリアの2つの徒歩ルート（約5km）
     items:
@@ -120,8 +136,24 @@ schedule:
         costVnd: 60000
         moveMinutes: 20
         moveBy: 徒歩またはGrab
-      - time: '18:30'
-        title: 夕食・早めに休む
+      - time: '18:45'
+        title: ダーカオ・タンディン周辺で夕食
+        note: 動植物園から歩いてすぐの古い住宅街。食堂の看板の料理名を手がかりに選んでみましょう。
+        moveMinutes: 15
+        moveBy: Grab
+      - time: '20:00'
+        title: 夜のサイゴン川沿いをさんぽ
+        note: 川風が涼しい夜の遊歩道。対岸の夜景を眺めながらのんびり歩けます。
+        moveMinutes: 20
+        moveBy: Grab
+      - time: '21:00'
+        title: （お好みで）ランドマーク81から夜景
+        spot: landmark-81-skyview
+        note: '営業時間はTODO: 要確認。3日目にプランA（5時出発）を選ぶ場合は、ここは省いて早めに休みましょう。'
+        moveMinutes: 20
+        moveBy: Grab
+      - time: '22:00'
+        title: ホテルへ
 sources:
   - title: Di tích lịch sử Dinh Độc Lập（公式サイト）
     url: https://dinhdoclap.gov.vn/

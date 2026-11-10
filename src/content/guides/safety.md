@@ -2,7 +2,7 @@
 slug: safety
 title: 安全
 category: safety
-order: 6
+order: 9
 summary: 治安は安定していますが、ひったくりと誘いには注意。
 points:
   - バッグは体の前に。歩きながら車道側でスマホを持たない（バイクのひったくり）

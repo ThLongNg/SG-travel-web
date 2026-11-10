@@ -5,6 +5,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import GlassPanel from '../glass/GlassPanel.astro';
 import Icon, { type IconName } from '../glass/Icon.astro';
 import { localizePath, t, type Locale } from '../../lib/i18n';
+import { EAT_CATEGORIES } from '../guide/categories';
 
 interface Props {
   lang: Locale;
@@ -24,10 +25,13 @@ const categoryIcon: Record<Category, IconName> = {
   weather: 'sun',
   manners: 'heart',
   payment: 'card',
+  food: 'bowl',
+  shopping: 'bag',
 };
 const guides = (await getCollection('guides'))
+  .filter((g) => !EAT_CATEGORIES.includes(g.data.category))
   .sort((a, b) => Number(a.data.fixture) - Number(b.data.fixture) || a.data.order - b.data.order)
-  .slice(0, 2);
+  .slice(0, 1);
 
 const tiles: { href: string; icon: IconName; title: string; desc: string; amber?: boolean }[] = [
   {
@@ -43,12 +47,18 @@ const tiles: { href: string; icon: IconName; title: string; desc: string; amber?
     title: t(lang, 'phrases.title'),
     desc: t(lang, 'phrases.lead'),
   },
-  ...guides.map((g, i) => ({
+  {
+    href: localizePath('/eat/', lang),
+    icon: 'bowl',
+    title: t(lang, 'eat.title'),
+    desc: t(lang, 'eat.lead'),
+    amber: true,
+  },
+  ...guides.map((g) => ({
     href: localizePath('/guide/', lang) + `#${g.id}`,
     icon: categoryIcon[g.data.category],
     title: g.data.title,
     desc: g.data.summary,
-    amber: i === 1,
   })),
 ];
 ---

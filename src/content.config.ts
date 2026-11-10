@@ -160,6 +160,8 @@ const guides = defineCollection({
       'weather',
       'manners',
       'payment',
+      'food',
+      'shopping',
     ]),
     order: z.number().int().default(0),
     /** one-line lead under the card title */

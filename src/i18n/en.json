@@ -165,7 +165,9 @@
       "power": "Power & plugs",
       "weather": "Seasons & weather",
       "manners": "Manners & culture",
-      "payment": "QR payment (VNPAY)"
+      "payment": "QR payment (VNPAY)",
+      "food": "Food",
+      "shopping": "Souvenirs"
     },
     "amount": "Amount",
     "quick": "Common amounts",
@@ -233,5 +235,9 @@
   "offline": {
     "title": "You are offline",
     "lead": "Saved phrasebook pages work without a connection."
+  },
+  "eat": {
+    "title": "Eat & shop",
+    "lead": "Tips to eat out and pick souvenirs with confidence on your own."
   }
 }

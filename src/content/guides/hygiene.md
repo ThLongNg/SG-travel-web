@@ -2,7 +2,7 @@
 slug: hygiene
 title: 水とトイレ
 category: hygiene
-order: 10
+order: 13
 summary: 水はボトルで。ティッシュを1つ持ち歩くと安心です。
 points:
   - 水道水は飲まず、ボトル入りの水を買う
