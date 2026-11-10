@@ -6,7 +6,7 @@ region: south
 order: 3
 summary: ホーチミン中心部から北西へ約70km、ベトナム戦争の地下トンネル網が残るエリアです。ゴム林と田園が広がり、都会とはまったく違う南部の姿に出会えます。タイニンへ向かう途中に立ち寄れます。
 heroImage: ../../assets/content/area-hcmc-suburbs.webp
-heroAlt: クチの森の中の小道（仮画像）
+heroAlt: クチの森の中を歩く人たち
 climate:
   - { month: 1, highC: 32.0, lowC: 23.4, rainMm: 12, season: dry }
   - { month: 2, highC: 32.7, lowC: 23.1, rainMm: 8, season: dry }

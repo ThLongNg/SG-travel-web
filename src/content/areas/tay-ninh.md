@@ -6,7 +6,7 @@ region: south
 order: 4
 summary: ホーチミンの北西、カンボジア国境に近い省です。南部最高峰のバーデン山と、カオダイ教の総本山があります。2025年の行政再編で旧ロンアン省と統合されました。
 heroImage: ../../assets/content/area-tay-ninh.webp
-heroAlt: タイニンの平原とバーデン山（仮画像）
+heroAlt: タイニンの街並みと遠くのバーデン山
 climate:
   - { month: 1, highC: null, lowC: null, rainMm: null, season: dry }
   - { month: 2, highC: null, lowC: null, rainMm: null, season: dry }

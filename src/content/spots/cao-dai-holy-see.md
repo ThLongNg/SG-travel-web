@@ -10,10 +10,10 @@ themes: [history, heritage]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 20世紀前半にベトナムで生まれた新宗教、カオダイ教の総本山です。色鮮やかな大聖堂と、白い衣装の信徒たちが並ぶ正午の礼拝は、ほかでは見られない光景です。
 heroImage: ../../assets/content/cao-dai-holy-see.webp
-heroAlt: カオダイ教総本山の色鮮やかな大聖堂（仮画像）
+heroAlt: 青空の下のカオダイ教総本山の大聖堂
 gallery:
   - src: ../../assets/content/cao-dai-holy-see-2.webp
-    alt: 大聖堂の内部と「天眼」のシンボル（仮画像）
+    alt: 大聖堂の内部で祈りをささげる信者たち
 info:
   hours: '開門は朝から夜まで（6:00または7:00〜22:00と記載が分かれます）。礼拝は1日4回（0時・6時・12時・18時）で、正午が主要な礼拝。TODO: 要確認（公式の案内を未確認）'
   priceVnd: 0

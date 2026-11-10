@@ -10,10 +10,10 @@ themes: [history, walk]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: フランス統治時代の白亜の宮殿を使った博物館です。サイゴンの成り立ちから現代までを、土地の歴史や暮らしの道具で紹介しています。建物そのものも見どころです。
 heroImage: ../../assets/content/hcmc-museum.webp
-heroAlt: 白い柱が並ぶホーチミン市博物館の外観（仮画像）
+heroAlt: 白い柱が並ぶホーチミン市博物館の外観
 gallery:
   - src: ../../assets/content/hcmc-museum-2.webp
-    alt: ホーチミン市博物館の大階段（仮画像）
+    alt: ホーチミン市博物館の大階段とシャンデリア
 info:
   hours: '8:00〜17:00（毎日）。TODO: 要確認（公式の開館時間を未確認）'
   priceVnd: 60000

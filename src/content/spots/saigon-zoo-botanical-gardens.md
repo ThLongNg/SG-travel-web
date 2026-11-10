@@ -10,10 +10,10 @@ themes: [nature, walk, history]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 19世紀後半に開園した、ベトナムでもっとも古い動植物園です。大きな古木が木陰をつくる園内は、朝の散歩やジョギングにぴったり。都会の真ん中で深呼吸できる場所です。
 heroImage: ../../assets/content/saigon-zoo-botanical-gardens.webp
-heroAlt: 古木の並木が続くサイゴン動植物園の園内（仮画像）
+heroAlt: サイゴン動植物園の入口にある園内案内図
 gallery:
   - src: ../../assets/content/saigon-zoo-botanical-gardens-2.webp
-    alt: サイゴン動植物園の池と緑（仮画像）
+    alt: 園内のシカの群れ
 info:
   hours: '7:00〜18:30（毎日）'
   priceVnd: 60000

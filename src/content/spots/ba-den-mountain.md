@@ -10,10 +10,10 @@ themes: [hiking, nature, history]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 南部でいちばん高い山（標高約986m）で、古くから信仰を集める霊山です。中腹のバー寺までは歩いて登れ、山頂へはロープウェイでも行けます。体を動かしたい方の日帰り先にぴったりです。
 heroImage: ../../assets/content/ba-den-mountain.webp
-heroAlt: 平原にそびえるバーデン山の全景（仮画像）
+heroAlt: バーデン山の山頂から見下ろす雲海と仏像
 gallery:
   - src: ../../assets/content/ba-den-mountain-2.webp
-    alt: バーデン山の山頂から見下ろす雲海（仮画像）
+    alt: バーデン山の岩の多い登山道を歩く人
 info:
   hours: 'ロープウェイは平日6:00〜20:00、週末・祝日5:30〜21:00。登山道（コッディエン・ルート）は出発5:00〜11:00のみ'
   priceVnd: 450000

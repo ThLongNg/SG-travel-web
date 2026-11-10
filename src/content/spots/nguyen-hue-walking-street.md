@@ -10,10 +10,10 @@ themes: [walk, nightview]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 市人民委員会庁舎からサイゴン川の方向へまっすぐ延びる、広い歩行者空間です。夜になるとライトアップされた建物を背景に、地元の家族連れや若者が集まってにぎわいます。ホーチミンの「今」を感じられる夜の散歩道です。
 heroImage: ../../assets/content/nguyen-hue-walking-street.webp
-heroAlt: 夜のグエンフエ通りと人民委員会庁舎（仮画像）
+heroAlt: 夜にライトアップされた人民委員会庁舎とグエンフエ通り
 gallery:
   - src: ../../assets/content/nguyen-hue-walking-street-2.webp
-    alt: グエンフエ通りでくつろぐ人々（仮画像）
+    alt: 夜のグエンフエ通りと高層ビル
 info:
   hours: 'TODO: 要確認（通り自体は終日通行できますが、歩行者天国の時間帯・曜日は要確認）'
   priceVnd: 0

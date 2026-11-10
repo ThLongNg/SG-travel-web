@@ -10,10 +10,10 @@ themes: [history, walk]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 旧南ベトナムの大統領官邸で、1975年4月30日に解放軍の戦車が門を突破し、ベトナム戦争が終わった場所です。1960年代の建物と調度品がほぼ当時のまま残り、地下には作戦室や通信室が公開されています。
 heroImage: ../../assets/content/independence-palace.webp
-heroAlt: 統一会堂の正面と前庭（仮画像）
+heroAlt: 噴水と芝生の前庭が広がる統一会堂の正面
 gallery:
   - src: ../../assets/content/independence-palace-2.webp
-    alt: 統一会堂の地下にある作戦室（仮画像）
+    alt: 旗が並ぶ統一会堂の外観
 info:
   hours: '7:00〜18:00（毎日、祝日も開館。特別な行事の日を除く）'
   priceVnd: 80000

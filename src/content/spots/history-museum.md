@@ -10,10 +10,10 @@ themes: [history]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 先史時代から阮朝まで、ベトナムの長い歴史を出土品や美術品でたどる博物館です。フランス統治時代に建てられた東洋風の建物も見どころ。動植物園のすぐ隣にあります。
 heroImage: ../../assets/content/history-museum.webp
-heroAlt: 東洋風の屋根をもつ歴史博物館の建物（仮画像）
+heroAlt: 歴史博物館の外壁のレリーフ
 gallery:
   - src: ../../assets/content/history-museum-2.webp
-    alt: 歴史博物館の展示室（仮画像）
+    alt: 歴史博物館に展示された王宮の門の模型
 info:
   hours: '火〜日 8:00〜11:30、13:00〜17:00（月曜休館）。TODO: 要確認（公式の案内を未確認）'
   priceVnd: 30000

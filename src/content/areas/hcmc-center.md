@@ -6,7 +6,7 @@ region: south
 order: 1
 summary: ベンタイン市場、グエンフエ通り、サイゴン中央郵便局など、主要な見どころが歩いて回れる距離に集まるエリアです。ホテルやレストランも多く、初めてのホーチミン旅行の拠点に最適です。
 heroImage: ../../assets/content/area-hcmc-center.webp
-heroAlt: ホーチミン中心部の街並み（仮画像）
+heroAlt: 夜のサイゴン川とホーチミン中心部の高層ビル
 climate:
   - { month: 1, highC: 32.0, lowC: 23.4, rainMm: 12, season: dry }
   - { month: 2, highC: 32.7, lowC: 23.1, rainMm: 8, season: dry }

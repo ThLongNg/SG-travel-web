@@ -6,7 +6,7 @@ region: south
 order: 5
 summary: ホーチミンから高速船で約2時間の海辺の町です。2025年の行政再編でホーチミン市の一部になりました。丘の上のキリスト像や灯台を歩いて巡り、海鮮料理を味わう日帰り旅に向いています。
 heroImage: ../../assets/content/area-vung-tau.webp
-heroAlt: ブンタウの海岸線と丘の上のキリスト像（仮画像）
+heroAlt: 海に突き出したブンタウの岬と町並み
 climate:
   - { month: 1, highC: null, lowC: null, rainMm: null, season: dry }
   - { month: 2, highC: null, lowC: null, rainMm: null, season: dry }

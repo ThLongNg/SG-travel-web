@@ -10,10 +10,10 @@ themes: [market, shopping, food]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 時計塔のある正門がシンボルの、ホーチミンでもっとも有名な市場です。雑貨、コーヒー豆、衣料品から屋台の食事まで、ベトナムらしい品々がひとつの屋根の下にそろいます。旅の最初に訪れると、街の活気をまとめて体感できます。
 heroImage: ../../assets/content/ben-thanh-market.webp
-heroAlt: ベンタイン市場の時計塔がある正門（仮画像）
+heroAlt: ベンタイン市場の時計塔がある正門
 gallery:
   - src: ../../assets/content/ben-thanh-market-2.webp
-    alt: ベンタイン市場の通路に並ぶ雑貨の店（仮画像）
+    alt: ベンタイン市場の通路に並ぶ店
 info:
   hours: 'TODO: 要確認（市場管理会社は営業を22時まで延長したと発表。店舗ごとに異なります）'
   priceVnd: 0

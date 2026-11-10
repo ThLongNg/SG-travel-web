@@ -10,10 +10,10 @@ themes: [history, heritage]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 20世紀初めに華人が建てた、道教の神・玉皇上帝をまつる寺院です。線香の煙がたちこめる薄暗い堂内に、色鮮やかな神像がずらりと並ぶ、ホーチミンでも指折りの雰囲気ある寺です。
 heroImage: ../../assets/content/jade-emperor-pagoda.webp
-heroAlt: 線香の煙がたちこめる玉皇殿の堂内（仮画像）
+heroAlt: 赤い外壁の玉皇殿の入口
 gallery:
   - src: ../../assets/content/jade-emperor-pagoda-2.webp
-    alt: 玉皇殿の入口と池（仮画像）
+    alt: 供え物と線香が並ぶ玉皇殿の祭壇
 info:
   hours: '7:00〜17:30ごろ（旧暦の1日と15日は5:00〜19:00）。TODO: 要確認（寺の公式案内を未確認）'
   priceVnd: 0

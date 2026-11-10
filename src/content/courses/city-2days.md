@@ -5,7 +5,7 @@ nights: 1
 days: 2
 summary: 2泊3日の旅の1・2日目。見どころが近くに集まるエリアを、徒歩ルートでつないで回ります。1日目は中心部を約6km、2日目はチョロンと北エリアを約5km（目安）。どちらの日も、夜のライトアップや川沿いまで21〜22時ごろまで楽しめます。3日目は「タイニン」か「ブンタウ」の日帰りプランから選べます。
 heroImage: ../../assets/content/course-city-2days.webp
-heroAlt: ホーチミン中心部の街並み（仮画像）
+heroAlt: グエンフエ通りの蓮の噴水と人民委員会庁舎
 themes: [walk, history, market]
 estimatedCostJpy:
   min: 5000

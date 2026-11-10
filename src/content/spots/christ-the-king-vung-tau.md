@@ -10,10 +10,10 @@ themes: [hiking, beach, history]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 海辺の町ブンタウの小山（ヌイ・ニョー）の頂に立つ、高さ32mの巨大なキリスト像です。811段の石段を登り切り、像の内部のらせん階段で肩の上へ出ると、南シナ海と町を一望できます。
 heroImage: ../../assets/content/christ-the-king-vung-tau.webp
-heroAlt: 海を見下ろす丘の上のキリスト像（仮画像）
+heroAlt: 木々の間から見える丘の上のキリスト像
 gallery:
   - src: ../../assets/content/christ-the-king-vung-tau-2.webp
-    alt: キリスト像へ続く石段（仮画像）
+    alt: 海へ向かって下るキリスト像の石段
 info:
   hours: 'TODO: 要確認（像の内部に入れる時間は限られるとの情報あり）'
   priceVnd: null

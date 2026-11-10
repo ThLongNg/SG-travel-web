@@ -10,10 +10,10 @@ themes: [history, walk]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: フランス統治時代に建てられた、アーチ型の天井が美しい郵便局です。現役の郵便局として使われながら、観光名所としても親しまれています。サイゴン大教会の向かいにあり、あわせて散策するのが定番です。
 heroImage: ../../assets/content/saigon-central-post-office.webp
-heroAlt: サイゴン中央郵便局の黄色い外観（仮画像）
+heroAlt: 青空の下のサイゴン中央郵便局の外観
 gallery:
   - src: ../../assets/content/saigon-central-post-office-2.webp
-    alt: サイゴン中央郵便局のアーチ天井のホール（仮画像）
+    alt: サイゴン中央郵便局の正面の時計
 info:
   hours: 'TODO: 要確認（曜日により異なり、情報源によって記載が食い違っています）'
   priceVnd: 0

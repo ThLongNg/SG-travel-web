@@ -10,10 +10,10 @@ themes: [history, heritage]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 18世紀ごろに華人の移民が建てたとされる、海の女神・天后（媽祖）をまつる廟です。天井から吊るされた大きな渦巻き線香と、屋根を飾る細かな陶製の人形が見どころです。
 heroImage: ../../assets/content/thien-hau-temple.webp
-heroAlt: 渦巻き線香が吊るされたティエンハウ廟の中庭（仮画像）
+heroAlt: チョロンにあるティエンハウ廟の門
 gallery:
   - src: ../../assets/content/thien-hau-temple-2.webp
-    alt: ティエンハウ廟の屋根の陶製装飾（仮画像）
+    alt: ティエンハウ廟の屋根の陶製人形の装飾
 info:
   hours: 'TODO: 要確認（開門時間を未確認）'
   priceVnd: 0

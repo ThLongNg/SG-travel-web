@@ -5,6 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import GlassPanel from '../../components/glass/GlassPanel.astro';
 import Icon, { type IconName } from '../../components/glass/Icon.astro';
 import { getLocale, localeParams, localizePath, t, type I18nKey } from '../../lib/i18n';
+import photoCredits from '../../data/photo-credits.json';
 
 export const getStaticPaths = localeParams;
 const lang = getLocale(Astro.params.lang);
@@ -74,5 +75,31 @@ const links: { href: string; key: I18nKey; icon: IconName }[] = [
         </a>
       ))}
     </GlassPanel>
+
+    <!-- Required attribution for the Wikimedia Commons photos (CC BY / CC BY-SA). -->
+    <details id="credits" class="glass glass--light glass-radius p-4 text-[12px] text-ink-muted">
+      <summary class="cursor-pointer text-[14px] font-bold text-ink">{t(lang, 'footer.credits')}</summary>
+      <p class="mt-2">Wikimedia Commons · 動画: Explorepia</p>
+      <ul class="m-0 mt-2 list-none space-y-1 p-0">
+        {photoCredits.map((c) => (
+          <li class="font-latin">
+            <a href={c.source} target="_blank" rel="noopener noreferrer">{c.title}</a>
+            {' — '}
+            {c.author}
+            {' / '}
+            {c.licenseUrl ? (
+              <a href={c.licenseUrl} target="_blank" rel="noopener noreferrer">{c.license}</a>
+            ) : (
+              c.license
+            )}
+          </li>
+        ))}
+      </ul>
+    </details>
   </div>
 </BaseLayout>
+
+<script>
+  // The footer links to /about/#credits: open the list when arriving that way.
+  if (location.hash === '#credits') document.querySelector<HTMLDetailsElement>('#credits')!.open = true;
+</script>

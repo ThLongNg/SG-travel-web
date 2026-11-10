@@ -5,7 +5,7 @@ nights: 0
 days: 1
 summary: 2泊3日の旅の最終日に選べる2つの日帰りプランです。Aは南部最高峰のバーデン山とカオダイ教総本山、クチトンネルをめぐる「山と歴史」。Bは高速船で海辺の町へ渡り、811段の石段を登る「海と石段」。どちらも体を動かしたい方向けです。
 heroImage: ../../assets/content/course-day3-options.webp
-heroAlt: 平原にそびえる山と、海辺の町の風景（仮画像）
+heroAlt: ブンタウの丘から見下ろす海と岬
 themes: [hiking, history, nature]
 estimatedCostJpy:
   min: 4000

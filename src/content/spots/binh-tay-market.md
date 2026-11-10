@@ -10,10 +10,10 @@ themes: [market, history, shopping]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 華人街チョロンの中心にある、卸売りを主とする大きな市場です。中庭を囲む伝統的な建物の中に、乾物や日用品の店がぎっしりと並びます。観光客向けのベンタイン市場とは違う、地元の商いの熱気を味わえます。
 heroImage: ../../assets/content/binh-tay-market.webp
-heroAlt: ビンタイ市場の時計塔と中庭（仮画像）
+heroAlt: ビンタイ市場の時計塔がある正門
 gallery:
   - src: ../../assets/content/binh-tay-market-2.webp
-    alt: ビンタイ市場に積み上げられた乾物（仮画像）
+    alt: ビンタイ市場の中庭と階段
 info:
   hours: 'TODO: 要確認'
   priceVnd: 0

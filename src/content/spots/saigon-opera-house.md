@@ -10,10 +10,10 @@ themes: [history, walk, nightview]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 1900年ごろに完成した、フランス統治時代を代表する劇場建築です。目抜き通りドンコイ通りの起点に立ち、夜のライトアップも美しい街のシンボルです。
 heroImage: ../../assets/content/saigon-opera-house.webp
-heroAlt: ライトアップされた市民劇場の正面（仮画像）
+heroAlt: 市民劇場（オペラハウス）の正面
 gallery:
   - src: ../../assets/content/saigon-opera-house-2.webp
-    alt: 市民劇場の正面装飾（仮画像）
+    alt: 通りから見た市民劇場の全景
 info:
   hours: '外観はいつでも見学可。内部の見学・公演はTODO: 要確認（公演スケジュールは劇場で確認）'
   priceVnd: 0

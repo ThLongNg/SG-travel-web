@@ -10,10 +10,10 @@ themes: [nightview, shopping]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: サイゴン川沿いにそびえる超高層ビル「ランドマーク81」の上層階にある展望施設です。眼下に広がるホーチミンの街並みと、蛇行するサイゴン川を一望できます。夕暮れから夜景に変わる時間帯が特に人気です。
 heroImage: ../../assets/content/landmark-81-skyview.webp
-heroAlt: サイゴン川沿いにそびえるランドマーク81（仮画像）
+heroAlt: サイゴン川の向こうにそびえるランドマーク81
 gallery:
   - src: ../../assets/content/landmark-81-skyview-2.webp
-    alt: スカイビューから見たホーチミンの夜景（仮画像）
+    alt: 夜の川面に映るランドマーク81
 info:
   hours: 'TODO: 要確認（平日と週末で異なる可能性あり。最終入場時間も要確認）'
   priceVnd: null

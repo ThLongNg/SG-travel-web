@@ -10,10 +10,10 @@ themes: [history, walk]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: 外壁が鮮やかなピンク色に塗られた、19世紀後半に建てられたカトリック教会です。サイゴン大教会が修復中のいま、ホーチミンでいちばん写真に残したくなる教会かもしれません。
 heroImage: ../../assets/content/tan-dinh-church.webp
-heroAlt: ピンク色の外壁が目を引くタンディン教会（仮画像）
+heroAlt: ピンク色の尖塔がそびえるタンディン教会
 gallery:
   - src: ../../assets/content/tan-dinh-church-2.webp
-    alt: タンディン教会の尖塔（仮画像）
+    alt: タンディン教会の聖堂の内部
 info:
   hours: 'TODO: 要確認（ミサ以外の時間に内部を見学できるかは未確認。外観はいつでも見学可）'
   priceVnd: 0

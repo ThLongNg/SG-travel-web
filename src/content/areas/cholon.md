@@ -6,7 +6,7 @@ region: south
 order: 2
 summary: 古くから華人の商人が暮らしてきた、ホーチミン最大の中華街です。ビンタイ市場を中心に、問屋街や中国寺院（会館）が点在し、中心部とはひと味違う下町の活気に出会えます。
 heroImage: ../../assets/content/area-cholon.webp
-heroAlt: チョロンの問屋街と中国寺院（仮画像）
+heroAlt: チョロンのビンタイ市場とバイクの列
 climate:
   - { month: 1, highC: 32.0, lowC: 23.4, rainMm: 12, season: dry }
   - { month: 2, highC: 32.7, lowC: 23.1, rainMm: 8, season: dry }

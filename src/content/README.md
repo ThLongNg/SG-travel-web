@@ -12,7 +12,7 @@
 | `guides/`  | Markdown  | mỗi `category` một file (`visa`, `money`…)          |
 | `phrases/` | YAML      | mỗi file một nhóm tình huống (`greetings`, `food`…) |
 
-Ảnh: `src/assets/content/<slug>.webp` (ảnh chính) và `<slug>-2.webp`… (gallery). Hiện tất cả là placeholder — xem `CREDITS.md`.
+Ảnh: `src/assets/content/<slug>.webp` (ảnh chính) và `<slug>-2.webp`… (gallery). Ảnh thật từ Wikimedia Commons (CC BY / CC BY-SA / CC0 / public domain); nguồn và giấy phép ở `src/data/photo-credits.json` (hiển thị tại /about/#credits) và `CREDITS.md`.
 
 ## Quy tắc chất lượng thông tin
 

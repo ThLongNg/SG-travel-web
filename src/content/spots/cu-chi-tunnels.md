@@ -10,10 +10,10 @@ themes: [history, hiking, nature]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: ベトナム戦争中、サイゴン地区の司令部が置かれた地下トンネルの史跡です。観光客の多いベンディンではなく、より奥にあるベンユックへ。何層にも重なる狭く深いトンネルを、自分の体で進む本格的な体験ができます。
 heroImage: ../../assets/content/cu-chi-tunnels.webp
-heroAlt: ベンユックの森の中にあるトンネルの入口（仮画像）
+heroAlt: クチトンネルの森の中の小道と小屋
 gallery:
   - src: ../../assets/content/cu-chi-tunnels-2.webp
-    alt: クチトンネルの狭い地下通路（仮画像）
+    alt: ベンユック（Bến Dược）の記念殿
 info:
   hours: '7:00〜17:00（毎日）'
   priceVnd: 85000

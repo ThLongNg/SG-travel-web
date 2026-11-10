@@ -10,10 +10,10 @@ themes: [history]
 bestSeasons: [12, 1, 2, 3, 4]
 summary: ベトナム戦争の実像を、写真や兵器、証言で伝える博物館です。報道写真家たちの作品や、枯葉剤の被害を伝える展示は、ホーチミンでもっとも心に残る場所のひとつになるでしょう。
 heroImage: ../../assets/content/war-remnants-museum.webp
-heroAlt: 戦争証跡博物館の屋外に並ぶ戦車や航空機（仮画像）
+heroAlt: 戦争証跡博物館の建物の外観
 gallery:
   - src: ../../assets/content/war-remnants-museum-2.webp
-    alt: 戦争証跡博物館の写真展示フロア（仮画像）
+    alt: 戦争証跡博物館の屋外に展示された戦闘機
 info:
   hours: '7:30〜17:30（毎日、土日・祝日も開館）。チケット売り場は17:00まで'
   priceVnd: 40000
