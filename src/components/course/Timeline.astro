@@ -1,0 +1,109 @@
+---
+// Day-by-day timeline: time · rail dot · title (links to the spot when it exists) · note · cost,
+// with a "移動" connector (means + minutes) between stops.
+import GlassPanel from '../glass/GlassPanel.astro';
+import Icon from '../glass/Icon.astro';
+import { localizePath, t, type Locale } from '../../lib/i18n';
+import { formatDuration, formatPrice } from '../../lib/format';
+import type { Course } from '../spot/spot-utils';
+
+interface Props {
+  lang: Locale;
+  schedule: Course['data']['schedule'];
+  /** ids of existing spots (links are only rendered for these) */
+  spotIds: Set<string>;
+}
+
+const { lang, schedule, spotIds } = Astro.props;
+const days = [...schedule].sort((a, b) => a.day - b.day);
+---
+
+<div class="space-y-5">
+  {days.map((day) => (
+    <GlassPanel as="section" variant="strong" aria-labelledby={`day-${day.day}`}>
+      <h3 id={`day-${day.day}`} class="mb-4 flex items-center gap-3 font-sans text-[17px]">
+        <span class="tag tag--amber font-latin">{t(lang, 'courses.day', { n: day.day })}</span>
+        {day.title && <span class="font-bold">{day.title}</span>}
+      </h3>
+      <ol class="timeline m-0 list-none p-0">
+        {day.items.map((item, i) => {
+          const isLast = i === day.items.length - 1;
+          const linked = item.spot && spotIds.has(item.spot);
+          return (
+            <li class="timeline__item">
+              <time class="font-latin text-[15px] font-semibold text-amber" datetime={item.time}>
+                {item.time}
+              </time>
+              <span class="timeline__dot" aria-hidden="true" />
+              <div class="min-w-0 pb-5">
+                {linked ? (
+                  <a
+                    href={localizePath(`/spots/${item.spot}/`, lang)}
+                    class="inline-flex min-h-[28px] items-center gap-1 font-bold text-ink underline decoration-river/60 underline-offset-4"
+                  >
+                    {item.title}
+                    <Icon name="chevronRight" size={16} class="text-river" />
+                  </a>
+                ) : (
+                  <p class="m-0 font-bold">{item.title}</p>
+                )}
+                {item.note && (
+                  <p class="m-0 mt-0.5 text-[14px] leading-relaxed text-ink-muted">{item.note}</p>
+                )}
+                {item.costVnd !== undefined && (
+                  <p class="m-0 mt-1 flex items-center gap-1.5 text-[13px] text-ink-muted">
+                    <Icon name="yen" size={14} class="text-amber" />
+                    {formatPrice(item.costVnd)}
+                  </p>
+                )}
+                {!isLast && item.moveMinutes !== undefined && (
+                  <p class="m-0 mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1 text-[12px] text-ink-muted">
+                    <Icon name="route" size={14} class="text-river" />
+                    {t(lang, 'courses.move')}
+                    {item.moveBy && <span>· {item.moveBy}</span>}
+                    <span>· {formatDuration(item.moveMinutes)}</span>
+                  </p>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </GlassPanel>
+  ))}
+</div>
+
+<style>
+  .timeline__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 48px 14px 1fr;
+    column-gap: 10px;
+  }
+  .timeline__item time {
+    line-height: 28px;
+  }
+  .timeline__dot {
+    position: relative;
+    margin-top: 9px;
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    background: var(--color-river);
+    box-shadow: 0 0 0 3px rgb(46 196 182 / 0.22);
+    justify-self: center;
+  }
+  /* vertical rail between dots */
+  .timeline__item:not(:last-child) .timeline__dot::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 16px;
+    width: 2px;
+    height: calc(100% + 200px);
+    background: linear-gradient(rgb(46 196 182 / 0.45), rgb(46 196 182 / 0.15));
+  }
+  .timeline__item {
+    overflow: hidden;
+  }
+</style>

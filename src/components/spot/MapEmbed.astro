@@ -1,0 +1,57 @@
+---
+// Lazy Google Maps embed: nothing is requested until the block nears the viewport
+// (IntersectionObserver) or the user taps "地図を表示".
+import Icon from '../glass/Icon.astro';
+import { t, type Locale } from '../../lib/i18n';
+
+interface Props {
+  lang: Locale;
+  src: string;
+  title: string;
+}
+
+const { lang, src, title } = Astro.props;
+---
+
+<div
+  class="map-embed media-frame tile-pattern relative aspect-[4/3] md:aspect-[16/9]"
+  data-map-src={src}
+  data-map-title={title}
+>
+  <button
+    type="button"
+    class="glass glass-pill glass-press touch-target absolute inset-0 m-auto flex h-fit w-fit items-center gap-2 px-5 py-2.5 font-medium"
+    data-map-load
+  >
+    <Icon name="map" size={20} />
+    {t(lang, 'spots.loadMap')}
+  </button>
+</div>
+
+<script>
+  for (const box of document.querySelectorAll<HTMLElement>('[data-map-src]')) {
+    let done = false;
+    const load = () => {
+      if (done) return;
+      done = true;
+      const f = document.createElement('iframe');
+      f.src = box.dataset.mapSrc!;
+      f.title = box.dataset.mapTitle!;
+      f.loading = 'lazy';
+      f.referrerPolicy = 'no-referrer-when-downgrade';
+      f.className = 'absolute inset-0 h-full w-full border-0';
+      box.replaceChildren(f);
+    };
+    box.querySelector('[data-map-load]')?.addEventListener('click', load);
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          load();
+        }
+      },
+      { rootMargin: '200px 0px' },
+    );
+    io.observe(box);
+  }
+</script>

@@ -162,6 +162,8 @@ const { lang, height = 'full', class: className } = Astro.props;
     opacity: 1;
   }
   .video-hero__toggle {
+    /* .glass sets position:relative (unlayered) — re-assert here */
+    position: absolute;
     top: calc(var(--safe-top) + var(--header-h) + 20px);
     right: var(--spacing-gutter);
   }

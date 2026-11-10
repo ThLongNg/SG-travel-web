@@ -1,10 +1,19 @@
 ---
-// STUB (owner: Agent A) — area overview. `area` param = areas collection id.
+// Area overview (owner: Agent A). `area` param = areas collection id.
+// Image → title → overview (body) → 月別の気候 → 交通・移動 → spots in this region → 更新日/出典
 import type { GetStaticPaths } from 'astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import StubPage from '../../../components/StubPage.astro';
-import { getLocale, localeParams } from '../../../lib/i18n';
+import GlassPanel from '../../../components/glass/GlassPanel.astro';
+import Icon from '../../../components/glass/Icon.astro';
+import ClimateTable from '../../../components/area/ClimateTable.astro';
+import SpotCard from '../../../components/spot/SpotCard.astro';
+import Prose from '../../../components/spot/Prose.astro';
+import PageMeta from '../../../components/spot/PageMeta.astro';
+import ContentNotes from '../../../components/spot/ContentNotes.astro';
+import { getSortedSpots, regionLabel } from '../../../components/spot/spot-utils';
+import { getLocale, localeParams, localizePath, t } from '../../../lib/i18n';
 
 export const getStaticPaths = (async () => {
   const areas = await getCollection('areas');
@@ -15,8 +24,98 @@ export const getStaticPaths = (async () => {
 
 const { area } = Astro.props;
 const lang = getLocale(Astro.params.lang);
+const d = area.data;
+const { Content } = await render(area);
+const spots = (await getSortedSpots()).filter((s) => s.data.area === d.region);
+const spotsHref = localizePath('/spots/', lang);
+const pageHref = localizePath(`/areas/${area.id}/`, lang);
 ---
 
-<BaseLayout title={area.data.nameJa} description={area.data.summary} lang={lang}>
-  <StubPage title={area.data.nameJa} owner="A" data={area.data.transport} />
+<BaseLayout
+  title={d.nameJa}
+  description={d.summary}
+  lang={lang}
+  image={d.heroImage.src}
+  breadcrumbs={[
+    { name: t(lang, 'nav.home'), href: localizePath('/', lang) },
+    { name: d.nameJa, href: pageHref },
+  ]}
+>
+  <article class="mx-auto max-w-3xl space-y-8 px-4">
+    <div class="space-y-5">
+      <div class="media-frame aspect-[16/9]">
+        <Image
+          src={d.heroImage}
+          alt={d.heroAlt}
+          widths={[390, 780, 1200]}
+          sizes="(min-width: 768px) 768px, 100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <header class="space-y-3">
+        <ContentNotes lang={lang} verified={d.verified} />
+        <div>
+          <p class="eyebrow">{regionLabel(lang, d.region)}</p>
+          <h1 class="mt-1 text-[28px] leading-snug md:text-4xl">{d.nameJa}</h1>
+          <p class="font-latin text-sm text-ink-muted" lang="vi">
+            {d.nameVi}
+          </p>
+        </div>
+        <p class="text-[16px]">{d.summary}</p>
+      </header>
+    </div>
+
+    <GlassPanel variant="strong">
+      <Prose>
+        <Content />
+      </Prose>
+    </GlassPanel>
+
+    <section aria-labelledby="area-climate">
+      <div class="section-head">
+        <h2 id="area-climate">{t(lang, 'areas.climate')}</h2>
+      </div>
+      <GlassPanel variant="strong">
+        <ClimateTable lang={lang} climate={d.climate} />
+      </GlassPanel>
+    </section>
+
+    <section aria-labelledby="area-transport">
+      <div class="section-head">
+        <h2 id="area-transport">{t(lang, 'areas.transport')}</h2>
+      </div>
+      <ul class="m-0 grid list-none gap-3 p-0">
+        {d.transport.map((line) => (
+          <GlassPanel as="li" variant="light" padding="sm" class="flex items-start gap-3">
+            <span class="icon-badge size-9!">
+              <Icon name="train" size={18} />
+            </span>
+            <span class="pt-1.5 text-[15px] leading-relaxed">{line}</span>
+          </GlassPanel>
+        ))}
+      </ul>
+    </section>
+
+    {spots.length > 0 && (
+      <section aria-labelledby="area-spots">
+        <div class="section-head">
+          <h2 id="area-spots">{t(lang, 'areas.spotsInArea')}</h2>
+          <a href={`${spotsHref}?area=${d.region}`} class="section-more">
+            {t(lang, 'common.seeMore')}
+            <Icon name="chevronRight" size={16} />
+          </a>
+        </div>
+        <ul class="m-0 grid list-none grid-cols-2 gap-x-3 gap-y-6 p-0 md:grid-cols-3">
+          {spots.slice(0, 6).map((spot) => (
+            <li>
+              <SpotCard spot={spot} lang={lang} size="grid" />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <PageMeta lang={lang} lastVerified={d.lastVerified} sources={d.sources} />
+  </article>
 </BaseLayout>

@@ -1,15 +1,253 @@
 ---
-// STUB (owner: Agent A) — spot list with client-side filters.
+// Spot list (owner: Agent A): card grid + client-side search (kana/diacritics-insensitive) and
+// filters (area / theme / month) in a GlassSheet. Filter state ↔ URL query (?q=&area=&theme=&month=).
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import StubPage from '../../../components/StubPage.astro';
-import { getCollection } from 'astro:content';
-import { getLocale, localeParams, t } from '../../../lib/i18n';
+import GlassSearch from '../../../components/glass/GlassSearch.astro';
+import GlassButton from '../../../components/glass/GlassButton.astro';
+import GlassChip from '../../../components/glass/GlassChip.astro';
+import GlassSheet from '../../../components/glass/GlassSheet.astro';
+import GlassPanel from '../../../components/glass/GlassPanel.astro';
+import SpotCard from '../../../components/spot/SpotCard.astro';
+import {
+  allThemes,
+  getSortedSpots,
+  monthLabel,
+  regionLabel,
+  regions,
+  themeLabel,
+} from '../../../components/spot/spot-utils';
+import { getLocale, localeParams, localizePath, t } from '../../../lib/i18n';
 
 export const getStaticPaths = localeParams;
 const lang = getLocale(Astro.params.lang);
-const spots = await getCollection('spots');
+const spots = await getSortedSpots();
+
+// Only offer filter values that at least one spot uses (keeps the sheet short)
+const usedThemes = allThemes.filter((th) => spots.some((s) => s.data.themes.includes(th)));
+const usedRegions = regions.filter((r) => spots.some((s) => s.data.area === r)).reverse();
+const months = Array.from({ length: 12 }, (_, i) => i + 1);
+const countTemplate = t(lang, 'spots.resultCount');
 ---
 
-<BaseLayout title={t(lang, 'spots.title')} lang={lang} activeTab="spots">
-  <StubPage title={t(lang, 'spots.title')} owner="A" data={spots.map((s) => s.id)} />
+<BaseLayout
+  title={t(lang, 'spots.title')}
+  lang={lang}
+  activeTab="spots"
+  breadcrumbs={[
+    { name: t(lang, 'nav.home'), href: localizePath('/', lang) },
+    { name: t(lang, 'spots.title'), href: localizePath('/spots/', lang) },
+  ]}
+>
+  <div class="mx-auto max-w-5xl space-y-5 px-4" data-spot-list>
+    <header>
+      <p class="eyebrow font-latin tracking-[0.3em]" lang="vi">
+        {t(lang, 'site.decorVi').toUpperCase()}
+      </p>
+      <h1 class="mt-1 text-[28px] md:text-4xl">{t(lang, 'spots.title')}</h1>
+    </header>
+
+    <GlassSearch
+      label={t(lang, 'home.searchLabel')}
+      placeholder={t(lang, 'common.searchPlaceholder')}
+      submitLabel={t(lang, 'common.search')}
+      id="spot-q"
+    />
+
+    <div class="flex items-center gap-3">
+      <GlassButton icon="filter" data-sheet-open="spot-filter" class="shrink-0">
+        {t(lang, 'spots.filter')}
+        <span
+          class="font-latin hidden size-5 place-items-center rounded-full bg-amber text-[11px] font-bold text-ink-dark [&:not(:empty)]:grid"
+          data-active-count
+        ></span>
+      </GlassButton>
+      <p class="m-0 ml-auto text-sm text-ink-muted" aria-live="polite">
+        <span data-result-count data-template={countTemplate}>
+          {t(lang, 'spots.resultCount', { count: spots.length })}
+        </span>
+      </p>
+    </div>
+
+    <ul class="h-scroll m-0 list-none" aria-label={t(lang, 'spots.filterTheme')}>
+      {usedThemes.map((th) => (
+        <li>
+          <GlassChip variant="light" data-filter="theme" data-value={th}>
+            {themeLabel(lang, th)}
+          </GlassChip>
+        </li>
+      ))}
+    </ul>
+
+    <ul class="m-0 grid list-none grid-cols-2 gap-x-3 gap-y-6 p-0 md:grid-cols-3 lg:grid-cols-4">
+      {spots.map((spot, i) => (
+        <li
+          data-spot
+          data-area={spot.data.area}
+          data-themes={spot.data.themes.join(' ')}
+          data-months={spot.data.bestSeasons.join(' ')}
+          data-text={[
+            spot.data.nameJa,
+            spot.data.nameVi,
+            spot.data.reading,
+            spot.data.city,
+            spot.id,
+            regionLabel(lang, spot.data.area),
+            ...spot.data.themes.map((th) => themeLabel(lang, th)),
+          ].join(' ')}
+        >
+          <SpotCard spot={spot} lang={lang} size="grid" eager={i < 4} />
+        </li>
+      ))}
+    </ul>
+
+    <GlassPanel variant="light" padding="lg" class="tile-pattern text-center" data-empty hidden>
+      <p class="m-0 font-bold">{t(lang, 'common.noResults')}</p>
+      <GlassButton class="mt-4" data-filter-reset>
+        {t(lang, 'common.reset')}
+      </GlassButton>
+    </GlassPanel>
+  </div>
+
+  <GlassSheet id="spot-filter" title={t(lang, 'spots.filter')} closeLabel={t(lang, 'common.close')}>
+    <fieldset class="m-0 mb-5 border-0 p-0">
+      <legend class="mb-2 p-0 text-sm text-ink-muted">{t(lang, 'spots.filterArea')}</legend>
+      <div class="flex flex-wrap gap-2">
+        {usedRegions.map((r) => (
+          <GlassChip variant="light" data-filter="area" data-value={r}>
+            {regionLabel(lang, r)}
+          </GlassChip>
+        ))}
+      </div>
+    </fieldset>
+    <fieldset class="m-0 mb-5 border-0 p-0">
+      <legend class="mb-2 p-0 text-sm text-ink-muted">{t(lang, 'spots.filterTheme')}</legend>
+      <div class="flex flex-wrap gap-2">
+        {usedThemes.map((th) => (
+          <GlassChip variant="light" data-filter="theme" data-value={th}>
+            {themeLabel(lang, th)}
+          </GlassChip>
+        ))}
+      </div>
+    </fieldset>
+    <fieldset class="m-0 border-0 p-0">
+      <legend class="mb-2 p-0 text-sm text-ink-muted">{t(lang, 'spots.filterSeason')}</legend>
+      <div class="grid grid-cols-4 gap-2">
+        {months.map((m) => (
+          <GlassChip
+            variant="light"
+            data-filter="month"
+            data-value={String(m)}
+            class="justify-center px-0"
+          >
+            {monthLabel(lang, m)}
+          </GlassChip>
+        ))}
+      </div>
+    </fieldset>
+    <div slot="footer" class="flex gap-3">
+      <GlassButton class="flex-1" data-filter-reset>
+        {t(lang, 'common.reset')}
+      </GlassButton>
+      <GlassButton class="flex-1" variant="accent" data-sheet-close>
+        {t(lang, 'common.apply')}
+      </GlassButton>
+    </div>
+  </GlassSheet>
 </BaseLayout>
+
+<script>
+  import { normalizeKana } from '../../../lib/format';
+
+  type Key = 'area' | 'theme' | 'month';
+  /** kana-insensitive (ひらがな = カタカナ, half-width) + Vietnamese-diacritic-insensitive */
+  const norm = (s: string) =>
+    normalizeKana(s)
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '')
+      .replace(/đ/g, 'd')
+      .normalize('NFC')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  const root = document.querySelector<HTMLElement>('[data-spot-list]')!;
+  const input = root.querySelector<HTMLInputElement>('#spot-q')!;
+  const items = [...root.querySelectorAll<HTMLElement>('[data-spot]')].map((el) => ({
+    el,
+    area: el.dataset.area!,
+    themes: el.dataset.themes!.split(' '),
+    months: el.dataset.months!.split(' '),
+    text: norm(el.dataset.text!),
+  }));
+  const countEl = root.querySelector<HTMLElement>('[data-result-count]')!;
+  const activeEl = root.querySelector<HTMLElement>('[data-active-count]')!;
+  const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+
+  // State from URL
+  const params = new URLSearchParams(location.search);
+  const list = (k: string) => new Set((params.get(k) ?? '').split(',').filter(Boolean));
+  const state: Record<Key, Set<string>> = {
+    area: list('area'),
+    theme: list('theme'),
+    month: list('month'),
+  };
+  input.value = params.get('q') ?? '';
+
+  function render() {
+    const words = norm(input.value).split(' ').filter(Boolean);
+    let shown = 0;
+    for (const it of items) {
+      const ok =
+        (!state.area.size || state.area.has(it.area)) &&
+        (!state.theme.size || it.themes.some((x) => state.theme.has(x))) &&
+        (!state.month.size || it.months.some((x) => state.month.has(x))) &&
+        words.every((w) => it.text.includes(w));
+      it.el.hidden = !ok;
+      if (ok) shown++;
+    }
+    countEl.textContent = countEl.dataset.template!.replace('{count}', String(shown));
+    empty.hidden = shown > 0;
+
+    for (const c of chips) {
+      const on = state[c.dataset.filter as Key].has(c.dataset.value!);
+      c.setAttribute('aria-pressed', String(on));
+    }
+    const active = state.area.size + state.theme.size + state.month.size;
+    activeEl.textContent = active ? String(active) : '';
+
+    // Reflect on the URL (no reload, no history spam)
+    const p = new URLSearchParams();
+    if (input.value.trim()) p.set('q', input.value.trim());
+    for (const k of ['area', 'theme', 'month'] as const) {
+      if (state[k].size) p.set(k, [...state[k]].join(','));
+    }
+    const qs = p.toString();
+    history.replaceState(null, '', location.pathname + (qs ? `?${qs}` : ''));
+  }
+
+  for (const c of chips) {
+    c.addEventListener('click', () => {
+      const set = state[c.dataset.filter as Key];
+      const v = c.dataset.value!;
+      if (set.has(v)) set.delete(v);
+      else set.add(v);
+      render();
+    });
+  }
+  for (const r of document.querySelectorAll('[data-filter-reset]')) {
+    r.addEventListener('click', () => {
+      state.area.clear();
+      state.theme.clear();
+      state.month.clear();
+      input.value = '';
+      render();
+    });
+  }
+  let timer = 0;
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = window.setTimeout(render, 120);
+  });
+  input.form?.addEventListener('submit', () => input.blur());
+  render();
+</script>

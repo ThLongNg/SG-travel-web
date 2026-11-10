@@ -21,6 +21,8 @@ const areas = (await getSortedAreas()).slice(0, 5);
 const courses = (await getSortedCourses()).slice(0, 2);
 const quickThemes = ['beach', 'food', 'heritage', 'nature', 'shopping', 'walk'] as const;
 const spotsHref = localizePath('/spots/', lang);
+// Break the Japanese slogan only after 、 (never mid-word like ホーチ／ミン)
+const taglineParts = t(lang, 'site.tagline').split(/(?<=、)/);
 ---
 
 <BaseLayout
@@ -43,7 +45,9 @@ const spotsHref = localizePath('/spots/', lang);
           {t(lang, 'site.decorVi').toUpperCase()}
         </p>
         <h1 class="max-w-[13em] text-[30px] leading-[1.35] [text-shadow:0_2px_24px_rgb(0_0_0/0.5)] md:text-5xl">
-          {t(lang, 'site.tagline')}
+          {taglineParts.map((part) => (
+            <span class:list={[taglineParts.length > 1 && 'inline-block']}>{part}</span>
+          ))}
         </h1>
       </div>
       <GlassSearch

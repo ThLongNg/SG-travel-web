@@ -1,10 +1,28 @@
 ---
-// STUB (owner: Agent A) — spot detail (most important page).
+// Spot detail (owner: Agent A) — the most important page.
+// Gallery → title → どんな場所？ → 基本情報 → map/share actions → accordion → map → nearby → courses → 更新日/出典
 import type { GetStaticPaths } from 'astro';
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntries, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import StubPage from '../../../components/StubPage.astro';
-import { getLocale, localeParams } from '../../../lib/i18n';
+import GlassButton from '../../../components/glass/GlassButton.astro';
+import GlassPanel from '../../../components/glass/GlassPanel.astro';
+import Icon from '../../../components/glass/Icon.astro';
+import SpotGallery from '../../../components/spot/SpotGallery.astro';
+import InfoBox from '../../../components/spot/InfoBox.astro';
+import MapEmbed from '../../../components/spot/MapEmbed.astro';
+import SpotCard from '../../../components/spot/SpotCard.astro';
+import Prose from '../../../components/spot/Prose.astro';
+import PageMeta from '../../../components/spot/PageMeta.astro';
+import ContentNotes from '../../../components/spot/ContentNotes.astro';
+import CourseCard from '../../../components/course/CourseCard.astro';
+import {
+  getSortedCourses,
+  mapLinks,
+  spotEyebrow,
+  themeLabel,
+} from '../../../components/spot/spot-utils';
+import { getLocale, localeParams, localizePath, t } from '../../../lib/i18n';
+import { formatJaDate } from '../../../lib/format';
 
 export const getStaticPaths = (async () => {
   const spots = await getCollection('spots');
@@ -15,12 +33,218 @@ export const getStaticPaths = (async () => {
 
 const { spot } = Astro.props;
 const lang = getLocale(Astro.params.lang);
+const d = spot.data;
 const { Content } = await render(spot);
+
+// Gallery = hero + gallery images (deduplicated)
+const images = [{ src: d.heroImage, alt: d.heroAlt }, ...d.gallery].filter(
+  (img, i, all) => all.findIndex((x) => x.src.src === img.src.src) === i,
+);
+
+const allSpotIds = new Set((await getCollection('spots')).map((s) => s.id));
+const nearby = await getEntries(
+  d.nearby
+    .filter((id) => id !== spot.id && allSpotIds.has(id))
+    .map((id) => ({ collection: 'spots' as const, id })),
+);
+const courses = (await getSortedCourses()).filter((c) =>
+  c.data.schedule.some((day) => day.items.some((item) => item.spot === spot.id)),
+);
+
+const maps = mapLinks(d.nameJa, d.coordinates.lat, d.coordinates.lng);
+const spotsHref = localizePath('/spots/', lang);
+const pageHref = localizePath(`/spots/${spot.id}/`, lang);
+
+type Fold = { id: string; title: string; list?: string[]; body?: boolean; warn?: boolean };
+const accordion: Fold[] = [
+  { id: 'highlights', title: t(lang, 'spots.highlights'), list: d.highlights },
+  { id: 'enjoy', title: t(lang, 'spots.howToEnjoy'), body: true },
+  { id: 'tips', title: t(lang, 'spots.tipsForJapanese'), list: d.tipsForJapanese },
+  { id: 'cautions', title: t(lang, 'spots.cautions'), list: d.cautions, warn: true },
+].filter((x: Fold) => x.body || (x.list?.length ?? 0) > 0);
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'TouristAttraction',
+    name: d.nameJa,
+    alternateName: d.nameVi,
+    description: d.summary,
+    image: new URL(d.heroImage.src, Astro.site).href,
+    url: new URL(pageHref, Astro.site).href,
+    geo: { '@type': 'GeoCoordinates', latitude: d.coordinates.lat, longitude: d.coordinates.lng },
+    address: { '@type': 'PostalAddress', addressLocality: d.city, addressCountry: 'VN' },
+    isAccessibleForFree: d.info.priceVnd === 0 ? true : undefined,
+  },
+];
 ---
 
-<BaseLayout title={spot.data.nameJa} description={spot.data.summary} lang={lang} activeTab="spots">
-  <StubPage title={spot.data.nameJa} owner="A" data={spot.data.info} />
-  <div class="mx-auto max-w-3xl px-4">
-    <Content />
-  </div>
+<BaseLayout
+  title={d.nameJa}
+  description={d.summary}
+  lang={lang}
+  activeTab="spots"
+  image={d.heroImage.src}
+  jsonLd={jsonLd}
+  breadcrumbs={[
+    { name: t(lang, 'nav.home'), href: localizePath('/', lang) },
+    { name: t(lang, 'spots.title'), href: spotsHref },
+    { name: d.nameJa, href: pageHref },
+  ]}
+>
+  <article class="mx-auto max-w-3xl space-y-6 px-4">
+    <SpotGallery lang={lang} slug={spot.id} name={d.nameJa} images={images} backHref={spotsHref} />
+
+    <header class="space-y-3">
+      <ContentNotes lang={lang} verified={d.verified} />
+      <div>
+        <p class="eyebrow">{spotEyebrow(lang, spot)}</p>
+        <h1 class="mt-1 text-[28px] leading-snug md:text-4xl">{d.nameJa}</h1>
+        <p class="font-latin text-sm text-ink-muted">
+          <span lang="vi">{d.nameVi}</span>
+          <span class="sr-only">{t(lang, 'spots.reading')}</span>（{d.reading}）
+        </p>
+      </div>
+      <ul class="m-0 flex list-none flex-wrap gap-2 p-0">
+        {d.themes.map((th) => (
+          <li class="tag">{themeLabel(lang, th)}</li>
+        ))}
+      </ul>
+    </header>
+
+    <section aria-labelledby="spot-what">
+      <h2 id="spot-what" class="mb-1 font-sans text-[15px] font-bold text-amber">
+        {t(lang, 'spots.whatIs')}
+      </h2>
+      <p class="text-[16px]">{d.summary}</p>
+    </section>
+
+    <InfoBox spot={spot} lang={lang}>
+      <p class="mt-5 border-t border-white/10 pt-3 text-xs text-ink-muted">
+        {t(lang, 'common.lastUpdated')}
+        {formatJaDate(d.lastVerified)}
+      </p>
+    </InfoBox>
+
+    <div class="flex gap-3">
+      <GlassButton
+        href={maps.google}
+        variant="accent"
+        icon="pin"
+        class="flex-1"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-maps-link
+        data-apple={maps.apple}
+      >
+        {t(lang, 'spots.openInMaps')}
+      </GlassButton>
+      <GlassButton icon="share" data-share-page={d.nameJa}>
+        {t(lang, 'common.share')}
+      </GlassButton>
+    </div>
+
+    <GlassPanel variant="strong" padding="none" class="divide-y divide-white/10">
+      {accordion.map((item, i) => (
+        <details class="group px-5" open={i === 0} id={`spot-${item.id}`}>
+          <summary class="flex min-h-[56px] cursor-pointer list-none items-center justify-between gap-3 font-bold [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center gap-2.5">
+              {item.warn && <Icon name="alert" size={18} class="text-amber" />}
+              {item.title}
+            </span>
+            <Icon name="chevronDown" class="shrink-0 transition-transform group-open:rotate-180" />
+          </summary>
+          <div class="pb-5">
+            {item.list && (
+              <ul class="m-0 list-none space-y-2.5 p-0">
+                {item.list.map((text) => (
+                  <li class="flex gap-2.5 text-[15px] leading-relaxed">
+                    <span
+                      class:list={[
+                        'mt-[0.7em] size-1.5 shrink-0 rounded-full',
+                        item.warn ? 'bg-amber' : 'bg-river',
+                      ]}
+                      aria-hidden="true"
+                    />
+                    <span>{text}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {item.body && (
+              <Prose class="text-[15px]">
+                <Content />
+              </Prose>
+            )}
+          </div>
+        </details>
+      ))}
+    </GlassPanel>
+
+    <section aria-labelledby="spot-map" class="space-y-3">
+      <div class="section-head mb-0">
+        <h2 id="spot-map">{t(lang, 'spots.map')}</h2>
+        <a
+          href={maps.google}
+          class="section-more"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-maps-link
+          data-apple={maps.apple}
+        >
+          {t(lang, 'spots.openInMaps')}
+          <Icon name="external" size={16} />
+        </a>
+      </div>
+      <MapEmbed lang={lang} src={maps.embed} title={`${t(lang, 'spots.map')}：${d.nameJa}`} />
+    </section>
+
+    {nearby.length > 0 && (
+      <section aria-labelledby="spot-nearby">
+        <div class="section-head">
+          <h2 id="spot-nearby">{t(lang, 'spots.nearby')}</h2>
+        </div>
+        <ul class="h-scroll m-0 list-none">
+          {nearby.map((s) => (
+            <li>
+              <SpotCard spot={s} lang={lang} />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {courses.length > 0 && (
+      <section aria-labelledby="spot-courses">
+        <div class="section-head">
+          <h2 id="spot-courses">{t(lang, 'spots.inCourses')}</h2>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          {courses.slice(0, 4).map((c) => (
+            <CourseCard course={c} lang={lang} variant="light" />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <PageMeta lang={lang} lastVerified={d.lastVerified} sources={d.sources} />
+  </article>
 </BaseLayout>
+
+<script>
+  // "地図で開く": Apple devices open Apple Maps directly; others use the Google Maps universal link
+  // (opens the Google Maps app when installed).
+  const isApple =
+    /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document;
+  if (isApple) {
+    for (const a of document.querySelectorAll<HTMLAnchorElement>('[data-maps-link]')) {
+      a.href = a.dataset.apple!;
+    }
+  }
+
+  const share = document.querySelector<HTMLButtonElement>('[data-share-page]');
+  share?.addEventListener('click', () => {
+    // Reuse the gallery's share button (Web Share API + clipboard fallback)
+    document.querySelector<HTMLButtonElement>('[data-share]')?.click();
+  });
+</script>

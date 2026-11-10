@@ -1,0 +1,102 @@
+---
+// 月別の気候: a real <table> (accessible) drawn as a compact 12-column chart.
+// Rain bars scale to the wettest month; rainy months are teal, dry months amber.
+import { t, type Locale } from '../../lib/i18n';
+import type { Area } from '../spot/spot-utils';
+
+interface Props {
+  lang: Locale;
+  climate: Area['data']['climate'];
+}
+
+const { lang, climate } = Astro.props;
+const rows = [...climate].sort((a, b) => a.month - b.month);
+const maxRain = Math.max(1, ...rows.map((r) => r.rainMm ?? 0));
+const dash = '–';
+---
+
+<div class="overflow-x-auto">
+  <table class="climate w-full min-w-[300px] table-fixed border-collapse text-center">
+    <caption class="sr-only">{t(lang, 'areas.climate')}</caption>
+    <thead>
+      <tr>
+        <th scope="row" class="sr-only">
+          {t(lang, 'areas.climate')}
+        </th>
+        {rows.map((r) => (
+          <th scope="col" class="font-latin pb-2 text-[11px] font-semibold text-ink-muted">
+            <span aria-hidden="true">{r.month}</span>
+            <span class="sr-only">{t(lang, `months.${r.month}` as 'months.1')}</span>
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row" class="sr-only">
+          {t(lang, 'areas.rainfall')} (mm)
+        </th>
+        {rows.map((r) => (
+          <td class="h-[96px] px-[2px] align-bottom">
+            <div
+              class:list={[
+                'mx-auto w-full max-w-[18px] rounded-t-[5px]',
+                r.season === 'rainy' ? 'bg-river/70' : 'bg-amber/55',
+              ]}
+              style={`height:${Math.max(3, Math.round(((r.rainMm ?? 0) / maxRain) * 80))}px`}
+              aria-hidden="true"
+            />
+            <span class="font-latin block pt-1 text-[10px] leading-none text-ink-muted">
+              {r.rainMm ?? dash}
+            </span>
+          </td>
+        ))}
+      </tr>
+      <tr>
+        <th scope="row" class="sr-only">
+          {t(lang, 'areas.tempHigh')} (°C)
+        </th>
+        {rows.map((r) => (
+          <td class="font-latin pt-3 text-[12px] font-semibold">
+            {r.highC ?? dash}
+            <span aria-hidden="true" class="text-[9px] text-ink-muted">
+              °
+            </span>
+          </td>
+        ))}
+      </tr>
+      <tr>
+        <th scope="row" class="sr-only">
+          {t(lang, 'areas.dry')} / {t(lang, 'areas.rainy')}
+        </th>
+        {rows.map((r) => (
+          <td class="pt-1">
+            <span
+              class:list={[
+                'mx-auto block size-1.5 rounded-full',
+                r.season === 'rainy' ? 'bg-river' : 'bg-amber',
+              ]}
+              aria-hidden="true"
+            />
+            <span class="sr-only">
+              {t(lang, r.season === 'rainy' ? 'areas.rainy' : 'areas.dry')}
+            </span>
+          </td>
+        ))}
+      </tr>
+    </tbody>
+  </table>
+</div>
+<ul class="m-0 mt-4 flex list-none flex-wrap gap-x-5 gap-y-1 p-0 text-xs text-ink-muted">
+  <li class="flex items-center gap-1.5">
+    <span class="size-2.5 rounded-sm bg-amber/70" aria-hidden="true"></span>
+    {t(lang, 'areas.dry')}
+  </li>
+  <li class="flex items-center gap-1.5">
+    <span class="size-2.5 rounded-sm bg-river/80" aria-hidden="true"></span>
+    {t(lang, 'areas.rainy')}
+  </li>
+  <li>
+    {t(lang, 'areas.rainfall')} (mm) ・ {t(lang, 'areas.tempHigh')} (°C)
+  </li>
+</ul>
