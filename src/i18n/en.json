@@ -154,13 +154,14 @@
       "visa": "Visa & entry",
       "money": "Money & exchange",
       "sim": "SIM & data",
-      "grab": "Grab & getting around",
+      "grab": "Taxis & getting around",
       "tip": "Tipping",
       "safety": "Safety & scams",
       "hygiene": "Hygiene & water",
       "power": "Power & plugs",
       "weather": "Seasons & weather",
-      "manners": "Manners & culture"
+      "manners": "Manners & culture",
+      "payment": "QR payment (VNPAY)"
     },
     "amount": "Amount",
     "quick": "Common amounts",

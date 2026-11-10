@@ -23,6 +23,7 @@ const categoryIcon: Record<Category, IconName> = {
   power: 'info',
   weather: 'sun',
   manners: 'heart',
+  payment: 'card',
 };
 const guides = (await getCollection('guides'))
   .sort((a, b) => Number(a.data.fixture) - Number(b.data.fixture) || a.data.order - b.data.order)

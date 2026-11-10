@@ -1,12 +1,13 @@
 ---
-// 旅の準備・お役立ち情報 (owner: Agent C) — VND⇄JPY converter + guides collection as accordions.
-import { getCollection, render } from 'astro:content';
+// 旅の準備・お役立ち: short cards (title, one-line lead, ≤4 points, action links) + VND⇄JPY converter.
+// Content lives in the `guides` collection frontmatter (points / links / ordered); no long prose.
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import GlassPanel from '../../../components/glass/GlassPanel.astro';
 import Icon, { type IconName } from '../../../components/glass/Icon.astro';
 import CurrencyConverter from '../../../components/tools/CurrencyConverter.astro';
 import { formatJaDate } from '../../../lib/format';
-import { getLocale, localeParams, t, type I18nKey } from '../../../lib/i18n';
+import { getLocale, localeParams, t } from '../../../lib/i18n';
 
 export const getStaticPaths = localeParams;
 const lang = getLocale(Astro.params.lang);
@@ -22,18 +23,17 @@ const icons = {
   power: 'info',
   weather: 'sun',
   manners: 'chat',
+  payment: 'card',
 } as const satisfies Record<string, IconName>;
-const amber = new Set(['money', 'safety']);
+const amber = new Set(['sim', 'payment', 'safety']);
 
-const guides = await Promise.all(
-  (await getCollection('guides'))
-    .sort((a, b) => a.data.order - b.data.order)
-    .map(async (g) => ({ ...g, Content: (await render(g)).Content })),
-);
+const guides = (await getCollection('guides')).sort((a, b) => a.data.order - b.data.order);
+/** Readers see "要確認" instead of the internal "TODO: 要確認" marker. */
+const clean = (s: string) => s.replace(/TODO:\s*/g, '');
 ---
 
 <BaseLayout title={t(lang, 'guide.title')} lang={lang} activeTab="guide">
-  <div class="mx-auto max-w-3xl space-y-14 px-4">
+  <div class="mx-auto max-w-5xl space-y-12 px-4">
     <header>
       <p class="eyebrow font-latin tracking-[0.3em]!">TRAVEL GUIDE</p>
       <h1 class="mt-1 text-[28px] leading-snug">{t(lang, 'guide.title')}</h1>
@@ -42,111 +42,125 @@ const guides = await Promise.all(
       )}
     </header>
 
+    <section aria-labelledby="g-basics">
+      <div class="section-head">
+        <h2 id="g-basics">
+          <span class="section-no">01</span>
+          {t(lang, 'guide.categories')}
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
+        {guides.map(({ id, data }) => {
+          const List = data.ordered ? 'ol' : 'ul';
+          return (
+            <GlassPanel
+              as="article"
+              id={id}
+              variant="light"
+              class="flex scroll-mt-28 flex-col gap-3"
+              aria-labelledby={`${id}-title`}
+            >
+              <header class="flex items-center gap-3">
+                <span class:list={['icon-badge', amber.has(data.category) && 'icon-badge--amber']}>
+                  <Icon name={icons[data.category]} size={20} />
+                </span>
+                <h3 id={`${id}-title`} class="m-0 min-w-0 text-[18px] leading-snug font-bold">
+                  {data.title}
+                </h3>
+              </header>
+              <p class="m-0 text-[15px] leading-relaxed font-medium">{clean(data.summary)}</p>
+              <List
+                class:list={[
+                  'guide-points m-0 list-none space-y-2 p-0',
+                  data.ordered && 'is-steps',
+                ]}
+              >
+                {data.points.map((point) => (
+                  <li class="flex gap-2.5 text-[14px] leading-relaxed">
+                    {!data.ordered && (
+                      <Icon name="check" size={16} class="mt-1 shrink-0 text-river" />
+                    )}
+                    <span>{clean(point)}</span>
+                  </li>
+                ))}
+              </List>
+              {data.links.length > 0 && (
+                <div class="flex flex-wrap gap-2">
+                  {data.links.map((l) => (
+                    <a
+                      href={l.url}
+                      target="_blank"
+                      rel="noopener"
+                      class="glass-press touch-target inline-flex items-center gap-1.5 rounded-full bg-amber px-4 text-[14px] font-semibold text-ink-dark no-underline"
+                    >
+                      {l.label}
+                      <Icon name="external" size={16} />
+                    </a>
+                  ))}
+                </div>
+              )}
+              <details class="mt-auto border-t border-line pt-1 text-[12px] text-ink-muted">
+                <summary class="flex min-h-[36px] cursor-pointer list-none items-center gap-1 [&::-webkit-details-marker]:hidden">
+                  {t(lang, 'common.sources')}・{t(lang, 'common.lastUpdated')}
+                  <Icon name="chevronDown" size={14} />
+                  {!data.verified && import.meta.env.DEV && (
+                    <span class="tag tag--amber ml-1">{t(lang, 'common.verifying')}</span>
+                  )}
+                </summary>
+                <ul class="m-0 list-none space-y-1 p-0 pb-1 leading-relaxed">
+                  {data.sources.map((s) => (
+                    <li>
+                      <a
+                        href={s.url}
+                        class="underline underline-offset-2"
+                        rel="noopener"
+                        target="_blank"
+                      >
+                        {s.title}
+                      </a>
+                    </li>
+                  ))}
+                  <li>
+                    {t(lang, 'common.lastUpdated')}: {formatJaDate(data.lastVerified)}
+                  </li>
+                </ul>
+              </details>
+            </GlassPanel>
+          );
+        })}
+      </div>
+    </section>
+
     <section aria-labelledby="g-rate" id="converter" class="scroll-mt-28">
       <div class="section-head">
         <h2 id="g-rate">
-          <span class="section-no">01</span>
+          <span class="section-no">02</span>
           {t(lang, 'guide.converterTitle')}
         </h2>
       </div>
       <CurrencyConverter lang={lang} />
     </section>
-
-    <section aria-labelledby="g-basics">
-      <div class="section-head">
-        <h2 id="g-basics">
-          <span class="section-no">02</span>
-          {t(lang, 'guide.categories')}
-        </h2>
-      </div>
-      <nav class="h-scroll mb-3" aria-label={t(lang, 'guide.jumpTo')}>
-        {guides.map((g) => (
-          <a
-            href={`#${g.id}`}
-            class="glass glass--light glass-pill glass-press touch-target inline-flex items-center gap-1.5 px-4 text-[14px] whitespace-nowrap no-underline"
-          >
-            <Icon name={icons[g.data.category]} size={16} class="text-river" />
-            {t(lang, `guide.cat.${g.data.category}` as I18nKey)}
-          </a>
-        ))}
-      </nav>
-
-      <GlassPanel variant="strong" padding="none" class="divide-y divide-line">
-        {guides.map(({ id, data, Content }) => (
-          <details id={id} class="group scroll-mt-28 px-4">
-            <summary class="flex min-h-[64px] cursor-pointer list-none items-center gap-3 py-3 [&::-webkit-details-marker]:hidden">
-              <span class:list={['icon-badge', amber.has(data.category) && 'icon-badge--amber']}>
-                <Icon name={icons[data.category]} size={20} />
-              </span>
-              <span class="min-w-0 flex-1">
-                <span class="eyebrow block">
-                  {t(lang, `guide.cat.${data.category}` as I18nKey)}
-                </span>
-                <span class="block font-bold">{data.title}</span>
-                <span class="block text-[13px] leading-snug text-ink-muted">{data.summary}</span>
-              </span>
-              <Icon
-                name="chevronDown"
-                class="shrink-0 transition-transform group-open:rotate-180"
-              />
-            </summary>
-            <div class="guide-body pb-5 text-[15px]">
-              <Content />
-              <p class="mt-4 border-t border-line pt-3 text-[12px] text-ink-muted">
-                {t(lang, 'common.lastUpdated')}: {formatJaDate(data.lastVerified)}
-                {!data.verified && import.meta.env.DEV && (
-                  <span class="tag tag--amber ml-2">{t(lang, 'common.verifying')}</span>
-                )}
-              </p>
-              <p class="text-[12px] text-ink-muted">
-                {t(lang, 'common.sources')}:{' '}
-                {data.sources.map((s, i) => (
-                  <>
-                    {i > 0 && '、'}
-                    <a
-                      href={s.url}
-                      class="text-river underline underline-offset-2"
-                      rel="noopener"
-                      target="_blank"
-                    >
-                      {s.title}
-                    </a>
-                  </>
-                ))}
-              </p>
-            </div>
-          </details>
-        ))}
-      </GlassPanel>
-    </section>
   </div>
 </BaseLayout>
 
-<script>
-  // Opening #anchor from the chip row (or a deep link) expands that accordion.
-  const openFromHash = () => {
-    const el = location.hash ? document.getElementById(location.hash.slice(1)) : null;
-    if (el instanceof HTMLDetailsElement) el.open = true;
-  };
-  addEventListener('hashchange', openFromHash);
-  openFromHash();
-</script>
-
 <style>
-  .guide-body :global(p) {
-    margin: 0 0 0.75em;
+  /* Numbered steps (VNPAY how-to): amber number discs instead of check marks */
+  .is-steps {
+    counter-reset: step;
   }
-  .guide-body :global(ul) {
-    margin: 0 0 0.75em;
-    padding-left: 1.25em;
-    list-style: disc;
-  }
-  .guide-body :global(h2),
-  .guide-body :global(h3) {
-    margin: 1.2em 0 0.4em;
-    font-size: 16px;
-  }
-  .guide-body :global(a) {
-    color: var(--color-river);
+  .is-steps li::before {
+    counter-increment: step;
+    content: counter(step);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+    border-radius: 9999px;
+    background: var(--color-amber);
+    color: var(--color-ink-dark);
+    font-size: 12px;
+    font-weight: 700;
   }
 </style>

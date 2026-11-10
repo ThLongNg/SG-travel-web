@@ -1,35 +1,24 @@
 ---
 slug: grab
-title: Grabとタクシー
+title: タクシーは Xanh SM
 category: grab
-order: 4
-summary: ホーチミンでの移動は、配車アプリのGrabがもっとも手軽で安心です。乗車前に料金が表示され、行き先を言葉で伝える必要もありません。
+order: 3
+summary: 移動は電気自動車の配車アプリ「Xanh SM（Green SM）」がおすすめです。
+points:
+  - 全車が電気自動車。乗る前に料金・ドライバー・ナンバーがアプリに表示されるので安心
+  - 日本でアプリ「Green SM」を入れ、電話番号で登録しておく
+  - '支払いは現金が確実（アプリ内のカード払いは海外発行カード非対応との情報あり。TODO: 要確認）'
+  - 空港などで声をかけてくる客引きのタクシーには乗らない
+links:
+  - label: Green SM（App Store）
+    url: https://apps.apple.com/jp/app/id6446425595
 sources:
+  - title: Green SM：Electric Mobility（App Store）
+    url: https://apps.apple.com/us/app/green-sm-electric-mobility/id6446425595
+  - title: Is Xanh SM Cheaper Than Grab? Vietnam Ride App Comparison 2026（Da Nang Visa Run）
+    url: https://danangvisarun.com/blog/grab-vs-xanh-sm-vs-be-vietnam-2026/
   - title: 外務省 海外安全ホームページ ベトナム安全対策基礎データ（タクシー）
     url: https://www.anzen.mofa.go.jp/info/pcsafetymeasure_015.html
-  - title: Grab Vietnam（公式サイト）
-    url: https://www.grab.com/vn/en/
 lastVerified: 2026-11-11
-verified: true
+verified: false
 ---
-
-## Grabの使い方
-
-1. 日本にいるうちにアプリをインストールし、電話番号で登録しておきます。
-2. 乗車地と目的地を地図で指定し、車（GrabCar）かバイク（GrabBike）を選びます。
-3. 表示された料金を確認して予約。ドライバーの顔写真、車種、ナンバーが表示されるので、乗る前に必ず照合しましょう。
-4. 支払いは現金のほか、アプリにカードを登録しておくこともできます。
-
-> バイクタクシー（GrabBike）は安くて速い反面、事故のリスクもあります。慣れないうちは車を選ぶと安心です。
-
-## タクシーを使うときは
-
-外務省は、メーターを作動させずに走り出したり、到着時にメーターの表示を消して高額な料金を請求したりする悪質な運転手がいると注意を呼びかけています。特に空港周辺で客引きをしているタクシーでのトラブルが確認されています。
-
-- 客引きのタクシーには乗らない
-- ホテルやレストランで配車を頼む、または大手タクシー会社や配車アプリを使う
-- 乗車したらメーターが動いているか確認する
-
-## 乗車中の注意
-
-降りるときは、後ろからバイクが来ていないかを確認してからドアを開けましょう。

@@ -159,9 +159,17 @@ const guides = defineCollection({
       'power',
       'weather',
       'manners',
+      'payment',
     ]),
     order: z.number().int().default(0),
+    /** one-line lead under the card title */
     summary: z.string().min(1),
+    /** the card body: 1–5 short points (keep each to one line on a phone) */
+    points: z.array(z.string().min(1)).min(1).max(5),
+    /** render points as numbered steps (how-to cards) */
+    ordered: z.boolean().default(false),
+    /** call-to-action buttons (e.g. buy an eSIM, official site) */
+    links: z.array(z.object({ label: z.string().min(1), url: z.url() })).default([]),
     sources,
     lastVerified: z.coerce.date(),
     verified: z.boolean(),

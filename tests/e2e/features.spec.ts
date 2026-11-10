@@ -23,12 +23,17 @@ test.describe('VND ⇄ JPY converter', () => {
     await expect(jpy).toHaveValue(yen(50000));
   });
 
-  test('guide accordions open from the topic chips', async ({ page }) => {
-    await page.goto('/guide/');
-    const chip = page.locator('nav.h-scroll a').first();
-    const id = (await chip.getAttribute('href'))!.slice(1);
-    await chip.click();
-    await expect(page.locator(`details#${id}`)).toHaveAttribute('open', '');
+  test('guide cards: deep links resolve and external links open safely', async ({ page }) => {
+    // the home page links to /guide/#<guide id>; every card must carry that id
+    await page.goto('/guide/#payment');
+    await expect(page.locator('article#payment')).toBeVisible();
+    await expect(page.locator('article#payment ol li')).toHaveCount(4);
+    // eSIM purchase button (the card's call to action)
+    const esim = page.locator('article#sim a[href*="trip.com"]');
+    await expect(esim).toHaveAttribute('target', '_blank');
+    await expect(esim).toHaveAttribute('rel', /noopener/);
+    // internal markers never reach readers
+    await expect(page.locator('main')).not.toContainText('TODO');
   });
 });
 

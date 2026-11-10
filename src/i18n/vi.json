@@ -154,13 +154,14 @@
       "visa": "Thị thực & nhập cảnh",
       "money": "Tiền & đổi tiền",
       "sim": "SIM & mạng",
-      "grab": "Grab & di chuyển",
+      "grab": "Taxi & di chuyển",
       "tip": "Tiền tip",
       "safety": "An toàn & lừa đảo",
       "hygiene": "Vệ sinh & nước uống",
       "power": "Điện & ổ cắm",
       "weather": "Mùa & thời tiết",
-      "manners": "Ứng xử & văn hóa"
+      "manners": "Ứng xử & văn hóa",
+      "payment": "Thanh toán QR (VNPAY)"
     },
     "amount": "Số tiền",
     "quick": "Số tiền thường dùng",

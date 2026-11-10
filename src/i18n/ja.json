@@ -154,13 +154,14 @@
       "visa": "ビザ・入国",
       "money": "お金・両替",
       "sim": "SIM・通信",
-      "grab": "Grab・移動",
+      "grab": "タクシー・移動",
       "tip": "チップ",
       "safety": "安全・トラブル",
       "hygiene": "衛生・飲み水",
       "power": "電圧・プラグ",
       "weather": "季節と天気",
-      "manners": "マナー・文化"
+      "manners": "マナー・文化",
+      "payment": "QR決済（VNPAY）"
     },
     "amount": "金額",
     "quick": "よく使う金額",

@@ -43,9 +43,9 @@ schedule:
         moveMinutes: 75
         moveBy: 車
       - time: '15:00'
-        title: クチトンネル
+        title: クチトンネル（ベンユック）
         spot: cu-chi-tunnels
-        note: 閉場は17時。動きやすく、汚れてもよい服装で。
+        note: 本格派のベンユックへ。閉場は17時。動きやすく、汚れてもよい服装で。
         moveMinutes: 90
         moveBy: 車
       - time: '18:30'

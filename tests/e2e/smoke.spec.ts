@@ -16,7 +16,8 @@ for (const route of routes) {
 
     await expect(page.locator('main#main')).toBeVisible();
     await expect(page.locator('h1').first()).toBeVisible();
-    await expect(page).toHaveTitle(/サイゴン・トラベル/);
+    // site.name per locale (ja: サイゴン・トラベル, vi/en: Saigon Travel)
+    await expect(page).toHaveTitle(route.ja ? /サイゴン・トラベル/ : /Saigon Travel/);
     await expect(page.locator('nav.glass-tabbar')).toBeVisible();
     expect(await page.locator('html').getAttribute('lang')).toMatch(/^(ja|vi|en)$/);
 
