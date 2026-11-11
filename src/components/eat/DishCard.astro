@@ -1,7 +1,9 @@
 ---
-// Must-try dish: a "shop sign" card (the Vietnamese name as written on signs) that opens a
-// bottom sheet with what it is, how to eat it, a rough price and order phrases.
+// Must-try dish: a photo card that opens a bottom sheet with the photo, what it is, how to eat it,
+// recommended shops (map link + 住所を見せる for drivers) and order phrases.
 import type { CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
 import GlassSheet from '../glass/GlassSheet.astro';
 import Icon from '../glass/Icon.astro';
 import SayLine from './SayLine.astro';
@@ -11,43 +13,70 @@ import { t, type Locale } from '../../lib/i18n';
 interface Props {
   lang: Locale;
   dish: CollectionEntry<'dishes'>;
+  eager?: boolean;
 }
-const { lang, dish } = Astro.props;
+const { lang, dish, eager = false } = Astro.props;
 const d = dish.data;
+const photos = import.meta.glob<{ default: ImageMetadata }>('../../assets/eat/*.webp', { eager: true });
+const photo = photos[`../../assets/eat/${dish.id}.webp`]?.default;
 const sheetId = `dish-${dish.id}`;
 const n = (v: number) => v.toLocaleString('ja-JP');
 const price = `${n(d.priceVnd.min)}〜${n(d.priceVnd.max)}ドン（約${n(vndToJpy(d.priceVnd.min))}〜${n(vndToJpy(d.priceVnd.max))}円）`;
+/** Readers see "要確認" instead of the internal "TODO: 要確認" marker. */
+const clean = (s: string) => s.replace(/TODO:\s*/g, '');
+const mapUrl = (name: string, address: string) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name}, ${address}`)}`;
+const hasBib = d.shops.some((s) => s.michelin === 'bib');
 ---
 
 <button
   type="button"
-  class="glass glass--light glass-radius glass-press block h-full w-full overflow-hidden p-0 text-left"
+  class="dish-card glass-press group block h-full w-full p-0 text-left"
   data-sheet-open={sheetId}
   aria-haspopup="dialog"
 >
-  <span class:list={['sign-band', `sign-band--${d.category}`]}>
-    <span class="sign-band__label">{t(lang, 'eat.sign')}</span>
-    <span class="sign-band__word font-latin" lang="vi">
-      {d.nameVi}
+  <span class="media-frame block aspect-[4/5] md:aspect-[4/3]">
+    {photo && (
+      <Image
+        src={photo}
+        alt={d.imageAlt}
+        widths={[240, 400, 600]}
+        sizes="(min-width: 1024px) 300px, (min-width: 768px) 30vw, calc(50vw - 22px)"
+        loading={eager ? 'eager' : 'lazy'}
+        class="transition-transform duration-500 group-hover:scale-[1.04]"
+      />
+    )}
+    <span class="dish-card__shade" aria-hidden="true"></span>
+    {hasBib && <span class="bib-badge absolute top-2.5 left-2.5">{t(lang, 'eat.bib')}</span>}
+    <span class="absolute inset-x-0 bottom-0 block p-3 text-white">
+      <span class="font-latin block text-[22px] leading-none font-extrabold tracking-wide" lang="vi">
+        {d.nameVi}
+      </span>
+      <span class="mt-1 block text-[13px] leading-snug font-bold opacity-95">{d.nameJa}</span>
     </span>
   </span>
-  <span class="block space-y-1 p-3">
-    <span class="block text-[15px] leading-snug font-bold">{d.nameJa}</span>
-    {d.when && <span class="tag">{d.when}</span>}
-    <span class="block text-[12px] text-ink-muted">
-      {t(lang, 'eat.approx')} {n(d.priceVnd.min)}〜{n(d.priceVnd.max)}ドン
-    </span>
+  <span class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 px-0.5 text-[12px] text-ink-muted">
+    {d.shops.length > 0 && (
+      <span class="flex items-center gap-1 font-bold text-amber">
+        <Icon name="pin" size={13} />
+        {t(lang, 'eat.shopsCount').replace('{n}', String(d.shops.length))}
+      </span>
+    )}
+    <span>{n(d.priceVnd.min)}〜{t(lang, 'eat.dong')}</span>
   </span>
 </button>
 
 <GlassSheet id={sheetId} title={d.nameJa} closeLabel={t(lang, 'common.close')}>
-  <div class="space-y-4">
-    <div class:list={['sign-band sign-band--lg rounded-2xl', `sign-band--${d.category}`]}>
-      <span class="sign-band__label">{t(lang, 'eat.sign')}</span>
-      <span class="sign-band__word font-latin" lang="vi">
-        {d.nameVi}
-      </span>
-    </div>
+  <div class="space-y-5">
+    {photo && (
+      <div class="media-frame aspect-[16/10] rounded-2xl">
+        <Image src={photo} alt={d.imageAlt} widths={[400, 800]} sizes="(min-width: 640px) 560px, 100vw" />
+        <span class="dish-card__shade" aria-hidden="true"></span>
+        <span class="font-latin absolute bottom-3 left-4 text-[30px] leading-none font-extrabold text-white" lang="vi">
+          {d.nameVi}
+        </span>
+      </div>
+    )}
     <p class="m-0 text-[15px] leading-relaxed">{d.desc}</p>
     {d.tip && (
       <p class="m-0 flex gap-2 rounded-2xl bg-sand/70 p-3 text-[14px] leading-relaxed">
@@ -57,62 +86,120 @@ const price = `${n(d.priceVnd.min)}〜${n(d.priceVnd.max)}ドン（約${n(vndToJ
     )}
     <p class="m-0 flex items-center gap-2 text-[14px]">
       <Icon name="yen" size={16} class="shrink-0 text-amber" />
-      <span>
-        {t(lang, 'eat.approx')}：{price}
-      </span>
+      <span>{t(lang, 'eat.approx')}：{price}</span>
     </p>
-    <div>
-      <h3 class="mb-2 text-[15px] font-bold">{t(lang, 'eat.sayThis')}</h3>
+
+    {d.shops.length > 0 && (
+      <section>
+        <h3 class="mb-2 flex items-center gap-1.5 text-[16px] font-bold">
+          <Icon name="pin" size={18} class="text-amber" />
+          {t(lang, 'eat.shopsTitle')}
+        </h3>
+        <ul class="m-0 list-none space-y-3 p-0">
+          {d.shops.map((s) => (
+            <li
+              class="shop-item rounded-2xl border border-line bg-white/70 p-3.5"
+              data-say
+              data-vi={s.address}
+              data-kana=""
+              data-ja={`${s.name}（${t(lang, 'eat.toHere')}）`}
+            >
+              <div class="flex flex-wrap items-center gap-2">
+                <p class="font-latin m-0 text-[17px] leading-snug font-bold" lang="vi">
+                  {s.name}
+                </p>
+                {s.michelin === 'bib' && <span class="bib-badge">{t(lang, 'eat.bib')}</span>}
+              </div>
+              <p class="m-0 mt-0.5 text-[13px] font-bold text-river">{s.area}</p>
+              <p class="m-0 mt-2 text-[14px] leading-relaxed">{s.note}</p>
+              <dl class="m-0 mt-2 space-y-1 text-[13px] text-ink-muted">
+                <div class="flex gap-1.5">
+                  <dt class="shrink-0">
+                    <Icon name="clock" size={14} class="mt-0.5" />
+                    <span class="sr-only">{t(lang, 'eat.hours')}</span>
+                  </dt>
+                  <dd class="m-0">{clean(s.hours)}</dd>
+                </div>
+                <div class="flex gap-1.5">
+                  <dt class="shrink-0">
+                    <Icon name="map" size={14} class="mt-0.5" />
+                    <span class="sr-only">{t(lang, 'eat.address')}</span>
+                  </dt>
+                  <dd class="font-latin m-0" lang="vi">
+                    {s.address}
+                  </dd>
+                </div>
+              </dl>
+              <div class="mt-3 grid grid-cols-2 gap-2">
+                <a
+                  href={mapUrl(s.name, s.address)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="glass-press touch-target flex items-center justify-center gap-1.5 rounded-full border border-line bg-white px-3 text-[13px] font-bold no-underline"
+                >
+                  <Icon name="map" size={16} class="text-river" />
+                  {t(lang, 'eat.openMap')}
+                </a>
+                <button
+                  type="button"
+                  class="glass-press touch-target flex items-center justify-center gap-1.5 rounded-full bg-amber px-3 text-[13px] font-bold text-ink-dark"
+                  data-show
+                >
+                  <Icon name="chat" size={16} />
+                  {t(lang, 'eat.showAddress')}
+                </button>
+              </div>
+              <a
+                href={s.source}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-2 inline-flex items-center gap-1 text-[11px] text-ink-muted"
+              >
+                {t(lang, 'eat.source')}
+                <Icon name="external" size={12} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <section>
+      <h3 class="mb-2 flex items-center gap-1.5 text-[16px] font-bold">
+        <Icon name="chat" size={18} class="text-amber" />
+        {t(lang, 'eat.sayThis')}
+      </h3>
       <ul class="m-0 list-none space-y-2 p-0">
         {d.phrases.map((p) => (
           <SayLine lang={lang} vi={p.vi} kana={p.kana} ja={p.ja} />
         ))}
       </ul>
-    </div>
+    </section>
   </div>
 </GlassSheet>
 
 <style is:global>
-  /* "Shop sign" band: the dish name as it appears on Saigon signboards */
-  .sign-band {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 2px;
-    min-height: 92px;
-    padding: 12px 14px;
-    color: var(--color-ink-dark); /* text on an accent fill */
+  .dish-card .media-frame {
+    border-radius: 22px;
+    box-shadow: 0 10px 24px -14px rgb(23 32 51 / 0.45);
   }
-  .sign-band--lg {
-    min-height: 110px;
+  .dish-card__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(10 14 22 / 0.78), rgb(10 14 22 / 0.1) 55%, transparent);
+    pointer-events: none;
   }
-  .sign-band__label {
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    opacity: 0.85;
-  }
-  .sign-band__word {
-    font-size: 24px;
-    font-weight: 800;
-    line-height: 1.15;
+  /* Text badge (no logo): the shop is listed as Bib Gourmand in the MICHELIN Guide */
+  .bib-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #c8102e;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
     letter-spacing: 0.02em;
-    text-transform: uppercase;
-  }
-  .sign-band--lg .sign-band__word {
-    font-size: 32px;
-  }
-  .sign-band--main {
-    background: var(--color-amber);
-  }
-  .sign-band--snack {
-    background: var(--color-river);
-  }
-  .sign-band--sweet {
-    background: color-mix(in srgb, var(--color-amber) 16%, white);
-    color: var(--color-amber);
-  }
-  .sign-band--drink {
-    background: color-mix(in srgb, var(--color-river) 16%, white);
-    color: var(--color-river);
+    white-space: nowrap;
   }
 </style>

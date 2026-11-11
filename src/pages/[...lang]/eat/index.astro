@@ -3,6 +3,8 @@
 // souvenirs (Japanese/Vietnamese names to show the staff). No specific restaurants or stores.
 // Data: src/data/eat/{dishes,souvenirs}.yml · tips: guides collection (food / shopping).
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import heroPhoto from '../../../assets/eat/bun-rieu.webp';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import GlassChip from '../../../components/glass/GlassChip.astro';
 import Icon from '../../../components/glass/Icon.astro';
@@ -21,6 +23,11 @@ const souvenirs = (await getCollection('souvenirs')).sort(byOrder);
 const guides = (await getCollection('guides')).sort(byOrder);
 const foodTips = guides.filter((g) => g.data.category === 'food');
 const shopTips = guides.filter((g) => g.data.category === 'shopping');
+
+const shopCount = new Set(dishes.flatMap((d) => d.data.shops.map((s) => s.name))).size;
+const bibCount = new Set(
+  dishes.flatMap((d) => d.data.shops.filter((s) => s.michelin === 'bib').map((s) => s.name)),
+).size;
 
 const dishCats: [string, I18nKey][] = [
   ['main', 'eat.catMain'],
@@ -47,14 +54,32 @@ const souvCats: [string, I18nKey][] = [
   ]}
 >
   <div class="mx-auto max-w-5xl space-y-12 px-4">
-    <header>
-      <p class="eyebrow font-latin tracking-[0.3em]!">EAT &amp; SHOP</p>
-      <h1 class="mt-1 text-[28px] leading-snug">{t(lang, 'eat.title')}</h1>
-      <p class="mt-1 text-[15px] text-ink-muted">{t(lang, 'eat.lead')}</p>
-      {lang !== 'ja' && (
-        <p class="mt-2 text-[12px] text-ink-muted">{t(lang, 'common.untranslated')}</p>
-      )}
+    <header class="media-frame on-dark aspect-[4/5] rounded-[28px] sm:aspect-[16/7]">
+      <Image
+        src={heroPhoto}
+        alt=""
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 1024px) 1024px, 100vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <span class="eat-hero__shade" aria-hidden="true"></span>
+      <div class="absolute inset-x-0 bottom-0 p-5 text-white sm:p-8">
+        <p class="font-latin m-0 text-[12px] font-bold tracking-[0.3em] opacity-90">EAT &amp; SHOP</p>
+        <h1 class="mt-1 text-[32px] leading-tight text-white sm:text-[40px]">{t(lang, 'eat.title')}</h1>
+        <p class="mt-2 max-w-xl text-[15px] leading-relaxed opacity-95">{t(lang, 'eat.lead')}</p>
+        <div class="mt-4 flex flex-wrap gap-2 text-[12px] font-bold">
+          <span class="rounded-full bg-white/20 px-3 py-1.5 backdrop-blur">
+            {t(lang, 'eat.statDishes').replace('{n}', String(dishes.length))}
+          </span>
+          <span class="rounded-full bg-white/20 px-3 py-1.5 backdrop-blur">
+            {t(lang, 'eat.statShops').replace('{n}', String(shopCount))}
+          </span>
+          <span class="bib-badge">{t(lang, 'eat.statBib').replace('{n}', String(bibCount))}</span>
+        </div>
+      </div>
     </header>
+    {lang !== 'ja' && <p class="-mt-8 text-[12px] text-ink-muted">{t(lang, 'common.untranslated')}</p>}
 
     <section aria-labelledby="eat-food" class="space-y-4" data-filter-scope>
       <div class="section-head mb-0!">
@@ -74,10 +99,10 @@ const souvCats: [string, I18nKey][] = [
           </GlassChip>
         ))}
       </div>
-      <ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 md:grid-cols-3">
-        {dishes.map((dish) => (
+      <ul class="m-0 grid list-none grid-cols-2 gap-x-3 gap-y-5 p-0 md:grid-cols-3 lg:grid-cols-4">
+        {dishes.map((dish, i) => (
           <li data-item-cat={dish.data.category}>
-            <DishCard lang={lang} dish={dish} />
+            <DishCard lang={lang} dish={dish} eager={i < 2} />
           </li>
         ))}
       </ul>
@@ -126,6 +151,14 @@ const souvCats: [string, I18nKey][] = [
 
   <ShowMode lang={lang} />
 </BaseLayout>
+
+<style>
+  .eat-hero__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(10 14 22 / 0.85), rgb(10 14 22 / 0.25) 55%, rgb(10 14 22 / 0.05));
+  }
+</style>
 
 <script>
   import { phraseTools } from '../../../components/phrase/client';

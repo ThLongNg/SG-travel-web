@@ -68,6 +68,19 @@ Nguồn gốc: video flycam TP.HCM về đêm của kênh **Explorepia** ("NEVER
 | `area-vung-tau.webp` | [Bai Truoc Vung Tau.jpg](https://commons.wikimedia.org/wiki/File:Bai_Truoc_Vung_Tau.jpg) | NDTK08 | CC BY 4.0 |
 | `course-city-2days.webp` | [Ho Chi Minh City, Nguyen Hue Street, 2020-01 CN-04.jpg](https://commons.wikimedia.org/wiki/File:Ho_Chi_Minh_City,_Nguyen_Hue_Street,_2020-01_CN-04.jpg) | Steffen Schmitz (more photos) | CC BY-SA 4.0 |
 | `course-day3-options.webp` | [Vung Tau Cap Saint-Jacques.JPG](https://commons.wikimedia.org/wiki/File:Vung_Tau_Cap_Saint-Jacques.JPG) | BrightRaven | CC BY 3.0 |
+| `eat/pho.webp` | [Beef pho 2.jpg](https://commons.wikimedia.org/wiki/File:Beef_pho_2.jpg) | avlxyz | CC BY-SA 2.0 |
+| `eat/com-tam.webp` | [Cơm tấm sườn cây.JPG](https://commons.wikimedia.org/wiki/File:C%C6%A1m_t%E1%BA%A5m_s%C6%B0%E1%BB%9Dn_c%C3%A2y.JPG) | Tokeisan at Vietnamese Wikipedia | Public domain |
+| `eat/hu-tieu.webp` | [Hủ tiếu Nam Vang.jpg](https://commons.wikimedia.org/wiki/File:H%E1%BB%A7_ti%E1%BA%BFu_Nam_Vang.jpg) | SauceSupreme | CC BY 2.0 |
+| `eat/banh-xeo.webp` | [Bánh xèo with pork sausage and shrimp served with various garnishes.jpg](https://commons.wikimedia.org/wiki/File:B%C3%A1nh_x%C3%A8o_with_pork_sausage_and_shrimp_served_with_various_garnishes.jpg) | Ser Amantio di Nicolao | CC BY-SA 4.0 |
+| `eat/banh-canh-cua.webp` | [Banhcanhcua.jpg](https://commons.wikimedia.org/wiki/File:Banhcanhcua.jpg) | bánh canh cu | CC0 |
+| `eat/bun-rieu.webp` | [Bun Rieu.jpg](https://commons.wikimedia.org/wiki/File:Bun_Rieu.jpg) | Sohini.sen | CC BY-SA 4.0 |
+| `eat/bo-kho.webp` | [Bánh mỳ và bò kho (bò Phú Yên) ở Nguyễn Nhữ Lãm, Tân Phú năm 2015 (3).jpg](https://commons.wikimedia.org/wiki/File:B%C3%A1nh_m%E1%BB%B3_v%C3%A0_b%C3%B2_kho_(b%C3%B2_Ph%C3%BA_Y%C3%AAn)_%E1%BB%9F_Nguy%E1%BB%85n_Nh%E1%BB%AF_L%C3%A3m,_T%C3%A2n_Ph%C3%BA_n%C4%83m_2015_(3).jpg) | Phương Huy | CC BY-SA 4.0 |
+| `eat/banh-mi.webp` | [Bánh-mì - Phương-thảo.jpg](https://commons.wikimedia.org/wiki/File:B%C3%A1nh-m%C3%AC_-_Ph%C6%B0%C6%A1ng-th%E1%BA%A3o.jpg) | Jean-Marie Hullot | CC BY 3.0 |
+| `eat/goi-cuon.webp` | [Homemade spring rolls (7010969349).jpg](https://commons.wikimedia.org/wiki/File:Homemade_spring_rolls_(7010969349).jpg) | pelican from Tokyo, Japan | CC BY-SA 2.0 |
+| `eat/banh-cuon.webp` | [Bánh cuốn Thanh Trì.jpg](https://commons.wikimedia.org/wiki/File:B%C3%A1nh_cu%E1%BB%91n_Thanh_Tr%C3%AC.jpg) | Casablanca1911 at vi.wikipedia | Public domain |
+| `eat/che.webp` | [Chè Thưng.jpg](https://commons.wikimedia.org/wiki/File:Ch%C3%A8_Th%C6%B0ng.jpg) | Zxcvasdfqwer888 | CC BY-SA 3.0 |
+| `eat/ca-phe-sua-da.webp` | [Ca Phe Sua Da.jpg](https://commons.wikimedia.org/wiki/File:Ca_Phe_Sua_Da.jpg) | Clarin | CC BY 2.5 |
+| `eat/nuoc-mia.webp` | [Juice ya miwa.jpg](https://commons.wikimedia.org/wiki/File:Juice_ya_miwa.jpg) | Drewshotz | CC BY-SA 4.0 |
 
 ## Khi thay bằng ảnh / video thật
 

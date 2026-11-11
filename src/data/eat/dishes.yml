@@ -1,21 +1,43 @@
-# /eat/ — must-try dishes (no specific restaurants). Kana follows the Southern accent, like phrases/.
-# priceVnd: rough ranges, verified: false until checked in Ho Chi Minh City.
+# /eat/ — must-try dishes and where to eat them. Kana follows the Southern accent, like phrases/.
+# priceVnd: rough ranges per bowl/plate (verified: false until checked in Ho Chi Minh City).
+# shops: picked from the MICHELIN Guide Vietnam 2026 (Bib Gourmand) and Vietnamese review sites.
+#   address = as written by the source (new ward names after the 2025 merger; old district in `area`).
+#   Hours change often: unverified ones are marked TODO and shown as 要確認.
 - id: pho
   order: 1
   nameVi: Phở
   nameJa: フォー
   category: main
   when: 朝ごはんに
-  priceVnd: { min: 40000, max: 70000 }
+  imageAlt: 牛肉とネギがのったフォーの丼
+  priceVnd: { min: 40000, max: 90000 }
   desc: 米麺を牛骨スープでいただく、ベトナムを代表する麺。南部風はもやしやバジルなどのハーブをたっぷり添えるのが特徴です。
   tip: ベトナムではフォーは朝ごはん。牛肉（bò）と鶏肉（gà）が定番です。
   phrases:
-    - {
-        vi: Cho tôi một tô phở bò,
-        kana: チョー トイ モッ トー フォー ボー,
-        ja: 牛肉のフォーをひとつください,
-      }
+    - { vi: Cho tôi một tô phở bò, kana: チョー トイ モッ トー フォー ボー, ja: 牛肉のフォーをひとつください }
     - { vi: Không hành, kana: コン ハン, ja: ネギ抜きで }
+  shops:
+    - name: Phở Minh
+      area: 旧1区・グエンフエ通りの近く（路地の奥）
+      address: 63/6 Pasteur, Phường Sài Gòn, TP.HCM
+      hours: 6:30〜10:30（毎日・売り切れ次第終了）
+      note: 1945年創業。路地の奥にある老舗で、焼きたてのパテ・ショー（ミートパイ）も名物。1日目の朝ごはんに。
+      michelin: bib
+      source: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/pho-minh
+    - name: Phở Lệ
+      area: 旧5区・チョロン
+      address: 413-415 Nguyễn Trãi, Phường An Đông, TP.HCM
+      hours: 6:00〜24:00（毎日）
+      note: 70年以上続く人気店。生肉・煮込み肉・牛団子がのった「ミックス」が定番。2日目のチョロン散策の朝に。
+      michelin: bib
+      source: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/pho-le-district-5
+    - name: Phở Chào
+      area: 旧ビンタイン区（中心部から配車で）
+      address: 52 Nguyễn Công Trứ, Phường Thạnh Mỹ Tây, TP.HCM
+      hours: 6:30〜21:00（毎日）
+      note: 3日間煮込んだ牛骨スープと鶏スープを選べます。夜も開いているので夕食にも。
+      michelin: bib
+      source: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/pho-chao
   sources:
     - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
       url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
@@ -26,17 +48,22 @@
   nameVi: Cơm tấm
   nameJa: コムタム
   category: main
-  when: 朝〜昼に
-  priceVnd: { min: 35000, max: 70000 }
+  when: 朝〜夜に
+  imageAlt: 焼いた骨付き豚肉と砕き米のごはん
+  priceVnd: { min: 35000, max: 90000 }
   desc: 砕けたお米のごはんに、甘辛く焼いた豚肉をのせたホーチミン名物。目玉焼きや甘酸っぱい漬物を添えて、タレをかけていただきます。
   tip: 定番は焼き豚（sườn）に目玉焼き（ốp la）をのせた一皿。
   phrases:
-    - {
-        vi: Cho tôi một dĩa cơm tấm sườn,
-        kana: チョー トイ モッ イア コム タム スオン,
-        ja: 焼き豚のコムタムをひとつください,
-      }
+    - { vi: Cho tôi một dĩa cơm tấm sườn, kana: チョー トイ モッ イア コム タム スオン, ja: 焼き豚のコムタムをひとつください }
     - { vi: Thêm trứng ốp la, kana: テム チュン オップ ラー, ja: 目玉焼きを追加で }
+  shops:
+    - name: Cơm Tấm Ba Ghiền
+      area: 旧フーニュアン区（中心部から配車で）
+      address: 84 Đặng Văn Ngữ, Phường Phú Nhuận, TP.HCM
+      hours: 9:00〜21:30（毎日）
+      note: 「街でいちばん」と地元で評判。秘伝のタレで炭火焼きにした大きな豚ロースが看板です。
+      michelin: bib
+      source: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/com-tam-ba-ghien
   sources:
     - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
       url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
@@ -48,20 +75,21 @@
   nameJa: フーティウ
   category: main
   when: 朝〜夜に
-  priceVnd: { min: 40000, max: 70000 }
+  imageAlt: エビと豚肉がのったナムヴァン風フーティウ
+  priceVnd: { min: 40000, max: 90000 }
   desc: 南部の屋台の定番麺。豚骨のやさしいスープに、豚肉やエビ、うずらの卵などがのります。「ナムヴァン風」が代表格です。
   tip: スープあり（nước）か、スープが別添えのまぜ麺（khô）を選べます。
   phrases:
-    - {
-        vi: Cho tôi một tô hủ tiếu Nam Vang,
-        kana: チョー トイ モッ トー フー ティウ ナム ヤン,
-        ja: ナムヴァン風フーティウをひとつください,
-      }
-    - {
-        vi: Cho tôi hủ tiếu khô,
-        kana: チョー トイ フー ティウ コー,
-        ja: スープなし（まぜ麺）でお願いします,
-      }
+    - { vi: Cho tôi một tô hủ tiếu Nam Vang, kana: チョー トイ モッ トー フー ティウ ナム ヤン, ja: ナムヴァン風フーティウをひとつください }
+    - { vi: Cho tôi hủ tiếu khô, kana: チョー トイ フー ティウ コー, ja: スープなし（まぜ麺）でお願いします }
+  shops:
+    - name: Hồng Phát
+      area: 旧3区・バンコー
+      address: 389-391 Võ Văn Tần, Phường Bàn Cờ, TP.HCM
+      hours: 6:30〜22:30
+      note: 潮州とクメールの食文化から生まれた一杯。エビとカニの揚げ春巻きや揚げ餃子もおすすめ。
+      michelin: bib
+      source: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/hong-phat-district-3
   sources:
     - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
       url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
@@ -73,114 +101,246 @@
   nameJa: バインセオ
   category: main
   when: 昼〜夜に
+  imageAlt: 黄色い生地のバインセオとハーブの盛り合わせ
   priceVnd: { min: 50000, max: 180000 }
   desc: 米粉の生地をパリッと焼き、エビや豚肉、もやしを包んだベトナム風お好み焼き。南部のものは大きくて薄いのが特徴です。
   tip: ちぎって葉野菜とハーブで包み、甘酸っぱいタレにつけて食べます。手を使ってOK。
   phrases:
-    - {
-        vi: Cho tôi một cái bánh xèo,
-        kana: チョー トイ モッ カイ バン セオ,
-        ja: バインセオをひとつください,
-      }
+    - { vi: Cho tôi một cái bánh xèo, kana: チョー トイ モッ カイ バン セオ, ja: バインセオをひとつください }
+  shops:
+    - name: Bánh Xèo 46A
+      area: 旧1区・タンディン教会の近く
+      address: 46A Đinh Công Tráng, Phường Tân Định, TP.HCM
+      hours: 10:00〜13:50、16:00〜20:50（毎日）
+      note: 70年以上続く名店。オープンキッチン横の屋外席がいちばんの雰囲気。閉店まぎわは避けて早めに。
+      michelin: bib
+      source: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/banh-xeo-46a
+    - name: Bếp Mẹ Ỉn
+      area: 旧1区・ベンタイン市場の近く
+      address: 136 Lê Thánh Tôn, Phường Bến Thành, TP.HCM
+      hours: 10:30〜22:30（毎日）
+      note: 黄色い壁の、田舎の家のような店内。竹かごで出てくるバインセオと、ココナッツの器のチャーハンが看板。
+      michelin: bib
+      source: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/bep-me-in-le-thanh-ton
   sources:
     - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
       url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
   verified: false
 
-- id: banh-mi
+- id: banh-canh-cua
   order: 5
+  nameVi: Bánh canh cua
+  nameJa: バインカン・クア（カニのとろみ麺）
+  category: main
+  when: 昼に
+  imageAlt: エビとカニがのったオレンジ色のスープの麺
+  priceVnd: { min: 50000, max: 120000 }
+  desc: もちもちの太い米麺を、カニの旨みたっぷりのとろみスープでいただく一杯。カニ身や揚げパンをのせるのが南部流です。
+  tip: 添えられた青唐辛子とライムのタレで、味を変えながら食べます。
+  phrases:
+    - { vi: Cho tôi một tô bánh canh cua, kana: チョー トイ モッ トー バン カン クア, ja: カニのバインカンをひとつください }
+  shops:
+    - name: Bánh Canh Cua Bà Ba
+      area: 旧5区（1区との境目あたり・路地の中）
+      address: 84/6 Nguyễn Biểu, Phường Chợ Quán, TP.HCM
+      hours: 8:00〜20:00（月曜休み）
+      note: メニューはこの一品だけ。ひとり用の小鉢と、シェア用の土鍋があります。
+      michelin: bib
+      source: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/banh-canh-cua-ba-ba
+  sources:
+    - title: MICHELIN Guide Vietnam — Bánh Canh Cua Bà Ba
+      url: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/banh-canh-cua-ba-ba
+  verified: false
+
+- id: bun-rieu
+  order: 6
+  nameVi: Bún riêu
+  nameJa: ブンリウ（カニとトマトの麺）
+  category: main
+  when: 朝〜昼に
+  imageAlt: トマトとカニのスープに米麺が入ったブンリウ
+  priceVnd: { min: 40000, max: 80000 }
+  desc: トマトとカニのやさしい酸味のスープに、細い米麺。カニ味噌の団子や揚げ豆腐がのり、日本人にも食べやすい味です。
+  tip: エビの発酵ペースト（mắm tôm）はとても香りが強いので、まずはほんの少しから。
+  phrases:
+    - { vi: Cho tôi một tô bún riêu, kana: チョー トイ モッ トー ブン リウ, ja: ブンリウをひとつください }
+    - { vi: Không mắm tôm, kana: コン マム トム, ja: エビの発酵ペーストは無しで }
+  shops:
+    - name: Bún Riêu Yến
+      area: 旧フーニュアン区（中心部から配車で）
+      address: 1346 Trường Sa, Phường Tân Sơn Hòa, TP.HCM
+      hours: 6:00〜18:00（日曜は11:00まで）
+      note: にぎやかな角の店。麺は細・太・平打ちから選べ、タニシと豚ひき肉がたっぷりのります。
+      michelin: bib
+      source: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/bun-rieu-yen
+  sources:
+    - title: MICHELIN Guide Vietnam — Bún Riêu Yến
+      url: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/bun-rieu-yen
+  verified: false
+
+- id: bo-kho
+  order: 7
+  nameVi: Bò kho
+  nameJa: ボーコー（牛肉のベトナム風シチュー）
+  category: main
+  when: 朝〜昼に
+  imageAlt: 赤いスープのボーコーとフランスパン
+  priceVnd: { min: 40000, max: 80000 }
+  desc: 牛肉をレモングラスや八角で甘くスパイシーに煮込んだシチュー。フランスパンを浸して食べるのが定番です。
+  tip: パン（bánh mì）・麺（hủ tiếu）・ごはんから選べる店が多いです。
+  phrases:
+    - { vi: Cho tôi một phần bò kho bánh mì, kana: チョー トイ モッ ファン ボー コー バン ミー, ja: ボーコーをパン付きでひとつください }
+  shops:
+    - name: Bò Kho Gánh
+      area: 旧10区（中心部から配車で）
+      address: 029 Lô H, chung cư Ngô Gia Tự, Sư Vạn Hạnh, Phường Vườn Lài, TP.HCM
+      hours: 10:00〜22:00（毎日）
+      note: 石の器で出てくる甘くて濃いボーコー。パン・麺・ごはんを選べます。団地の1階にあるので住所を見せて向かいましょう。
+      michelin: bib
+      source: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/bo-kho-ganh
+  sources:
+    - title: MICHELIN Guide Vietnam — Bò Kho Gánh
+      url: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/bo-kho-ganh
+  verified: false
+
+- id: banh-mi
+  order: 8
   nameVi: Bánh mì
   nameJa: バインミー
   category: snack
   when: 朝ごはんや小腹に
+  imageAlt: パンが並ぶ街角のバインミー屋台
   priceVnd: { min: 25000, max: 80000 }
   desc: パリッと軽いフランスパンに、ハムやパテ、なます、ハーブを挟んだベトナム風サンドイッチ。街角の屋台で買えます。
   tip: 辛いのが苦手なら、唐辛子抜きをお願いしましょう。
   phrases:
-    - {
-        vi: Cho tôi một ổ bánh mì thịt,
-        kana: チョー トイ モッ オー バン ミー ティッ,
-        ja: お肉のバインミーをひとつください,
-      }
+    - { vi: Cho tôi một ổ bánh mì thịt, kana: チョー トイ モッ オー バン ミー ティッ, ja: お肉のバインミーをひとつください }
     - { vi: Không cay nhé, kana: コン カイ ニェ, ja: 辛くしないでください }
+  shops:
+    - name: Bánh Mì Huỳnh Hoa
+      area: 旧1区・ベンタイン市場の近く
+      address: 26 Lê Thị Riêng, Phường Bến Thành, TP.HCM
+      hours: 'TODO: 要確認（営業時間の変更が多い店です）'
+      note: 35年以上続く、具がぎっしりの「最強」バインミー。持ち帰り専門で席はありません。ひとつでかなりお腹いっぱいに。
+      source: https://vnguide.vn/restaurant/banh-mi-huynh-hoa
+    - name: Bánh Mì Hòa Mã
+      area: 旧3区
+      address: 53 Cao Thắng, Quận 3, TP.HCM
+      hours: 6:00〜11:00
+      note: 1958年からの老舗。目玉焼きやパテを小さなフライパンごと出す「バインミー・チャオ」で朝ごはんを。
+      source: https://www.foody.vn/ho-chi-minh/banh-mi-hoa-ma
   sources:
     - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
       url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
   verified: false
 
+- id: banh-cuon
+  order: 9
+  nameVi: Bánh cuốn
+  nameJa: バインクオン（蒸し春巻き）
+  category: snack
+  when: 朝〜夜に
+  imageAlt: 揚げエシャロットとハーブをのせたバインクオン
+  priceVnd: { min: 35000, max: 80000 }
+  desc: 薄く蒸した米の皮で、豚ひき肉とキクラゲを巻いたつるりとした一皿。軽いので朝ごはんや小腹がすいたときに。
+  tip: ヌックマム（魚醤）の甘いタレにつけて。ベトナムハム（chả lụa）を添えるのが定番です。
+  phrases:
+    - { vi: Cho tôi một dĩa bánh cuốn, kana: チョー トイ モッ イア バン クオン, ja: バインクオンをひとつください }
+  shops:
+    - name: Bánh Cuốn Tây Hồ 127
+      area: 旧1区・タンディン教会の近く
+      address: 127 Đinh Tiên Hoàng, Phường Tân Định, TP.HCM
+      hours: 5:30〜21:30（毎日）
+      note: 屋台から始まった2階建ての人気店。オープンキッチンで注文ごとに蒸しあげます。黄金色の緑豆の揚げ菓子もぜひ。
+      michelin: bib
+      source: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/banh-cuon-tay-ho-127
+  sources:
+    - title: MICHELIN Guide Vietnam — Bánh Cuốn Tây Hồ 127
+      url: https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurant/banh-cuon-tay-ho-127
+  verified: false
+
 - id: goi-cuon
-  order: 6
+  order: 10
   nameVi: Gỏi cuốn
   nameJa: ゴイクオン（生春巻き）
   category: snack
+  imageAlt: エビが透けて見える生春巻き
   priceVnd: { min: 30000, max: 60000 }
   desc: エビや豚肉、米麺、ハーブをライスペーパーで巻いた生春巻き。さっぱりしていて、暑い日にもぴったりです。
   tip: ピーナッツ味噌のタレにつけるのが南部流です。
   phrases:
-    - {
-        vi: Cho tôi một phần gỏi cuốn,
-        kana: チョー トイ モッ ファン ゴイ クオン,
-        ja: 生春巻きを一人前ください,
-      }
+    - { vi: Cho tôi một phần gỏi cuốn, kana: チョー トイ モッ ファン ゴイ クオン, ja: 生春巻きを一人前ください }
+  shops:
+    - name: Gỏi Cuốn Minh
+      area: 旧1区・ブイビエン通り
+      address: 84/33 Bùi Viện, Quận 1, TP.HCM
+      hours: 'TODO: 要確認'
+      note: 地元の「おいしい生春巻きの店」まとめで必ず名前が挙がる路地の店。バックパッカー街の夜歩きのついでに。
+      source: https://vinwonders.com/vi/wonderpedia/news/goi-cuon-sai-gon/
   sources:
     - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
       url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
   verified: false
 
 - id: che
-  order: 7
+  order: 11
   nameVi: Chè
   nameJa: チェー（ベトナムぜんざい）
   category: sweet
+  imageAlt: いもや豆が入ったココナッツミルクのチェー
   priceVnd: { min: 20000, max: 50000 }
   desc: 豆やいも、ゼリー、ココナッツミルクなどを組み合わせた甘いデザート。温かいものと氷入りの冷たいものがあります。
   tip: 種類が多いので、ショーケースを指さして選ぶのがかんたんです。
   phrases:
-    - {
-        vi: Cho tôi một ly chè này,
-        kana: チョー トイ モッ リー チェー ナイ,
-        ja: このチェーをひとつください,
-      }
+    - { vi: Cho tôi một ly chè này, kana: チョー トイ モッ リー チェー ナイ, ja: このチェーをひとつください }
     - { vi: Ít đá, kana: イッ ダー, ja: 氷は少なめで }
+  shops:
+    - name: Chè Hà Ký
+      area: 旧5区・チョロン
+      address: 138 Châu Văn Liêm, Quận 5, TP.HCM
+      hours: 'TODO: 要確認（午後〜夜。情報源により異なります）'
+      note: 30年以上続く華人系のチェー店で、種類は約40。黒ごまのチェーが人気です。チョロン散策の締めに。
+      source: https://quan5xinchao.vn/che-ha-ky/
   sources:
     - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
       url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
   verified: false
 
 - id: ca-phe-sua-da
-  order: 8
+  order: 12
   nameVi: Cà phê sữa đá
   nameJa: カフェスアダー（練乳アイスコーヒー）
   category: drink
-  priceVnd: { min: 25000, max: 50000 }
+  imageAlt: グラスに入った練乳アイスコーヒー
+  priceVnd: { min: 25000, max: 60000 }
   desc: 濃く淹れたコーヒーに練乳を合わせ、氷を入れたベトナムの定番。濃厚な甘さが暑さで疲れた体にしみます。
   tip: 甘さ控えめにしたいときは「Ít ngọt」とひとこと。
   phrases:
-    - {
-        vi: Cho tôi một ly cà phê sữa đá,
-        kana: チョー トイ モッ リー カー フェー スア ダー,
-        ja: 練乳アイスコーヒーをひとつください,
-      }
+    - { vi: Cho tôi một ly cà phê sữa đá, kana: チョー トイ モッ リー カー フェー スア ダー, ja: 練乳アイスコーヒーをひとつください }
     - { vi: Ít ngọt nhé, kana: イッ ゴッ ニェ, ja: 甘さ控えめで }
+  shops:
+    - name: Cà Phê Vợt Cheo Leo
+      area: 旧3区・路地の奥
+      address: 109/36 Nguyễn Thiện Thuật, Quận 3, TP.HCM
+      hours: 6:00〜18:00
+      note: 1938年創業、サイゴンでいちばん古いといわれる布ドリップ（vợt）のコーヒー店。路地の中の小さな椅子で地元気分を。
+      source: https://www.ngoctrainui.vn/2024/07/09/ca-phe-vot-cheo-leo-quan-3-sai-gon/
   sources:
     - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
       url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/
   verified: false
 
 - id: nuoc-mia
-  order: 9
+  order: 13
   nameVi: Nước mía
   nameJa: ヌックミア（サトウキビジュース）
   category: drink
+  imageAlt: 機械でサトウキビを搾っているところ
   priceVnd: { min: 15000, max: 25000 }
   desc: その場でサトウキビを搾ってくれる屋台のジュース。ほんのり甘く、歩き疲れたときの一杯にぴったりです。
-  tip: 氷が心配な日は「氷なし」で頼めます。
+  tip: 決まった名店はなく、街角の屋台で。氷が心配な日は「氷なし」で頼めます。
   phrases:
-    - {
-        vi: Cho tôi một ly nước mía,
-        kana: チョー トイ モッ リー ヌオック ミア,
-        ja: サトウキビジュースをひとつください,
-      }
+    - { vi: Cho tôi một ly nước mía, kana: チョー トイ モッ リー ヌオック ミア, ja: サトウキビジュースをひとつください }
     - { vi: Không đá, kana: コン ダー, ja: 氷なしで }
   sources:
     - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）

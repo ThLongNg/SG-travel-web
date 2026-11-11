@@ -48,9 +48,17 @@ test.describe('VND ⇄ JPY converter', () => {
     await page.goto('/eat/');
     await page.locator('[data-sheet-open="dish-pho"]').click();
     await expect(page.locator('dialog#dish-pho')).toHaveAttribute('open', '');
-    await page.locator('dialog#dish-pho [data-show]').first().click();
+    // recommended shops: map link + 住所を見せる (the address, for drivers)
+    const shop = page.locator('dialog#dish-pho .shop-item').first();
+    await expect(shop.locator('a[href^="https://www.google.com/maps/"]')).toHaveAttribute('target', '_blank');
+    await shop.locator('[data-show]').click();
+    await expect(page.locator('#show-mode [data-sm-vi]')).toHaveText(/63\/6 Pasteur/);
+    await page.locator('#show-mode [data-show-close]').click();
+    // order phrase
+    await page.locator('dialog#dish-pho li[data-say]:not(.shop-item) [data-show]').first().click();
     await expect(page.locator('#show-mode [data-sm-vi]')).toHaveText('Cho tôi một tô phở bò');
     await page.locator('#show-mode [data-show-close]').click();
+    await expect(page.locator('dialog#dish-pho')).not.toContainText('TODO');
     await page.locator('dialog#dish-pho [data-sheet-close]').click();
 
     // drinks chip leaves only drink cards in the food section

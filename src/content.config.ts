@@ -208,7 +208,18 @@ const phrase = z.object({
   ja: z.string().min(1),
 });
 
-/** /eat/ — must-try dishes. No specific restaurants: the sign word is how she finds them. */
+/** A recommended shop for a dish (MICHELIN Guide / Vietnamese review sites). */
+const shop = z.object({
+  name: z.string().min(1), // as on the sign
+  area: z.string().min(1), // where it is, for a Japanese reader
+  address: z.string().min(1), // Vietnamese, shown to drivers (住所を見せる)
+  hours: z.string().min(1), // may be 'TODO: 要確認…'
+  note: z.string().min(1),
+  michelin: z.enum(['bib']).optional(),
+  source: z.url(),
+});
+
+/** /eat/ — must-try dishes with a photo (src/assets/eat/<id>.webp) and recommended shops. */
 const dishes = defineCollection({
   loader: file('./src/data/eat/dishes.yml'),
   schema: z.object({
@@ -218,10 +229,12 @@ const dishes = defineCollection({
     nameJa: z.string().min(1),
     category: z.enum(['main', 'snack', 'sweet', 'drink']),
     when: z.string().optional(), // e.g. 朝ごはんに
+    imageAlt: z.string().min(1),
     priceVnd: z.object({ min: z.number().int().positive(), max: z.number().int().positive() }),
     desc: z.string().min(1),
     tip: z.string().optional(),
     phrases: z.array(phrase).min(1),
+    shops: z.array(shop).default([]),
     sources,
     verified: z.boolean(),
   }),

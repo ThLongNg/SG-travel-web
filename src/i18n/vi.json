@@ -238,7 +238,7 @@
   },
   "eat": {
     "title": "Ăn & mua sắm",
-    "lead": "Gợi ý để tự mình ăn uống và chọn quà một cách yên tâm.",
+    "lead": "13 món phải thử và những quán được người Sài Gòn lẫn Michelin khen. Chạm để xem quán và câu gọi món.",
     "eatTitle": "Ăn",
     "buyTitle": "Mua",
     "all": "Tất cả",
@@ -257,7 +257,20 @@
     "where": "Mua ở đâu",
     "sayThis": "Câu gọi món",
     "showStaff": "Cho xem",
-    "tapHint": "Chạm để xem cách ăn và câu gọi món",
-    "tips": "Mẹo"
+    "tapHint": "Chạm để xem quán gợi ý và câu gọi món",
+    "tips": "Mẹo",
+    "bib": "Michelin Bib Gourmand",
+    "shopsCount": "{n} quán gợi ý",
+    "dong": "đ",
+    "shopsTitle": "Quán gợi ý",
+    "toHere": "Tôi muốn đến đây",
+    "hours": "Giờ mở cửa",
+    "address": "Địa chỉ",
+    "openMap": "Mở bản đồ",
+    "showAddress": "Cho xem địa chỉ",
+    "source": "Nguồn",
+    "statDishes": "{n} món phải thử",
+    "statShops": "{n} quán gợi ý",
+    "statBib": "{n} quán Bib Gourmand"
   }
 }

@@ -238,7 +238,7 @@
   },
   "eat": {
     "title": "Eat & shop",
-    "lead": "Tips to eat out and pick souvenirs with confidence on your own.",
+    "lead": "13 must-try dishes and the places locals and the MICHELIN Guide rate. Tap a dish for shops and what to say.",
     "eatTitle": "Eat",
     "buyTitle": "Shop",
     "all": "All",
@@ -257,7 +257,20 @@
     "where": "Where to buy",
     "sayThis": "How to order",
     "showStaff": "Show",
-    "tapHint": "Tap for how to eat and order",
-    "tips": "Tips"
+    "tapHint": "Tap for recommended shops and what to say",
+    "tips": "Tips",
+    "bib": "MICHELIN Bib Gourmand",
+    "shopsCount": "{n} shops",
+    "dong": "VND",
+    "shopsTitle": "Where to eat it",
+    "toHere": "I want to go here",
+    "hours": "Hours",
+    "address": "Address",
+    "openMap": "Open map",
+    "showAddress": "Show address",
+    "source": "Source",
+    "statDishes": "{n} must-try dishes",
+    "statShops": "{n} shops",
+    "statBib": "{n} Bib Gourmand"
   }
 }
