@@ -134,26 +134,60 @@ export class UpstreamError extends Error {
 
 type Part = { text: string } | { inlineData: { mimeType: string; data: string } };
 
-/** One structured Gemini call, falling through MODELS on overload / retired model / broken JSON. */
-async function gemini(
+/**
+ * One structured Gemini call, "hedged": Gemini usually answers in 1–2 s but sometimes stalls for
+ * 6–9 s or returns 503. If the current model hasn't answered after `hedgeMs`, the next model in
+ * MODELS starts in parallel and the first good answer wins (the others are aborted). A model that
+ * fails with overload / retired (404) / broken JSON hands over to the next one immediately.
+ * Cost: an extra call only on slow requests.
+ */
+function gemini(
   parts: Part[],
   schema: object,
   maxOutputTokens: number,
   key: string,
+  hedgeMs: number,
 ): Promise<unknown> {
-  let last: unknown;
-  for (const model of MODELS) {
-    try {
-      return await callGemini(model, parts, schema, maxOutputTokens, key);
-    } catch (error) {
-      last = error;
-      const s = error instanceof UpstreamError ? error.status : 0;
-      const retry = s >= 500 || s === 404 || s === 422;
-      if (!retry) throw error;
-      console.warn(`gemini ${model} → ${(error as UpstreamError).status}, trying next model`);
-    }
-  }
-  throw last;
+  return new Promise((resolve, reject) => {
+    const ctrls: AbortController[] = [];
+    let next = 0;
+    let running = 0;
+    let done = false;
+    let lastError: unknown = new UpstreamError(503);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    const finish = (fn: () => void) => {
+      done = true;
+      clearTimeout(timer);
+      for (const c of ctrls) c.abort();
+      fn();
+    };
+    const launch = () => {
+      if (done || next >= MODELS.length) return;
+      const model = MODELS[next++];
+      const ctrl = new AbortController();
+      ctrls.push(ctrl);
+      running++;
+      clearTimeout(timer);
+      timer = setTimeout(launch, hedgeMs); // still waiting → hedge with the next model
+      callGemini(model, parts, schema, maxOutputTokens, key, ctrl.signal).then(
+        (out) => !done && finish(() => resolve(out)),
+        (error: unknown) => {
+          running--;
+          if (done) return;
+          lastError = error;
+          const s = error instanceof UpstreamError ? error.status : 0;
+          // 429: per-model quota (free tier limits each model separately) → another model may still have room
+          if (!(s >= 500 || s === 404 || s === 422 || s === 429))
+            return finish(() => reject(error));
+          console.warn(`gemini ${model} → ${s || 'error'}, trying next model`);
+          if (next < MODELS.length) launch();
+          else if (running === 0) finish(() => reject(lastError));
+        },
+      );
+    };
+    launch();
+  });
 }
 
 async function callGemini(
@@ -162,11 +196,13 @@ async function callGemini(
   schema: object,
   maxOutputTokens: number,
   key: string,
+  signal: AbortSignal,
 ): Promise<unknown> {
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
     {
       method: 'POST',
+      signal,
       headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: STYLE }] },
@@ -198,6 +234,7 @@ export async function translate(text: string, dir: Dir, key: string): Promise<Tr
     TEXT_SCHEMA,
     1024,
     key,
+    2500, // a normal answer takes 1–2 s
   )) as Partial<TranslateResult>;
   if (!out.vi || !out.ja) throw new UpstreamError(422);
   return { vi: out.vi, kana: out.kana ?? '', ja: out.ja, note: out.note ?? '' };
@@ -210,6 +247,7 @@ export async function readMenu(image: string, mime: string, key: string): Promis
     MENU_SCHEMA,
     8192,
     key,
+    9000, // a menu photo normally takes 4–6 s
   )) as Partial<MenuResult>;
   const items = (out.items ?? [])
     .filter((i) => i && i.vi && i.ja)
