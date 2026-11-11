@@ -4,8 +4,9 @@
 // Needs GEMINI_API_KEY in the Vercel project's environment variables — never commit the key.
 // Called by the 翻訳 bubble (src/components/translate/TranslateBubble.astro).
 
-const MODEL = 'gemini-3.5-flash-lite';
-const FALLBACK_MODEL = 'gemini-2.5-flash-lite';
+/** Tried in order; the next one is used when a model is overloaded (5xx) or retired (404).
+ *  gemini-2.5-flash-lite was retired for new keys (404) — don't add it back. Last one is a bigger Flash. */
+const MODELS = ['gemini-3.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-3.5-flash'];
 const MAX_CHARS = 200;
 /** base64 length cap (~1.5 MB of JPEG); the client resizes photos to ~1600 px before sending. */
 const MAX_IMAGE_B64 = 2_000_000;
@@ -133,19 +134,26 @@ export class UpstreamError extends Error {
 
 type Part = { text: string } | { inlineData: { mimeType: string; data: string } };
 
-/** One structured Gemini call; on a 5xx (overloaded) retry once on the previous Flash Lite. */
+/** One structured Gemini call, falling through MODELS on overload / retired model / broken JSON. */
 async function gemini(
   parts: Part[],
   schema: object,
   maxOutputTokens: number,
   key: string,
 ): Promise<unknown> {
-  try {
-    return await callGemini(MODEL, parts, schema, maxOutputTokens, key);
-  } catch (error) {
-    if (!(error instanceof UpstreamError) || error.status < 500) throw error;
-    return callGemini(FALLBACK_MODEL, parts, schema, maxOutputTokens, key);
+  let last: unknown;
+  for (const model of MODELS) {
+    try {
+      return await callGemini(model, parts, schema, maxOutputTokens, key);
+    } catch (error) {
+      last = error;
+      const s = error instanceof UpstreamError ? error.status : 0;
+      const retry = s >= 500 || s === 404 || s === 422;
+      if (!retry) throw error;
+      console.warn(`gemini ${model} → ${(error as UpstreamError).status}, trying next model`);
+    }
   }
+  throw last;
 }
 
 async function callGemini(

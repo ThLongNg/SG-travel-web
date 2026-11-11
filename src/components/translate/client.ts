@@ -208,7 +208,11 @@ export function initTranslate(sheet: HTMLElement) {
     }
   };
   const errorFor = (status: number) =>
-    status === 503 || status === 404 ? 'unavailable' : status === 429 ? 'busy' : 'failed';
+    status === 503 || status === 404
+      ? 'unavailable'
+      : status === 429 || status === 502 // 502 = every Gemini model overloaded
+        ? 'busy'
+        : 'failed';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -223,7 +227,8 @@ export function initTranslate(sheet: HTMLElement) {
     const d = dir;
     busy(true);
     try {
-      const res = await post({ text, dir: d }, 25_000);
+      // up to 3 models server-side when Gemini is overloaded (~5–7 s each)
+      const res = await post({ text, dir: d }, 40_000);
       if (!res.ok) return showError(errorFor(res.status));
       const r = (await res.json()) as Result;
       remember(d, text, r);
@@ -317,7 +322,7 @@ export function initTranslate(sheet: HTMLElement) {
     busy(true, cameraLabel.dataset.busy);
     try {
       const image = await shrink(file);
-      const res = await post({ mode: 'menu', image, mime: 'image/jpeg' }, 45_000);
+      const res = await post({ mode: 'menu', image, mime: 'image/jpeg' }, 60_000);
       if (!res.ok) return showError(res.status === 400 ? 'badImage' : errorFor(res.status));
       const data = (await res.json()) as { items: MenuItem[]; tip: string };
       renderMenu(data.items, data.tip);
