@@ -17,7 +17,9 @@ interface Props {
 }
 const { lang, dish, eager = false } = Astro.props;
 const d = dish.data;
-const photos = import.meta.glob<{ default: ImageMetadata }>('../../assets/eat/*.webp', { eager: true });
+const photos = import.meta.glob<{ default: ImageMetadata }>('../../assets/eat/*.webp', {
+  eager: true,
+});
 const photo = photos[`../../assets/eat/${dish.id}.webp`]?.default;
 const sheetId = `dish-${dish.id}`;
 const n = (v: number) => v.toLocaleString('ja-JP');
@@ -49,7 +51,10 @@ const hasBib = d.shops.some((s) => s.michelin === 'bib');
     <span class="dish-card__shade" aria-hidden="true"></span>
     {hasBib && <span class="bib-badge absolute top-2.5 left-2.5">{t(lang, 'eat.bib')}</span>}
     <span class="absolute inset-x-0 bottom-0 block p-3 text-white">
-      <span class="font-latin block text-[22px] leading-none font-extrabold tracking-wide" lang="vi">
+      <span
+        class="font-latin block text-[22px] leading-none font-extrabold tracking-wide"
+        lang="vi"
+      >
         {d.nameVi}
       </span>
       <span class="mt-1 block text-[13px] leading-snug font-bold opacity-95">{d.nameJa}</span>
@@ -62,7 +67,9 @@ const hasBib = d.shops.some((s) => s.michelin === 'bib');
         {t(lang, 'eat.shopsCount').replace('{n}', String(d.shops.length))}
       </span>
     )}
-    <span>{n(d.priceVnd.min)}〜{t(lang, 'eat.dong')}</span>
+    <span>
+      {n(d.priceVnd.min)}〜{t(lang, 'eat.dong')}
+    </span>
   </span>
 </button>
 
@@ -70,9 +77,17 @@ const hasBib = d.shops.some((s) => s.michelin === 'bib');
   <div class="space-y-5">
     {photo && (
       <div class="media-frame aspect-[16/10] rounded-2xl">
-        <Image src={photo} alt={d.imageAlt} widths={[400, 800]} sizes="(min-width: 640px) 560px, 100vw" />
+        <Image
+          src={photo}
+          alt={d.imageAlt}
+          widths={[400, 800]}
+          sizes="(min-width: 640px) 560px, 100vw"
+        />
         <span class="dish-card__shade" aria-hidden="true"></span>
-        <span class="font-latin absolute bottom-3 left-4 text-[30px] leading-none font-extrabold text-white" lang="vi">
+        <span
+          class="font-latin absolute bottom-3 left-4 text-[30px] leading-none font-extrabold text-white"
+          lang="vi"
+        >
           {d.nameVi}
         </span>
       </div>
@@ -86,7 +101,9 @@ const hasBib = d.shops.some((s) => s.michelin === 'bib');
     )}
     <p class="m-0 flex items-center gap-2 text-[14px]">
       <Icon name="yen" size={16} class="shrink-0 text-amber" />
-      <span>{t(lang, 'eat.approx')}：{price}</span>
+      <span>
+        {t(lang, 'eat.approx')}：{price}
+      </span>
     </p>
 
     {d.shops.length > 0 && (

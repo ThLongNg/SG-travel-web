@@ -65,8 +65,12 @@ const souvCats: [string, I18nKey][] = [
       />
       <span class="eat-hero__shade" aria-hidden="true"></span>
       <div class="absolute inset-x-0 bottom-0 p-5 text-white sm:p-8">
-        <p class="font-latin m-0 text-[12px] font-bold tracking-[0.3em] opacity-90">EAT &amp; SHOP</p>
-        <h1 class="mt-1 text-[32px] leading-tight text-white sm:text-[40px]">{t(lang, 'eat.title')}</h1>
+        <p class="font-latin m-0 text-[12px] font-bold tracking-[0.3em] opacity-90">
+          EAT &amp; SHOP
+        </p>
+        <h1 class="mt-1 text-[32px] leading-tight text-white sm:text-[40px]">
+          {t(lang, 'eat.title')}
+        </h1>
         <p class="mt-2 max-w-xl text-[15px] leading-relaxed opacity-95">{t(lang, 'eat.lead')}</p>
         <div class="mt-4 flex flex-wrap gap-2 text-[12px] font-bold">
           <span class="rounded-full bg-white/20 px-3 py-1.5 backdrop-blur">
@@ -79,7 +83,9 @@ const souvCats: [string, I18nKey][] = [
         </div>
       </div>
     </header>
-    {lang !== 'ja' && <p class="-mt-8 text-[12px] text-ink-muted">{t(lang, 'common.untranslated')}</p>}
+    {lang !== 'ja' && (
+      <p class="-mt-8 text-[12px] text-ink-muted">{t(lang, 'common.untranslated')}</p>
+    )}
 
     <section aria-labelledby="eat-food" class="space-y-4" data-filter-scope>
       <div class="section-head mb-0!">
@@ -156,7 +162,12 @@ const souvCats: [string, I18nKey][] = [
   .eat-hero__shade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgb(10 14 22 / 0.85), rgb(10 14 22 / 0.25) 55%, rgb(10 14 22 / 0.05));
+    background: linear-gradient(
+      to top,
+      rgb(10 14 22 / 0.85),
+      rgb(10 14 22 / 0.25) 55%,
+      rgb(10 14 22 / 0.05)
+    );
   }
 </style>
 

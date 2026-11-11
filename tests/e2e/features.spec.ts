@@ -50,7 +50,10 @@ test.describe('VND ⇄ JPY converter', () => {
     await expect(page.locator('dialog#dish-pho')).toHaveAttribute('open', '');
     // recommended shops: map link + 住所を見せる (the address, for drivers)
     const shop = page.locator('dialog#dish-pho .shop-item').first();
-    await expect(shop.locator('a[href^="https://www.google.com/maps/"]')).toHaveAttribute('target', '_blank');
+    await expect(shop.locator('a[href^="https://www.google.com/maps/"]')).toHaveAttribute(
+      'target',
+      '_blank',
+    );
     await shop.locator('[data-show]').click();
     await expect(page.locator('#show-mode [data-sm-vi]')).toHaveText(/63\/6 Pasteur/);
     await page.locator('#show-mode [data-show-close]').click();

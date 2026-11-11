@@ -86,6 +86,13 @@ test.describe('PWA offline', () => {
     // Precached at install time, never visited:
     await page.goto('/en/phrases/');
     await expect(page.locator('[data-phrase]').first()).toBeVisible();
+    // /eat/ is precached too: dish photos load and "show the address" still works with no signal.
+    await page.goto('/eat/');
+    await page.locator('[data-sheet-open="dish-pho"]').click();
+    await expect(page.locator('dialog#dish-pho img').first()).toHaveJSProperty('complete', true);
+    await page.locator('dialog#dish-pho .shop-item [data-show]').first().click();
+    await expect(page.locator('#show-mode [data-sm-vi]')).toHaveText(/Pasteur/);
+    await page.locator('#show-mode [data-show-close]').click();
     // Visited while online:
     await page.goto('/guide/');
     await expect(page.locator('#cv-vnd')).toBeVisible();

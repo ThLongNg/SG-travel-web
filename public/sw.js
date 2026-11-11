@@ -1,19 +1,21 @@
 /* Service worker — owner: Agent C. Hand-written (no PWA library).
  *
- * - Precaches the phrasebook (/phrases/ in all 3 languages) plus the CSS/JS it needs, so
- *   指さし会話帳 works offline from the first visit.
+ * - Precaches the phrasebook (/phrases/ in all 3 languages) and /eat/ plus the CSS/JS/images they
+ *   need, so 指さし会話帳 and 食べる・買う work offline from the first visit.
  * - Pages: network-first, falling back to the cached copy (every page you view is cached).
  * - Hashed build assets (/_astro/), icons, OG/poster images: cache-first.
  * - VIDEO IS NEVER CACHED: video files and Range requests go straight to the network.
  *
  * Bump VERSION whenever this file's caching rules change.
  */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const PAGE_CACHE = `pages-${VERSION}`;
 const ASSET_CACHE = `assets-${VERSION}`;
 const MAX_PAGES = 80;
 
-const PHRASE_PAGES = ['/phrases/', '/vi/phrases/', '/en/phrases/'];
+// /eat/ (ja) is precached with its photos (~2.7 MB): "show the address to the driver" and the order
+// phrases must work with no signal.
+const PHRASE_PAGES = ['/phrases/', '/vi/phrases/', '/en/phrases/', '/eat/'];
 const PRECACHE_ASSETS = [
   '/manifest.webmanifest',
   '/icons/icon-192.png',
@@ -57,9 +59,26 @@ self.addEventListener('install', (event) => {
           if (!res.ok) continue;
           const html = await res.clone().text();
           await pages.put(path, await clean(res));
-          for (const m of html.matchAll(/(?:href|src)="(\/_astro\/[^"]+)"/g)) found.add(m[1]);
+          // every /_astro/ URL in the page: href, src and srcset (responsive images)
+          for (const m of html.matchAll(/\/_astro\/[^"\s,)]+/g)) found.add(m[0]);
         } catch {
           /* offline during install: runtime caching still applies */
+        }
+      }
+      // Page scripts import sibling chunks ("./client.abc.js"): follow them so the JS works offline.
+      const queue = [...found].filter((u) => u.endsWith('.js'));
+      while (queue.length) {
+        try {
+          const code = await (await fetch(queue.pop())).text();
+          for (const m of code.matchAll(/["'`]\.\/([\w.-]+\.js)["'`]/g)) {
+            const dep = `/_astro/${m[1]}`;
+            if (!found.has(dep)) {
+              found.add(dep);
+              queue.push(dep);
+            }
+          }
+        } catch {
+          /* optional */
         }
       }
       await Promise.all(
@@ -114,7 +133,8 @@ async function handleNavigate(request) {
 
 async function handleAsset(request) {
   const cache = await caches.open(ASSET_CACHE);
-  const hit = await cache.match(request);
+  // ignoreVary: module scripts send different request headers (Origin…) than the precache fetch
+  const hit = await cache.match(request, { ignoreVary: true });
   if (hit) return hit;
   const res = await fetch(request);
   if (res.ok && res.type === 'basic') await cache.put(request, res.clone());
