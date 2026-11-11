@@ -63,8 +63,7 @@ const { items, active, label } = Astro.props;
     display: grid;
     grid-template-columns: repeat(var(--count), 1fr);
     padding: 4px;
-    /* Liquid glass: mostly clear, light blur so what scrolls underneath stays visible;
-       legibility comes from the label halo below, not from a milky fill. */
+    /* Liquid glass: mostly clear, light blur so what scrolls underneath stays visible. */
     --glass-bg: linear-gradient(
       160deg,
       rgb(255 255 255 / 0.5) 0%,
@@ -125,11 +124,6 @@ const { items, active, label } = Astro.props;
     font-size: 11px;
     line-height: 1.2;
     font-weight: 600;
-    /* white halo keeps labels/icons readable over photos and the dark video */
-    text-shadow:
-      0 0 6px rgb(255 255 255 / 0.95),
-      0 0 2px rgb(255 255 255 / 0.9);
-    filter: drop-shadow(0 0 3px rgb(255 255 255 / 0.85));
     -webkit-tap-highlight-color: transparent;
     transition: color 200ms var(--ease-out-soft);
   }
