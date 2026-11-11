@@ -185,7 +185,8 @@ const { lang } = Astro.props;
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 25_000);
       try {
-        const res = await fetch('/api/translate', {
+        const res = await fetch('/api/translate/', {
+          // trailing slash: vercel.json has trailingSlash:true (a 308 hop otherwise)
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ text, dir }),

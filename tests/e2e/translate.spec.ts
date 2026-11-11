@@ -12,7 +12,7 @@ const reply = {
 test.describe('translate bubble', () => {
   test('ja→vi: result, kana, back-translation, then full screen', async ({ page }) => {
     let sent: unknown = null;
-    await page.route('**/api/translate', async (route) => {
+    await page.route('**/api/translate/', async (route) => {
       sent = route.request().postDataJSON();
       await route.fulfill({
         status: 200,
@@ -39,7 +39,7 @@ test.describe('translate bubble', () => {
   });
 
   test('vi→ja puts the Japanese on top and hides 全画面', async ({ page }) => {
-    await page.route('**/api/translate', (route) =>
+    await page.route('**/api/translate/', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -62,7 +62,7 @@ test.describe('translate bubble', () => {
   });
 
   test('explains when the service is not configured', async ({ page }) => {
-    await page.route('**/api/translate', (route) => route.fulfill({ status: 503, body: '{}' }));
+    await page.route('**/api/translate/', (route) => route.fulfill({ status: 503, body: '{}' }));
     await page.goto('/guide/');
     await page.locator('.translate-fab').click();
     await page.locator('[data-tr-input]').fill('こんにちは');
