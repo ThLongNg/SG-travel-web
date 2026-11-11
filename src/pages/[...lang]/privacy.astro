@@ -1,7 +1,8 @@
 ---
 // プライバシーポリシー (owner: Agent C). Body is Japanese-only content; vi/en show common.untranslated.
 // Keep in sync with what the site really does: Formspree (contact), Google Maps iframe (spot pages),
-// service-worker cache (offline), speechSynthesis (on device). No cookies or analytics of our own.
+// service-worker cache (offline), speechSynthesis (on device), /api/translate → Anthropic (翻訳 bubble).
+// No cookies or analytics of our own.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GlassPanel from '../../components/glass/GlassPanel.astro';
 import { formatJaDate } from '../../lib/format';
@@ -29,6 +30,7 @@ const sections: { title: string; body: string[] }[] = [
     body: [
       'お問い合わせフォームの送信には外部サービス「Formspree」を利用しています。送信内容は同サービスのサーバーを経由して運営者に届きます。',
       '観光地ページの地図には「Google マップ」を埋め込んでいます。地図を表示した場合、Google のプライバシーポリシーに基づいて情報が扱われます。',
+      '翻訳機能（画面右下の「訳」ボタン）で入力した文は、翻訳のため AI サービス「Anthropic（Claude）」に送信されます。当サイトは入力内容を保存しません。名前・電話番号・住所などの個人情報は入力しないでください。',
       'LINE 公式アカウントでのお問い合わせには、LINE の運営会社のプライバシーポリシーが適用されます。',
     ],
   },

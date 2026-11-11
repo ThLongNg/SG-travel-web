@@ -7,7 +7,6 @@ import GlassSearch from '../glass/GlassSearch.astro';
 import GlassChip from '../glass/GlassChip.astro';
 import Icon from '../glass/Icon.astro';
 import PhraseCard from './PhraseCard.astro';
-import ShowMode from './ShowMode.astro';
 import { t, type Locale } from '../../lib/i18n';
 
 interface Props {
@@ -72,8 +71,6 @@ const countTpl = t(lang, 'phrases.count', { n: '{n}' });
     {t(lang, 'phrases.noVoice')}
   </p>
 </div>
-
-<ShowMode lang={lang} />
 
 <script>
   import { searchKey } from './search';

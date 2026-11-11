@@ -11,7 +11,6 @@ import Icon from '../../../components/glass/Icon.astro';
 import GuideCards from '../../../components/guide/GuideCards.astro';
 import DishCard from '../../../components/eat/DishCard.astro';
 import SouvenirCard from '../../../components/eat/SouvenirCard.astro';
-import ShowMode from '../../../components/phrase/ShowMode.astro';
 import { getLocale, localeParams, localizePath, t, type I18nKey } from '../../../lib/i18n';
 
 export const getStaticPaths = localeParams;
@@ -154,8 +153,6 @@ const souvCats: [string, I18nKey][] = [
       {t(lang, 'phrases.noVoice')}
     </p>
   </div>
-
-  <ShowMode lang={lang} />
 </BaseLayout>
 
 <style>

@@ -59,7 +59,7 @@ test.describe('VND ⇄ JPY converter', () => {
     await page.locator('#show-mode [data-show-close]').click();
     // order phrase
     await page.locator('dialog#dish-pho li[data-say]:not(.shop-item) [data-show]').first().click();
-    await expect(page.locator('#show-mode [data-sm-vi]')).toHaveText('Cho tôi một tô phở bò');
+    await expect(page.locator('#show-mode [data-sm-vi]')).toHaveText('Cho em một tô phở bò');
     await page.locator('#show-mode [data-show-close]').click();
     await expect(page.locator('dialog#dish-pho')).not.toContainText('TODO');
     await page.locator('dialog#dish-pho [data-sheet-close]').click();

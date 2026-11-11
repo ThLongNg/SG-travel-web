@@ -4,36 +4,37 @@ order: 4
 verified: true
 phrases:
   - id: how-much
-    ja: いくらですか？
-    vi: Bao nhiêu tiền?
-    kana: バオ ニウ ティエン
+    ja: これはいくらですか？
+    vi: Cái này bao nhiêu vậy chị?
+    kana: カイ ナイ バオ ニウ ヤイ チ
   - id: too-expensive
-    ja: 高すぎます！
-    vi: Mắc quá!
-    kana: マッ ワー
-    note: 「Mắc」は南部の言い方です（北部では「Đắt」）。
+    ja: 高いですね〜
+    vi: Mắc quá chị ơi!
+    kana: マッ ワー チ オーイ
+    note: 「Mắc」は南部の言い方です（北部では「Đắt」）。笑いながら言うのがコツ。
   - id: discount
-    ja: 安くしてもらえますか？
-    vi: Bớt được không?
-    kana: ボッ ドゥオック コン
+    ja: 少し安くしてもらえますか？
+    vi: Bớt chút được không chị?
+    kana: ボッ チュッ ドゥオック コン チ
     note: 市場での値段交渉の定番フレーズです。
   - id: just-looking
     ja: 見ているだけです
-    vi: Tôi chỉ xem thôi
-    kana: トイ チー セム トイ
+    vi: Em coi chút thôi
+    kana: エム コイ チュッ トイ
+    note: 「coi」は南部で「見る」のこと。
   - id: take-this
     ja: これにします
-    vi: Tôi lấy cái này
-    kana: トイ ライ カイ ナイ
+    vi: Em lấy cái này nha
+    kana: エム ライ カイ ナイ ニャー
   - id: card-ok
     ja: カードで払えますか？
-    vi: Trả bằng thẻ được không?
-    kana: チャー バン テー ドゥオック コン
+    vi: Quẹt thẻ được không chị?
+    kana: ウェッ テー ドゥオック コン チ
   - id: bigger-size
     ja: もっと大きいサイズはありますか？
-    vi: Có cỡ lớn hơn không?
-    kana: コー コー ロン フン コン
+    vi: Có size lớn hơn không chị?
+    kana: コー サイ ロン フン コン チ
   - id: receipt
-    ja: レシートをください
-    vi: Cho tôi hóa đơn
-    kana: チョー トイ ホア ドン
+    ja: レシートをもらえますか
+    vi: Cho em xin hóa đơn nha
+    kana: チョー エム シン ホア ドン ニャー

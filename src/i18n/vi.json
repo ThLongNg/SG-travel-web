@@ -272,5 +272,15 @@
     "statDishes": "{n} món phải thử",
     "statShops": "{n} quán gợi ý",
     "statBib": "{n} quán Bib Gourmand"
+  },
+  "translate": {
+    "open": "Mở chế độ dịch",
+    "title": "Dịch",
+    "jaToVi": "Nhật → Việt",
+    "viToJa": "Việt → Nhật",
+    "submit": "Dịch",
+    "busy": "Đang dịch…",
+    "showFull": "Phóng to",
+    "speak": "Đọc"
   }
 }

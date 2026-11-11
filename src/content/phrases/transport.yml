@@ -1,40 +1,40 @@
 slug: transport
-titleJa: 移動（タクシー・Grab）
+titleJa: 移動（タクシー・配車アプリ）
 order: 3
 verified: true
 phrases:
   - id: to-this-address
-    ja: この住所まで行ってください
-    vi: Cho tôi đến địa chỉ này
-    kana: チョー トイ デン ディア チー ナイ
-    note: 地図アプリの画面や住所のメモと一緒に見せましょう。
+    ja: この住所までお願いします
+    vi: Anh chở em tới địa chỉ này nha
+    kana: アン チョー エム トイ ディア チー ナイ ニャー
+    note: 地図アプリの画面や住所のメモと一緒に見せましょう。運転手が女性なら「Anh」を「Chị（チ）」に。
   - id: to-the-airport
     ja: 空港までお願いします
-    vi: Cho tôi ra sân bay
-    kana: チョー トイ ラー サン バイ
+    vi: Cho em ra sân bay nha
+    kana: チョー エム ラー サン バイ ニャー
   - id: stop-here
-    ja: ここで止めてください
-    vi: Dừng ở đây
-    kana: ユン オー ダイ
+    ja: ここで降ります
+    vi: Cho em xuống đây nha
+    kana: チョー エム スオン ダイ ニャー
   - id: drive-slowly
-    ja: ゆっくり走ってください
-    vi: Làm ơn chạy chậm lại
-    kana: ラム ウン チャイ チャム ライ
+    ja: ゆっくり走ってもらえますか
+    vi: Anh chạy chậm chậm giùm em nha
+    kana: アン チャイ チャム チャム ユム エム ニャー
   - id: turn-on-meter
-    ja: メーターを使ってください
-    vi: Làm ơn bật đồng hồ
-    kana: ラム ウン バッ ドン ホー
+    ja: メーターを入れてください
+    vi: Anh bật đồng hồ giùm em nha
+    kana: アン バッ ドン ホー ユム エム ニャー
     note: タクシーでメーターが動いていないときに使います。
   - id: turn-left
     ja: 左に曲がってください
-    vi: Quẹo trái
-    kana: ウェオ チャイ
+    vi: Quẹo trái nha anh
+    kana: ウェオ チャイ ニャー アン
     note: 「Quẹo」は南部の言い方です（北部では「Rẽ」）。
   - id: turn-right
     ja: 右に曲がってください
-    vi: Quẹo phải
-    kana: ウェオ ファイ
+    vi: Quẹo phải nha anh
+    kana: ウェオ ファイ ニャー アン
   - id: how-long
-    ja: どのくらい時間がかかりますか？
-    vi: Mất bao lâu?
-    kana: マッ バオ ラウ
+    ja: どのくらいかかりますか？
+    vi: Đi bao lâu vậy anh?
+    kana: ディー バオ ラウ ヤイ アン

@@ -15,11 +15,11 @@
   tip: ベトナムではフォーは朝ごはん。牛肉（bò）と鶏肉（gà）が定番です。
   phrases:
     - {
-        vi: Cho tôi một tô phở bò,
-        kana: チョー トイ モッ トー フォー ボー,
+        vi: Cho em một tô phở bò,
+        kana: チョー エム モッ トー フォー ボー,
         ja: 牛肉のフォーをひとつください,
       }
-    - { vi: Không hành, kana: コン ハン, ja: ネギ抜きで }
+    - { vi: Không hành nha, kana: コン ハン ニャー, ja: ネギ抜きで }
   shops:
     - name: Phở Minh
       area: 旧1区・グエンフエ通りの近く（路地の奥）
@@ -59,11 +59,11 @@
   tip: 定番は焼き豚（sườn）に目玉焼き（ốp la）をのせた一皿。
   phrases:
     - {
-        vi: Cho tôi một dĩa cơm tấm sườn,
-        kana: チョー トイ モッ イア コム タム スオン,
+        vi: Cho em một dĩa cơm tấm sườn,
+        kana: チョー エム モッ イア コム タム スオン,
         ja: 焼き豚のコムタムをひとつください,
       }
-    - { vi: Thêm trứng ốp la, kana: テム チュン オップ ラー, ja: 目玉焼きを追加で }
+    - { vi: Thêm trứng ốp la nha, kana: テム チュン オップ ラー ニャー, ja: 目玉焼きを追加で }
   shops:
     - name: Cơm Tấm Ba Ghiền
       area: 旧フーニュアン区（中心部から配車で）
@@ -89,13 +89,13 @@
   tip: スープあり（nước）か、スープが別添えのまぜ麺（khô）を選べます。
   phrases:
     - {
-        vi: Cho tôi một tô hủ tiếu Nam Vang,
-        kana: チョー トイ モッ トー フー ティウ ナム ヤン,
+        vi: Cho em một tô hủ tiếu Nam Vang,
+        kana: チョー エム モッ トー フー ティウ ナム ヤン,
         ja: ナムヴァン風フーティウをひとつください,
       }
     - {
-        vi: Cho tôi hủ tiếu khô,
-        kana: チョー トイ フー ティウ コー,
+        vi: Cho em hủ tiếu khô nha,
+        kana: チョー エム フー ティウ コー ニャー,
         ja: スープなし（まぜ麺）でお願いします,
       }
   shops:
@@ -123,8 +123,8 @@
   tip: ちぎって葉野菜とハーブで包み、甘酸っぱいタレにつけて食べます。手を使ってOK。
   phrases:
     - {
-        vi: Cho tôi một cái bánh xèo,
-        kana: チョー トイ モッ カイ バン セオ,
+        vi: Cho em một cái bánh xèo,
+        kana: チョー エム モッ カイ バン セオ,
         ja: バインセオをひとつください,
       }
   shops:
@@ -159,8 +159,8 @@
   tip: 添えられた青唐辛子とライムのタレで、味を変えながら食べます。
   phrases:
     - {
-        vi: Cho tôi một tô bánh canh cua,
-        kana: チョー トイ モッ トー バン カン クア,
+        vi: Cho em một tô bánh canh cua,
+        kana: チョー エム モッ トー バン カン クア,
         ja: カニのバインカンをひとつください,
       }
   shops:
@@ -188,11 +188,11 @@
   tip: エビの発酵ペースト（mắm tôm）はとても香りが強いので、まずはほんの少しから。
   phrases:
     - {
-        vi: Cho tôi một tô bún riêu,
-        kana: チョー トイ モッ トー ブン リウ,
+        vi: Cho em một tô bún riêu,
+        kana: チョー エム モッ トー ブン リウ,
         ja: ブンリウをひとつください,
       }
-    - { vi: Không mắm tôm, kana: コン マム トム, ja: エビの発酵ペーストは無しで }
+    - { vi: Không mắm tôm nha, kana: コン マム トム ニャー, ja: エビの発酵ペーストは無しで }
   shops:
     - name: Bún Riêu Yến
       area: 旧フーニュアン区（中心部から配車で）
@@ -218,8 +218,8 @@
   tip: パン（bánh mì）・麺（hủ tiếu）・ごはんから選べる店が多いです。
   phrases:
     - {
-        vi: Cho tôi một phần bò kho bánh mì,
-        kana: チョー トイ モッ ファン ボー コー バン ミー,
+        vi: Cho em một phần bò kho bánh mì,
+        kana: チョー エム モッ ファン ボー コー バン ミー,
         ja: ボーコーをパン付きでひとつください,
       }
   shops:
@@ -247,11 +247,11 @@
   tip: 辛いのが苦手なら、唐辛子抜きをお願いしましょう。
   phrases:
     - {
-        vi: Cho tôi một ổ bánh mì thịt,
-        kana: チョー トイ モッ オー バン ミー ティッ,
+        vi: Cho em một ổ bánh mì thịt,
+        kana: チョー エム モッ オー バン ミー ティッ,
         ja: お肉のバインミーをひとつください,
       }
-    - { vi: Không cay nhé, kana: コン カイ ニェ, ja: 辛くしないでください }
+    - { vi: Không cay nha, kana: コン カイ ニャー, ja: 辛くしないでください }
   shops:
     - name: Bánh Mì Huỳnh Hoa
       area: 旧1区・ベンタイン市場の近く
@@ -282,8 +282,8 @@
   tip: ヌックマム（魚醤）の甘いタレにつけて。ベトナムハム（chả lụa）を添えるのが定番です。
   phrases:
     - {
-        vi: Cho tôi một dĩa bánh cuốn,
-        kana: チョー トイ モッ イア バン クオン,
+        vi: Cho em một dĩa bánh cuốn,
+        kana: チョー エム モッ イア バン クオン,
         ja: バインクオンをひとつください,
       }
   shops:
@@ -310,8 +310,8 @@
   tip: ピーナッツ味噌のタレにつけるのが南部流です。
   phrases:
     - {
-        vi: Cho tôi một phần gỏi cuốn,
-        kana: チョー トイ モッ ファン ゴイ クオン,
+        vi: Cho em một phần gỏi cuốn,
+        kana: チョー エム モッ ファン ゴイ クオン,
         ja: 生春巻きを一人前ください,
       }
   shops:
@@ -337,11 +337,11 @@
   tip: 種類が多いので、ショーケースを指さして選ぶのがかんたんです。
   phrases:
     - {
-        vi: Cho tôi một ly chè này,
-        kana: チョー トイ モッ リー チェー ナイ,
+        vi: Cho em một ly chè này,
+        kana: チョー エム モッ リー チェー ナイ,
         ja: このチェーをひとつください,
       }
-    - { vi: Ít đá, kana: イッ ダー, ja: 氷は少なめで }
+    - { vi: Ít đá nha, kana: イッ ダー ニャー, ja: 氷は少なめで }
   shops:
     - name: Chè Hà Ký
       area: 旧5区・チョロン
@@ -365,11 +365,11 @@
   tip: 甘さ控えめにしたいときは「Ít ngọt」とひとこと。
   phrases:
     - {
-        vi: Cho tôi một ly cà phê sữa đá,
-        kana: チョー トイ モッ リー カー フェー スア ダー,
+        vi: Cho em một ly cà phê sữa đá,
+        kana: チョー エム モッ リー カー フェー スア ダー,
         ja: 練乳アイスコーヒーをひとつください,
       }
-    - { vi: Ít ngọt nhé, kana: イッ ゴッ ニェ, ja: 甘さ控えめで }
+    - { vi: Ít ngọt nha, kana: イッ ンゴッ ニャー, ja: 甘さ控えめで }
   shops:
     - name: Cà Phê Vợt Cheo Leo
       area: 旧3区・路地の奥
@@ -393,11 +393,11 @@
   tip: 決まった名店はなく、街角の屋台で。氷が心配な日は「氷なし」で頼めます。
   phrases:
     - {
-        vi: Cho tôi một ly nước mía,
-        kana: チョー トイ モッ リー ヌオック ミア,
+        vi: Cho em một ly nước mía,
+        kana: チョー エム モッ リー ヌオック ミア,
         ja: サトウキビジュースをひとつください,
       }
-    - { vi: Không đá, kana: コン ダー, ja: 氷なしで }
+    - { vi: Không đá nha, kana: コン ダー ニャー, ja: 氷なしで }
   sources:
     - title: 21 must-try Vietnamese dishes（ベトナム政府観光局 Vietnam Tourism）
       url: https://vietnam.travel/things-to-do/21-must-try-vietnamese-dishes/

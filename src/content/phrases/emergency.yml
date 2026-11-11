@@ -5,36 +5,36 @@ verified: true
 phrases:
   - id: help
     ja: 助けて！
-    vi: Cứu tôi với!
-    kana: クーウ トイ ヨイ
+    vi: Cứu với!
+    kana: クーウ ヨイ
   - id: call-police
-    ja: 警察を呼んでください
-    vi: Gọi cảnh sát giúp tôi
-    kana: ゴイ カン サッ ユップ トイ
-    note: 警察の電話番号は113です。
+    ja: 警察を呼んでください！
+    vi: Gọi công an giùm em với!
+    kana: ゴイ コン アン ユム エム ヨイ
+    note: 警察の電話番号は113です。ベトナムでは警察を「công an」と呼ぶのが一般的です。
   - id: call-ambulance
-    ja: 救急車を呼んでください
-    vi: Gọi xe cấp cứu giúp tôi
-    kana: ゴイ セー カップ クーウ ユップ トイ
+    ja: 救急車を呼んでください！
+    vi: Gọi xe cấp cứu giùm em với!
+    kana: ゴイ セー カップ クーウ ユム エム ヨイ
     note: 救急車の電話番号は115です。
   - id: lost-passport
     ja: パスポートをなくしました
-    vi: Tôi bị mất hộ chiếu
-    kana: トイ ビー マッ ホー チウ
+    vi: Em bị mất hộ chiếu rồi
+    kana: エム ビー マッ ホー チウ ロイ
   - id: phone-snatched
-    ja: スマートフォンをひったくられました
-    vi: Tôi bị giật điện thoại
-    kana: トイ ビー ヤッ ディエン トアイ
+    ja: スマホをひったくられました
+    vi: Em bị giật điện thoại rồi
+    kana: エム ビー ヤッ ディエン トアイ ロイ
   - id: where-toilet
     ja: トイレはどこですか？
-    vi: Nhà vệ sinh ở đâu?
-    kana: ニャー イェー シン オー ダウ
+    vi: Nhà vệ sinh ở đâu vậy ạ?
+    kana: ニャー イェー シン オー ダウ ヤイ アー
   - id: it-hurts-here
     ja: ここが痛いです
-    vi: Tôi bị đau ở đây
-    kana: トイ ビー ダウ オー ダイ
+    vi: Em bị đau chỗ này
+    kana: エム ビー ダウ チョー ナイ
     note: 痛む場所を指さしながら見せましょう。
   - id: nearest-hospital
     ja: いちばん近い病院はどこですか？
-    vi: Bệnh viện gần nhất ở đâu?
-    kana: ベン イエン ガン ニャッ オー ダウ
+    vi: Bệnh viện gần nhất ở đâu vậy ạ?
+    kana: ベン イエン ガン ニャッ オー ダウ ヤイ アー

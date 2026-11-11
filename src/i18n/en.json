@@ -272,5 +272,15 @@
     "statDishes": "{n} must-try dishes",
     "statShops": "{n} shops",
     "statBib": "{n} Bib Gourmand"
+  },
+  "translate": {
+    "open": "Open translator",
+    "title": "Translate",
+    "jaToVi": "Japanese → Vietnamese",
+    "viToJa": "Vietnamese → Japanese",
+    "submit": "Translate",
+    "busy": "Translating…",
+    "showFull": "Show full screen",
+    "speak": "Speak"
   }
 }

@@ -9,7 +9,15 @@ export interface PhraseTools {
   show: (ja: string, vi: string, kana: string) => void;
 }
 
+// One instance per page: the phrasebook, /eat/ and the 翻訳 bubble all share the same <ShowMode>.
+let instance: PhraseTools | null | undefined;
+
 export function phraseTools(): PhraseTools | null {
+  if (instance === undefined) instance = create();
+  return instance;
+}
+
+function create(): PhraseTools | null {
   const dialog = document.querySelector<HTMLDialogElement>('#show-mode');
   if (!dialog) return null;
 

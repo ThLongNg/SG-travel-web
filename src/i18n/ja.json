@@ -272,5 +272,26 @@
     "statDishes": "必食 {n}品",
     "statShops": "おすすめ店 {n}軒",
     "statBib": "ビブグルマン {n}軒"
+  },
+  "translate": {
+    "open": "翻訳モードを開く",
+    "title": "翻訳",
+    "direction": "翻訳の向き",
+    "jaToVi": "日本語 → ベトナム語",
+    "viToJa": "ベトナム語 → 日本語",
+    "inputLabel": "翻訳したい文",
+    "placeholderJa": "伝えたいことを日本語で（例：辛くしないでください）",
+    "placeholderVi": "Nhập tiếng Việt ở đây（相手に入力してもらいましょう）",
+    "submit": "翻訳する",
+    "busy": "翻訳中…",
+    "backLabel": "日本語に戻すと：",
+    "showFull": "全画面で見せる",
+    "speak": "読み上げ",
+    "privacy": "入力した文は翻訳のためAI（Anthropic）に送信されます。名前や電話番号などは入力しないでください。電波がないときは",
+    "phrasebookLink": "会話帳の定型文をどうぞ。",
+    "errOffline": "電波がないため翻訳できません。会話帳の定型文をお使いください。",
+    "errUnavailable": "翻訳機能は現在準備中です。会話帳の定型文をお使いください。",
+    "errBusy": "混み合っています。少し待ってからもう一度お試しください。",
+    "errFailed": "うまく翻訳できませんでした。言い方を変えてもう一度お試しください。"
   }
 }

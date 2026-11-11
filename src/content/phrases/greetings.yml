@@ -4,39 +4,44 @@ order: 1
 verified: true
 phrases:
   - id: hello
-    ja: こんにちは
-    vi: Xin chào
-    kana: シン チャオ
-    note: 朝・昼・夜を問わず使えるあいさつです。
+    ja: こんにちは（女性に）
+    vi: Chào chị ạ
+    kana: チャオ チ アー
+    note: ベトナム語は相手で呼び方が変わります。自分は「em（エム）」、女性には「chị（チ）」、男性には「anh（アン）」。男性には「Chào anh ạ（チャオ アン アー）」。「Xin chào」は少しかしこまった言い方です。
+  - id: excuse-me
+    ja: すみません！（店員さんを呼ぶとき）
+    vi: Chị ơi!
+    kana: チ オーイ
+    note: 男性の店員さんには「Anh ơi!（アン オーイ）」。お店で人を呼ぶときのいちばん自然な言い方です。
   - id: thank-you
-    ja: ありがとう
-    vi: Cảm ơn
-    kana: カム ウン
-    note: 南部では「Cám ơn」と書かれることもあります。
+    ja: ありがとうございます
+    vi: Cám ơn chị nhiều nha
+    kana: カム ウン チ ニウ ニャー
+    note: 男性には「chị」を「anh（アン）」に。短く「Cám ơn nha」でもOKです。
   - id: sorry
-    ja: すみません／ごめんなさい
-    vi: Xin lỗi
-    kana: シン ローイ
-    note: 人に声をかけるときにも使えます。
+    ja: ごめんなさい
+    vi: Xin lỗi chị nha
+    kana: シン ローイ チ ニャー
   - id: goodbye
-    ja: さようなら
-    vi: Tạm biệt
-    kana: タム ビエッ
+    ja: ごちそうさま、じゃあまた（お店を出るとき）
+    vi: Em về nha chị
+    kana: エム イェー ニャー チ
+    note: 直訳は「帰りますね」。お店を出るときの自然なひとことです。
   - id: yes
     ja: はい
     vi: Dạ
     kana: ヤー
     note: 南部でよく使う丁寧な返事です。
   - id: no-thanks
-    ja: いいえ、結構です
-    vi: Không, cảm ơn
-    kana: コン、カム ウン
-    note: 客引きや物売りを断るときに便利です。
+    ja: いえ、大丈夫です（断るとき）
+    vi: Dạ thôi, em không cần đâu
+    kana: ヤー トイ、エム コン カン ダウ
+    note: 客引きや物売りを断るときに。笑顔でひとこと言って離れれば大丈夫です。
   - id: i-am-japanese
-    ja: 私は日本人です
-    vi: Tôi là người Nhật
-    kana: トイ ラー ングオイ ニャッ
+    ja: 日本人です
+    vi: Em là người Nhật
+    kana: エム ラー ングオイ ニャッ
   - id: i-dont-understand
-    ja: わかりません
-    vi: Tôi không hiểu
-    kana: トイ コン ヒウ
+    ja: ベトナム語がわかりません
+    vi: Em không hiểu tiếng Việt
+    kana: エム コン ヒウ ティエン イェッ

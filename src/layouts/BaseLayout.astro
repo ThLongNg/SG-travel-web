@@ -4,6 +4,8 @@ import '../styles/global.css';
 import SEO, { type Breadcrumb } from '../components/seo/SEO.astro';
 import RegisterSW from '../components/pwa/RegisterSW.astro';
 import GlassTabBar from '../components/glass/GlassTabBar.astro';
+import ShowMode from '../components/phrase/ShowMode.astro';
+import TranslateBubble from '../components/translate/TranslateBubble.astro';
 import SiteHeader from './SiteHeader.astro';
 import SiteFooter from './SiteFooter.astro';
 import { heroMedia } from '../lib/media';
@@ -137,6 +139,8 @@ const fullTitle = title === t(lang, 'site.name') ? title : `${title}｜${t(lang,
         icon: x.icon,
       }))}
     />
+    <TranslateBubble lang={lang} />
+    <ShowMode lang={lang} />
   </body>
 </html>
 
