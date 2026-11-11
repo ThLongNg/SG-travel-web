@@ -42,17 +42,17 @@ const tiles: { href: string; icon: IconName; title: string; desc: string; amber?
     amber: true,
   },
   {
-    href: localizePath('/phrases/', lang),
-    icon: 'chat',
-    title: t(lang, 'phrases.title'),
-    desc: t(lang, 'phrases.lead'),
-  },
-  {
     href: localizePath('/eat/', lang),
     icon: 'bowl',
     title: t(lang, 'eat.title'),
     desc: t(lang, 'eat.lead'),
     amber: true,
+  },
+  {
+    href: localizePath('/phrases/', lang),
+    icon: 'chat',
+    title: t(lang, 'phrases.title'),
+    desc: t(lang, 'phrases.lead'),
   },
   ...guides.map((g) => ({
     href: localizePath('/guide/', lang) + `#${g.id}`,
