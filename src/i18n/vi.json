@@ -281,6 +281,10 @@
     "submit": "Dịch",
     "busy": "Đang dịch…",
     "showFull": "Phóng to",
-    "speak": "Đọc"
+    "speak": "Đọc",
+    "mic": "Nói",
+    "camera": "Chụp menu",
+    "save": "Lưu",
+    "orderThis": "Gọi món này"
   }
 }

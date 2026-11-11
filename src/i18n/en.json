@@ -281,6 +281,10 @@
     "submit": "Translate",
     "busy": "Translating…",
     "showFull": "Show full screen",
-    "speak": "Speak"
+    "speak": "Speak",
+    "mic": "Speak",
+    "camera": "Scan menu",
+    "save": "Save",
+    "orderThis": "Order this"
   }
 }

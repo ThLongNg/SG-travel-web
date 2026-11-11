@@ -2,8 +2,10 @@
 // 翻訳 bubble: a floating button on every page that opens a translation sheet.
 // - 日本語 → ベトナム語: natural Saigon Vietnamese + katakana reading + a back-translation to check it,
 //   then 全画面で見せる (the shared <ShowMode>) and 読み上げ (vi-VN speech).
-// - ベトナム語 → 日本語: hand the phone to the other person to type.
-// Calls POST /api/translate (Vercel Function, api/translate.ts). Needs a connection.
+// - ベトナム語 → 日本語: hand the phone over; the other person types or speaks (🎤).
+// - メニューを撮る: a menu photo read into Japanese names, prices in yen and ★ picks; これください → 見せる.
+// - ★ saves a translation (offline); repeated sentences come from a local cache (no API call).
+// Logic: ./client.ts. API: POST /api/translate/ (Vercel Function, api/translate.ts).
 import GlassSheet from '../glass/GlassSheet.astro';
 import Icon from '../glass/Icon.astro';
 import { localizePath, t, type Locale } from '../../lib/i18n';
@@ -12,6 +14,8 @@ interface Props {
   lang: Locale;
 }
 const { lang } = Astro.props;
+const pill =
+  'glass-press touch-target flex items-center justify-center gap-1.5 rounded-full px-3 text-[14px] font-bold';
 ---
 
 <button
@@ -45,26 +49,49 @@ const { lang } = Astro.props;
     <label class="sr-only" for="tr-input">
       {t(lang, 'translate.inputLabel')}
     </label>
-    <textarea
-      id="tr-input"
-      class="block min-h-[96px] w-full resize-none rounded-2xl border border-line bg-white p-3 text-[17px] leading-relaxed"
-      maxlength="200"
-      rows="3"
-      data-tr-input
-      data-ph-ja-vi={t(lang, 'translate.placeholderJa')}
-      data-ph-vi-ja={t(lang, 'translate.placeholderVi')}
-      placeholder={t(lang, 'translate.placeholderJa')}
-    ></textarea>
-    <button
-      type="submit"
-      class="glass-press touch-target flex w-full items-center justify-center gap-2 rounded-full bg-amber px-6 py-3 text-[16px] font-bold text-ink-dark disabled:opacity-60"
-      data-tr-submit
-      data-label={t(lang, 'translate.submit')}
-      data-busy={t(lang, 'translate.busy')}
-    >
-      <Icon name="translate" size={18} />
-      <span data-tr-submit-label>{t(lang, 'translate.submit')}</span>
-    </button>
+    <div class="relative">
+      <textarea
+        id="tr-input"
+        class="block min-h-[96px] w-full resize-none rounded-2xl border border-line bg-white p-3 pr-14 text-[17px] leading-relaxed"
+        maxlength="200"
+        rows="3"
+        data-tr-input
+        data-ph-ja-vi={t(lang, 'translate.placeholderJa')}
+        data-ph-vi-ja={t(lang, 'translate.placeholderVi')}
+        placeholder={t(lang, 'translate.placeholderJa')}
+      ></textarea>
+      <button
+        type="button"
+        class="tr-mic glass-press touch-target absolute right-2 bottom-2 grid place-items-center rounded-full"
+        data-tr-mic
+        aria-pressed="false"
+        aria-label={t(lang, 'translate.mic')}
+        hidden
+      >
+        <Icon name="mic" size={22} />
+      </button>
+    </div>
+    <div class="grid grid-cols-[1fr_auto] gap-2">
+      <button
+        type="submit"
+        class="glass-press touch-target flex items-center justify-center gap-2 rounded-full bg-amber px-6 py-3 text-[16px] font-bold text-ink-dark disabled:opacity-60"
+        data-tr-submit
+        data-label={t(lang, 'translate.submit')}
+        data-busy={t(lang, 'translate.busy')}
+      >
+        <Icon name="translate" size={18} />
+        <span data-tr-submit-label>{t(lang, 'translate.submit')}</span>
+      </button>
+      <label
+        class:list={[pill, 'cursor-pointer border border-line bg-white']}
+        data-tr-camera-label
+        data-busy={t(lang, 'translate.menuBusy')}
+      >
+        <Icon name="camera" size={18} class="text-river" />
+        {t(lang, 'translate.camera')}
+        <input type="file" accept="image/*" capture="environment" class="sr-only" data-tr-camera />
+      </label>
+    </div>
   </form>
 
   <p class="mt-3 rounded-2xl bg-sand/70 p-3 text-[14px]" data-tr-error role="status" hidden></p>
@@ -87,18 +114,14 @@ const { lang } = Astro.props;
       <Icon name="info" size={16} class="mt-0.5 shrink-0 text-amber" />
       <span data-tr-note></span>
     </p>
-    <div class="grid grid-cols-2 gap-2">
-      <button
-        type="button"
-        class="glass-press touch-target flex items-center justify-center gap-1.5 rounded-full bg-amber px-3 text-[14px] font-bold text-ink-dark"
-        data-tr-show
-      >
+    <div class="flex flex-wrap gap-2">
+      <button type="button" class:list={[pill, 'flex-1 bg-amber text-ink-dark']} data-tr-show>
         <Icon name="expand" size={18} />
         {t(lang, 'translate.showFull')}
       </button>
       <button
         type="button"
-        class="glass-press touch-target flex items-center justify-center gap-1.5 rounded-full border border-line bg-white px-3 text-[14px] font-bold"
+        class:list={[pill, 'border border-line bg-white']}
         data-speak
         data-tr-speak
         hidden
@@ -106,122 +129,84 @@ const { lang } = Astro.props;
         <Icon name="speaker" size={18} />
         {t(lang, 'translate.speak')}
       </button>
+      <button
+        type="button"
+        class:list={[pill, 'tr-save border border-line bg-white']}
+        data-tr-save
+        aria-pressed="false"
+      >
+        <Icon name="star" size={18} />
+        {t(lang, 'translate.save')}
+      </button>
     </div>
+  </section>
+
+  <section class="mt-4 space-y-3" data-tr-menu hidden aria-live="polite">
+    <h3 class="m-0 text-[16px] font-bold">{t(lang, 'translate.menuTitle')}</h3>
+    <p class="m-0 flex gap-1.5 rounded-2xl bg-sand/70 p-3 text-[13px]" data-tr-menu-tip></p>
+    <p class="m-0 text-[14px] text-ink-muted" data-tr-menu-empty hidden>
+      {t(lang, 'translate.menuEmpty')}
+    </p>
+    <ul class="m-0 list-none space-y-2 p-0" data-tr-menu-list></ul>
+    <p class="m-0 text-[11px] text-ink-muted">{t(lang, 'translate.menuNote')}</p>
+  </section>
+
+  <section class="mt-5" data-tr-saved hidden>
+    <h3 class="m-0 mb-2 flex items-center gap-1.5 text-[15px] font-bold">
+      <Icon name="star" size={16} class="text-amber" />
+      {t(lang, 'translate.savedTitle')}
+    </h3>
+    <ul class="m-0 list-none space-y-2 p-0" data-tr-saved-list></ul>
   </section>
 
   <p class="mt-4 text-[11px] leading-relaxed text-ink-muted">
     {t(lang, 'translate.privacy')}
     <a href={localizePath('/phrases/', lang)}>{t(lang, 'translate.phrasebookLink')}</a>
   </p>
+
+  <template data-tr-menu-item>
+    <li class="rounded-2xl border border-line bg-white/80 p-3">
+      <div class="flex items-start gap-2">
+        <div class="min-w-0 flex-1">
+          <p class="m-0 flex flex-wrap items-center gap-1.5 text-[16px] leading-snug font-bold">
+            <span data-m-ja></span>
+            <span class="tag tag--amber" data-m-pick hidden>
+              ★ {t(lang, 'translate.pick')}
+            </span>
+          </p>
+          <p class="font-latin m-0 text-[14px] font-semibold" lang="vi" data-m-vi></p>
+          <p class="m-0 text-[12px] text-river" data-m-kana></p>
+          <p class="m-0 mt-1 text-[13px] leading-relaxed text-ink-muted" data-m-desc></p>
+          <p class="m-0 mt-1 text-[13px] font-bold" data-m-price></p>
+        </div>
+        <button
+          type="button"
+          class="glass-press touch-target shrink-0 rounded-full bg-amber px-3 text-[13px] font-bold text-ink-dark"
+          data-m-order
+        >
+          {t(lang, 'translate.orderThis')}
+        </button>
+      </div>
+    </li>
+  </template>
+
+  <template data-tr-saved-item>
+    <li class="flex items-center gap-2 rounded-2xl bg-sand/70 p-2 pl-3">
+      <button type="button" class="glass-press min-h-[44px] min-w-0 flex-1 text-left" data-s-open>
+        <span class="font-latin block truncate text-[15px] font-bold" data-s-main></span>
+        <span class="block truncate text-[12px] text-ink-muted" data-s-sub></span>
+      </button>
+      <button
+        type="button"
+        class="glass-press touch-target grid shrink-0 place-items-center rounded-full text-ink-muted"
+        data-s-remove
+        aria-label={t(lang, 'translate.remove')}
+      >
+        <Icon name="close" size={18} />
+      </button>
+    </li>
+  </template>
 </GlassSheet>
-
-<script>
-  import { phraseTools } from '../phrase/client';
-
-  type Dir = 'ja-vi' | 'vi-ja';
-  interface Result {
-    vi: string;
-    kana: string;
-    ja: string;
-    note: string;
-  }
-
-  const sheet = document.getElementById('translate-sheet');
-  if (sheet) {
-    const $ = <T extends HTMLElement>(s: string) => sheet.querySelector<T>(s)!;
-    const form = $<HTMLFormElement>('[data-tr-form]');
-    const input = $<HTMLTextAreaElement>('[data-tr-input]');
-    const submit = $<HTMLButtonElement>('[data-tr-submit]');
-    const submitLabel = $('[data-tr-submit-label]');
-    const errorBox = $('[data-tr-error]');
-    const result = $('[data-tr-result]');
-    const dirButtons = [...sheet.querySelectorAll<HTMLButtonElement>('[data-tr-dir]')];
-    const messages = JSON.parse(
-      document.querySelector<HTMLElement>('[data-tr-messages]')?.textContent ?? '{}',
-    ) as Record<string, string>;
-    let dir: Dir = 'ja-vi';
-    let last: { dir: Dir; input: string; r: Result } | null = null;
-
-    const setDir = (d: Dir) => {
-      dir = d;
-      for (const b of dirButtons) b.setAttribute('aria-pressed', String(b.dataset.trDir === d));
-      input.placeholder = input.dataset[d === 'ja-vi' ? 'phJaVi' : 'phViJa'] ?? '';
-      input.lang = d === 'ja-vi' ? 'ja' : 'vi';
-    };
-    for (const b of dirButtons) b.addEventListener('click', () => setDir(b.dataset.trDir as Dir));
-
-    const showError = (key: string) => {
-      errorBox.textContent = messages[key] ?? messages.failed;
-      errorBox.hidden = false;
-    };
-
-    const render = (d: Dir, text: string, r: Result) => {
-      last = { dir: d, input: text, r };
-      $('[data-tr-vi]').textContent = r.vi;
-      $('[data-tr-kana]').textContent = r.kana;
-      const jaBig = $('[data-tr-ja-big]');
-      jaBig.textContent = r.ja;
-      jaBig.hidden = d === 'ja-vi';
-      $('[data-tr-back]').textContent = r.ja;
-      $('[data-tr-back-wrap]').hidden = d === 'vi-ja';
-      // vi→ja: the Japanese is what she reads, so it goes on top
-      if (d === 'vi-ja') result.prepend(jaBig);
-      else result.append(jaBig);
-      $('[data-tr-note]').textContent = r.note;
-      $('[data-tr-note-wrap]').hidden = !r.note;
-      $('[data-tr-show]').hidden = d === 'vi-ja';
-      result.hidden = false;
-    };
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const text = input.value.trim();
-      errorBox.hidden = true;
-      if (!text) return input.focus();
-      if (!navigator.onLine) return showError('offline');
-
-      submit.disabled = true;
-      submitLabel.textContent = submit.dataset.busy ?? '';
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 25_000);
-      try {
-        const res = await fetch('/api/translate/', {
-          // trailing slash: vercel.json has trailingSlash:true (a 308 hop otherwise)
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ text, dir }),
-          signal: ctrl.signal,
-        });
-        if (res.ok) render(dir, text, (await res.json()) as Result);
-        else if (res.status === 503 || res.status === 404) showError('unavailable');
-        else if (res.status === 429) showError('busy');
-        else showError('failed');
-      } catch {
-        showError(navigator.onLine ? 'failed' : 'offline');
-      } finally {
-        clearTimeout(timer);
-        submit.disabled = false;
-        submitLabel.textContent = submit.dataset.label ?? '';
-      }
-    });
-
-    // Enter sends on desktop keyboards; Shift+Enter keeps a newline. IME composition is respected.
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
-        e.preventDefault();
-        form.requestSubmit();
-      }
-    });
-
-    const tools = phraseTools();
-    $('[data-tr-show]').addEventListener('click', () => {
-      if (last && tools) tools.show(last.input, last.r.vi, last.r.kana);
-    });
-    $('[data-tr-speak]').addEventListener('click', () => {
-      if (last && tools) tools.speak(last.r.vi);
-    });
-  }
-</script>
 
 <script
   type="application/json"
@@ -232,8 +217,17 @@ const { lang } = Astro.props;
     unavailable: t(lang, 'translate.errUnavailable'),
     busy: t(lang, 'translate.errBusy'),
     failed: t(lang, 'translate.errFailed'),
+    micDenied: t(lang, 'translate.errMic'),
+    badImage: t(lang, 'translate.errImage'),
   })}
 />
+<script>
+  import { initTranslate } from './client';
+
+  const sheet = document.getElementById('translate-sheet');
+  if (sheet) initTranslate(sheet);
+</script>
+
 <style>
   .translate-fab {
     position: fixed;
@@ -262,5 +256,35 @@ const { lang } = Astro.props;
     background: #fff;
     color: var(--color-amber);
     box-shadow: 0 2px 8px -4px rgb(20 28 46 / 0.3);
+  }
+  .tr-mic {
+    color: var(--color-river);
+    background: color-mix(in srgb, var(--color-river) 10%, white);
+  }
+  /* listening: pulsing red ring */
+  .tr-mic[aria-pressed='true'] {
+    color: #fff;
+    background: #d6334a;
+    animation: tr-pulse 1.2s ease-out infinite;
+  }
+  @keyframes tr-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgb(214 51 74 / 0.5);
+    }
+    100% {
+      box-shadow: 0 0 0 14px rgb(214 51 74 / 0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tr-mic[aria-pressed='true'] {
+      animation: none;
+    }
+  }
+  .tr-save[aria-pressed='true'] {
+    color: var(--color-amber);
+    border-color: var(--color-amber);
+  }
+  .tr-save[aria-pressed='true'] :global(svg path) {
+    fill: currentColor;
   }
 </style>
