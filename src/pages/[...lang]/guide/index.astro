@@ -38,16 +38,6 @@ const guides = (await getCollection('guides'))
       <CurrencyConverter lang={lang} />
     </section>
 
-    <section aria-labelledby="g-basics">
-      <div class="section-head">
-        <h2 id="g-basics">
-          <span class="section-no">02</span>
-          {t(lang, 'guide.categories')}
-        </h2>
-      </div>
-      <GuideCards lang={lang} guides={guides} />
-    </section>
-
     <GlassPanel as="aside" variant="light" padding="none">
       <a
         href={localizePath('/eat/', lang)}
@@ -63,5 +53,15 @@ const guides = (await getCollection('guides'))
         <Icon name="chevronRight" class="shrink-0 text-ink-muted" />
       </a>
     </GlassPanel>
+
+    <section aria-labelledby="g-basics">
+      <div class="section-head">
+        <h2 id="g-basics">
+          <span class="section-no">02</span>
+          {t(lang, 'guide.categories')}
+        </h2>
+      </div>
+      <GuideCards lang={lang} guides={guides} />
+    </section>
   </div>
 </BaseLayout>
