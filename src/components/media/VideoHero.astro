@@ -49,11 +49,8 @@ const { lang, height = 'full', class: className } = Astro.props;
     data-mp4-landscape={heroMedia.desktop.mp4}
     data-webm-landscape={heroMedia.desktop.webm}
   ></video>
-  <!-- Scrim: dark from the bottom (text area) + a light veil at the top (header) -->
-  <div
-    class="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/45 to-night/30"
-    aria-hidden="true"
-  ></div>
+  <!-- Scrim: dark only behind the text (bottom) and a thin veil under the header; the middle stays clear -->
+  <div class="video-hero__scrim absolute inset-0 -z-10" aria-hidden="true"></div>
   <button
     type="button"
     class="video-hero__toggle glass glass-pill glass-press touch-target absolute z-10 grid place-items-center"
@@ -154,6 +151,11 @@ const { lang, height = 'full', class: className } = Astro.props;
 </script>
 
 <style>
+  .video-hero__scrim {
+    background:
+      linear-gradient(to bottom, rgb(10 14 22 / 0.35), transparent 22%),
+      linear-gradient(to top, var(--color-night) 0%, rgb(10 14 22 / 0.55) 30%, transparent 62%);
+  }
   .video-hero__video {
     opacity: 0;
     transition: opacity 600ms var(--ease-out-soft);
